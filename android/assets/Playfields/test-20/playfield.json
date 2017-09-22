@@ -1,0 +1,24 @@
+{
+path: testboard.png
+minoSize: 20
+bgWidth: 400
+bgHeight: 480
+matrixOffsetX: 100
+matrixOffsetY: 40
+warningPath: garbage.png
+warningOffsetX: 307
+warningOffsetY: 440
+warningWidth: 5
+scoreFontPath: fonts/score.fnt
+scoreFontImagePath: fonts/score.png
+scoreOffsetY: 0
+scoreOffsetX: 100
+blockcoords: [
+	[ 25, 60, 60, 60 ]
+	[ 315, 60, 60, 60 ]
+	[ 315, 130, 50, 50 ]
+	[ 315, 190, 50, 50 ]
+	[ 315, 250, 50, 50 ]
+	[ 315, 310, 50, 50 ]
+]
+}

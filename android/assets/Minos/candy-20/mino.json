@@ -1,0 +1,12 @@
+{
+path: block1a20.png
+size: 20
+colored: true
+shaped: true
+blocksize: [ 80, 60, 50 ]
+blockpath: [
+	block1b80.png
+	block1b60.png
+	block1b50.png
+]
+}

@@ -1,0 +1,28 @@
+{
+path: board1a20.png
+minoSize: 20
+width: 400
+height: 480
+matrixOffsetX: 100
+matrixOffsetY: 40
+warningPath: garbage.png
+warningOffsetX: 307
+warningOffsetY: 440
+warningWidth: 5
+scoreFontPath: fonts/score.fnt
+scoreFontImagePath: fonts/score.png
+scoreOffsetX: 100
+scoreOffsetY: 0
+timeFontPath: fonts/time.fnt
+timeFontImagePath: fonts/time.png
+timeOffsetX: 325
+timeOffsetY: 380
+blockcoords: [
+	[ 25, 60, 60, 60 ]
+	[ 315, 60, 60, 60 ]
+	[ 315, 130, 50, 50 ]
+	[ 315, 190, 50, 50 ]
+	[ 315, 250, 50, 50 ]
+	[ 315, 310, 50, 50 ]
+]
+}

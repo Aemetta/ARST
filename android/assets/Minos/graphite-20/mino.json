@@ -1,0 +1,74 @@
+{
+path: Untitled.png
+size: 20
+randomized: true
+randomamount: 5
+randomPerPiece: true
+blocksize: [ 80 ]
+blockpath: [
+	testblock2.png
+]
+colorset: [
+	{}
+	{
+		r: 0.25
+		g: 1
+		b: 1
+		a: 1
+	}
+	{
+		r: 1
+		g: 1
+		b: 0.25
+		a: 1
+	}
+	{
+		r: 1
+		g: 0.25
+		b: 1
+		a: 1
+	}
+	{
+		r: 1
+		g: 0.25
+		b: 0.25
+		a: 1
+	}
+	{
+		r: 0.25
+		g: 1
+		b: 0.25
+		a: 1
+	}
+	{
+		r: 0.25
+		g: 0.25
+		b: 1
+		a: 1
+	}
+	{
+		r: 1
+		g: 0.65
+		b: 0.25
+		a: 1
+	}
+	{
+		r: 1
+		g: 1
+		b: 1
+		a: 0.2
+	}
+	{
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	{
+		r: 0.5
+		g: 0.5
+		b: 0.5
+		a: 1
+	}
+]
+}

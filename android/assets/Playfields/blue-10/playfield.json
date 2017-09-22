@@ -1,0 +1,22 @@
+{
+path: board1a10.png
+minosize: 10
+bgwidth: 320
+bgheight: 240
+matrixoffsetx: 50
+matrixoffsety: 20
+warningpath: garbage.png
+warningoffsetx: 153
+warningoffsety: 220
+warningwidth: 2
+blockcoords: [
+	[ 12, 30, 43, 60 ]
+	[ 157, 30, 188, 60 ]
+	[ 157, 65, 183, 90 ]
+	[ 157, 95, 183, 120 ]
+	[ 157, 125, 183, 150 ]
+	[ 157, 155, 183, 180 ]
+	[ 0, 0, 0, 0 ]
+	[ 0, 0, 0, 0 ]
+]
+}
