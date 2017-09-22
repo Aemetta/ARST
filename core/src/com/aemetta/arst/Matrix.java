@@ -148,4 +148,8 @@ public class Matrix {
 	public Wang getShape(int x, int y) {
 		return wang[y][x];
 	}
+
+	public int getTexture(int x, int y) {
+		return texture[y][x];
+	}
 }

@@ -183,7 +183,7 @@ public class Player {
 						srcy = matrix.getColor(x,y);
 					
 					if(mino.randomized){
-						srcx = matrix.texture[y][x];
+						srcx = matrix.getTexture(x,y);
 					}
 					
 					if(mino.shaped){

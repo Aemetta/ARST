@@ -24,7 +24,7 @@ public class Arst extends ApplicationAdapter {
 	Controller cont;
 	Player[] players;
 	Player human;
-	Player human2;
+	Player human2; //Second player for hotseat games
 	
 	@Override
 	public void create () {
@@ -32,6 +32,7 @@ public class Arst extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("Backgrounds/017.png", Texture.class);
+		//TODO add random backgrounds
 		
 		players = new Player[1];
 		
