@@ -58,7 +58,7 @@ public class Piece {
 		boolean survive = false;
 		for(int i = 0; i < 4; i++)
 			if(y[i] < 20) survive = true;
-		if(!survive) player.lose();
+		if(!survive) player.lose(1);
 		
 		//T-spin check
 				boolean tspin = false;
@@ -79,11 +79,14 @@ public class Piece {
 					}*/
 				}
 		
-		for(int i = 0; i < 4; i++)
+		int lowy = 20;
+		for(int i = 0; i < 4; i++) {
 			matrix.makeSolid(x[i],y[i]);
+			lowy = (y[i] < lowy) ? y[i] : lowy;
+		}
 		
 		if(hardDrop) cells *= 2;
-		score.place(matrix.consolidate(), cells, tspin);
+		score.place(matrix.consolidate(), cells, tspin, lowy);
 		
 		shape = queue.pull();
 		newPiece();
@@ -125,7 +128,7 @@ public class Piece {
 		}
 		
 		if(!shift(0,-2,2)) //Move the piece to its new current position
-			player.lose();
+			player.lose(1);
 		shift(0,-1,1);
 		rotation = 0;
 		countCells();

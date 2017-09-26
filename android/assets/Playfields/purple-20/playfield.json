@@ -9,14 +9,6 @@ warningPath: garbage.png
 warningOffsetX: 307
 warningOffsetY: 440
 warningWidth: 5
-scoreFontPath: fonts/score.fnt
-scoreFontImagePath: fonts/score.png
-scoreOffsetX: 100
-scoreOffsetY: 0
-timeFontPath: fonts/time.fnt
-timeFontImagePath: fonts/time.png
-timeOffsetX: 325
-timeOffsetY: 380
 blockcoords: [
 	[ 25, 60, 60, 60 ]
 	[ 315, 60, 60, 60 ]
@@ -25,4 +17,17 @@ blockcoords: [
 	[ 315, 250, 50, 50 ]
 	[ 315, 310, 50, 50 ]
 ]
+scoreFontPath: fonts/score.fnt
+scoreFontImagePath: fonts/score.png
+scoreOffsetX: 100
+scoreOffsetY: 0
+timeFontPath: fonts/time.fnt
+timeFontImagePath: fonts/time.png
+timeOffsetX: 250
+timeOffsetY: -10
+popupPath: popups-packed/pack.atlas
+popupOffsetX: 320
+popupOffsetY: 425
+comboOffsetX: 5
+comboOffsetY: 425
 }

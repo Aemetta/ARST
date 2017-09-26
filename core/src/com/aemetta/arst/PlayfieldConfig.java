@@ -17,6 +17,8 @@ public class PlayfieldConfig {
 	int warningOffsetY;
 	int warningWidth;
 	
+	int[][] blockcoords;
+	
 	String scoreFontPath;
 	String scoreFontImagePath;
 	int scoreOffsetX;
@@ -25,10 +27,11 @@ public class PlayfieldConfig {
 	String timeFontImagePath;
 	int timeOffsetX;
 	int timeOffsetY;
-
-	int[][] blockcoords;
-	
-    
+	String popupPath;
+	int popupOffsetX;
+	int popupOffsetY;
+	int comboOffsetX;
+	int comboOffsetY;
     
     public PlayfieldConfig() {
     }

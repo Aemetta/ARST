@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Json;
 
 public class Player {
@@ -18,6 +19,7 @@ public class Player {
 	Score score;
 	Garbage garbage;
 	Timer timer;
+	Popup popup;
 	
 	int das = 80;
 	int arr = 18;
@@ -28,6 +30,8 @@ public class Player {
 	int drop = 75;
 	boolean dropping = false;
 	long nextFall = -1;
+	
+	boolean gameover = false;
 	
 	final static int LEFT = 0;
 	final static int RIGHT = 1;
@@ -47,21 +51,14 @@ public class Player {
 	BitmapFont scorefont;
 	BitmapFont timefont;
 	
+	TextureAtlas popups;
+	
 	int[] blockref;
 	
 	MinoConfig mino;
 	PlayfieldConfig playfield;
 	
 	public Player(long seed, String fieldpath, String minopath) {
-		queue = new Queue(seed);
-		matrix = new Matrix();
-		garbage = new Garbage(matrix, seed);
-		score = new Score(matrix, garbage);
-		piece = new Piece(matrix, queue, score, this);
-		timer = new Timer(120);
-		
-		garbage.add(4);
-		
 		minopath = "Minos/"+minopath+"/";
 		fieldpath = "Playfields/"+fieldpath+"/";
 		
@@ -97,19 +94,32 @@ public class Player {
 			}
 		}
 		
-		scorefont = new BitmapFont(new FileHandle("Playfields/purple-20/" + playfield.scoreFontPath),
-				new FileHandle("Playfields/purple-20/" + playfield.scoreFontImagePath),false);
-		timefont = new BitmapFont(new FileHandle("Playfields/purple-20/" + playfield.timeFontPath),
-				new FileHandle("Playfields/purple-20/" + playfield.timeFontImagePath),false);
+		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.scoreFontPath),
+				new FileHandle(fieldpath + playfield.scoreFontImagePath),false);
+		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.timeFontPath),
+				new FileHandle(fieldpath + playfield.timeFontImagePath),false);
+		
+		popup = new Popup(new TextureAtlas(fieldpath + playfield.popupPath));
+		
+		queue = new Queue(seed);
+		matrix = new Matrix();
+		garbage = new Garbage(matrix, seed);
+		score = new Score(matrix, garbage, popup);
+		piece = new Piece(matrix, queue, score, this);
+		timer = new Timer(120);
+		
+		garbage.add(4);
 	}
 	
 	public void act(float t){
+		if(gameover) return;
 		long time = (long) (1000*t);
 		
 		nextRepeat -= time;
 		nextFall -= time;
 		
-		if(!timer.update(time)) lose();
+		if(!timer.update(time)) lose(0);
+		popup.update(time);
 		
 		if(nextRepeat < 0 && shiftDir != 0){
 			piece.shift(shiftDir, 0, 0);
@@ -128,6 +138,7 @@ public class Player {
 	}
 	
 	public void setInput(int key, boolean pressed){
+		if(gameover) return;
 		if(pressed){
 			if(key == LEFT){
 				piece.shift(-1, 0, 0);
@@ -158,8 +169,10 @@ public class Player {
 		}
 	}
 	
-	public void lose(){
+	public void lose(int method){
+		gameover = true;
 		
+		popup.create(true, method);
 	}
 	
 	public void draw(Batch batch) {
@@ -233,5 +246,15 @@ public class Player {
 		//time
 		timefont.draw(batch, timer.view(),
 				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY);
+		
+		//popup
+		if(popup.alive)
+			batch.draw(popup.image, playfield.popupOffsetX, 
+					playfield.height - playfield.popupOffsetY);
+		
+		//combo
+		if(popup.image2 != null)
+			batch.draw(popup.image2, playfield.comboOffsetX, 
+					playfield.height - playfield.comboOffsetY);
 	}
 }

@@ -5,27 +5,29 @@ public class Score {
 	Player target;
 	Matrix matrix;
 	Garbage garbage;
+	Popup popup;
 	
 	int level = 1;
 	int score = 0;
 	boolean backtoback = false;
 	int combo = 0;
-	final int[] table = {0,0,1,1,1,2,2,3,3,4,4,4,5,5,5,5,5,5,5,5,5,5,5};
+	final int[] table = {0,0,1,1,1,2,2,3,3,4,4,4,5,5};
 	
-	public Score(Matrix b, Garbage g){
+	public Score(Matrix b, Garbage g, Popup p){
 		target = null;
 		matrix = b;
 		garbage = g;
+		popup = p;
 	}
 	
 	public void setTarget(Player t) {
 		target = t;
 	}
 	
-	public void place(int lines, int cells, boolean tspin){
+	public void place(int lines, int cells, boolean tspin, int height){
 		
 		if(lines==0) combo = 0;
-		if(!(lines==4 || tspin)) backtoback = false;
+		if(!(lines==4 || lines==0 || tspin)) backtoback = false;
 		
 		//Add score
 		int add = 0;
@@ -50,6 +52,9 @@ public class Score {
 		add *= level;
 		add += cells;
 		score += add;
+		
+		//create a popup
+		popup.create(lines, tspin, backtoback, combo, height);
 		
 		if(lines == 0){
 			garbage.fill();
