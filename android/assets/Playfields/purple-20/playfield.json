@@ -21,10 +21,14 @@ scoreFontPath: fonts/score.fnt
 scoreFontImagePath: fonts/score.png
 scoreOffsetX: 100
 scoreOffsetY: 0
+scoreWidth: 100
+scoreAlign: 0
 timeFontPath: fonts/time.fnt
 timeFontImagePath: fonts/time.png
-timeOffsetX: 250
+timeOffsetX: 200
 timeOffsetY: -10
+timeWidth: 100
+timeAlign: 2
 popupPath: popups-packed/pack.atlas
 popupOffsetX: 320
 popupOffsetY: 425
