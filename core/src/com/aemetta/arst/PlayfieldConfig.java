@@ -23,10 +23,16 @@ public class PlayfieldConfig {
 	String scoreFontImagePath;
 	int scoreOffsetX;
 	int scoreOffsetY;
+	int scoreWidth;
+	int scoreAlign;
+	
 	String timeFontPath;
 	String timeFontImagePath;
 	int timeOffsetX;
 	int timeOffsetY;
+	int timeWidth;
+	int timeAlign;
+	
 	String popupPath;
 	int popupOffsetX;
 	int popupOffsetY;

@@ -245,8 +245,8 @@ public class Player {
 
 		//time
 		timefont.draw(batch, timer.view(),
-				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY);
-		
+				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY,
+				playfield.timeWidth, playfield.timeAlign, false);
 		//popup
 		if(popup.alive)
 			batch.draw(popup.image, playfield.popupOffsetX, 
