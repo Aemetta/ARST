@@ -29,7 +29,6 @@ public class Renderer implements Disposable {
 	
 	private BitmapFont scorefont;
 	private BitmapFont timefont;
-	private TextureAtlas popups;
 	
 	int[] blockref;
 	
@@ -49,10 +48,7 @@ public class Renderer implements Disposable {
 
 		blocks = new Texture[mino.blockpath.length];
 		minosheet = new Texture(minopath+mino.path);
-		for(int i = 0; i < mino.blockpath.length; i++){
-			blocks = Arrays.copyOf(blocks,blocks.length+1);
-			blocks[i] = new Texture(minopath+mino.blockpath[i]);
-		}
+		
 		if(mino.randomized) {
 			for(Player p : players) {
 				p.piece.randomized = true;
@@ -71,6 +67,13 @@ public class Renderer implements Disposable {
 				if(playfield.blockcoords[i][3] == mino.blocksize[j]) blockref[i] = j;
 			}
 		}
+		blo: for(int i = 0; i < mino.blockpath.length; i++)
+			for(int j : blockref)
+			if(i == j){
+				blocks = Arrays.copyOf(blocks,blocks.length+1);
+				blocks[i] = new Texture(minopath+mino.blockpath[i]);
+				continue blo;
+			}
 		
 		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.scoreFontPath),
 				new FileHandle(fieldpath + playfield.scoreFontImagePath),false);
@@ -210,11 +213,11 @@ public class Renderer implements Disposable {
 		disposed = true;
 		minosheet.dispose();
 		for(Texture t : blocks)
-			t.dispose();
+			if(t != null)
+				t.dispose();
 		background.dispose();
 		warning.dispose();
 		scorefont.dispose();
 		timefont.dispose();
-		popups.dispose();
 	}
 }
