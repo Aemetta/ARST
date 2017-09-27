@@ -36,15 +36,15 @@ public class Arst extends ApplicationAdapter {
 		manager.load("Backgrounds/017.png", Texture.class);
 		//TODO add random backgrounds
 		
-		players = new Player[2];
+		players = new Player[1];
 		
 		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(seed);
-		players[1] = new Player(seed);
+		players[0] = new Player(seed, mapLoader.load("Maps/Untitled.png"));
+	//	players[1] = new Player(seed, mapLoader.load("Maps/Untitled.png"));
 		human = players[0];
-		human2 = players[1];
-		players[0].score.setTarget(players[1]);
-		players[1].score.setTarget(players[0]);
+	//	human2 = players[1];
+	//	players[0].score.setTarget(players[1]);
+	//	players[1].score.setTarget(players[0]);
 		
 		renderer = new Renderer("purple-20", "candy-20", players);
 		

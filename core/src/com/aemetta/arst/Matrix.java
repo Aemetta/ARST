@@ -6,19 +6,37 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Matrix {
 	
-	final int WIDTH = 10;
-	final int HEIGHT = 24;
-	final int TOP = 4;
-	boolean[][] solid = new boolean[HEIGHT][WIDTH];
-	int[][] color = new int[HEIGHT][WIDTH];
-	Wang[][] wang = new Wang[HEIGHT][WIDTH];
-	int[][] texture = new int[HEIGHT][WIDTH];
-	boolean[][] updated = new boolean[HEIGHT][WIDTH];
-	Sprite[][] sprite = new Sprite[HEIGHT][WIDTH];
+	final int WIDTH;
+	final int HEIGHT;
+	final int TOP;
+	boolean[][] solid;
+	int[][] color;
+	Wang[][] wang;
+	int[][] texture;
+	boolean[][] updated;
+	Sprite[][] sprite;
 		//ALL ARRAYS WITH X/Y VALUES FOR BLOCKS ON THE matrix
 		//ARE IN THE FORM var[y][x] STARTING WITH Y
 	
 	public Matrix(){
+		this(10, 24, 4);
+	}
+	
+	public Matrix(int w, int h) {
+		this(w, h+4, 4);
+	}
+	
+	public Matrix(int w, int h, int t) {
+		WIDTH = w;
+		HEIGHT = h;
+		TOP = t;
+		
+		solid = new boolean[HEIGHT][WIDTH];
+		color = new int[HEIGHT][WIDTH];
+		wang = new Wang[HEIGHT][WIDTH];
+		texture = new int[HEIGHT][WIDTH];
+		updated = new boolean[HEIGHT][WIDTH];
+		sprite = new Sprite[HEIGHT][WIDTH];
 	}
 	
 	public int consolidate(){
@@ -97,10 +115,8 @@ public class Matrix {
 	}
 	
 	public void setSquare(int x, int y, int c, Wang s, int t){
-		color[y][x] = c;
-		wang[y][x] = s;
+		setSquare(x, y, c, s);
 		texture[y][x] = t;
-		updated[y][x] = true;
 	}
 	
 	public void setSquare(int x, int y, int c, Wang s){
@@ -151,5 +167,16 @@ public class Matrix {
 
 	public int getTexture(int x, int y) {
 		return texture[y][x];
+	}
+	
+	public Matrix clone() {
+		Matrix m = new Matrix(this.WIDTH, this.HEIGHT, this.TOP);
+		m.solid = this.solid.clone();
+		m.color = this.color.clone();
+		m.wang = this.wang.clone();
+		m.texture = this.texture.clone();
+		m.updated = this.updated.clone();
+		m.sprite = this.sprite.clone();
+		return m;
 	}
 }

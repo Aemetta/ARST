@@ -1,16 +1,5 @@
 package com.aemetta.arst;
 
-import java.util.Arrays;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Json;
-
 public class Player {
 	
 	Matrix matrix;
@@ -45,9 +34,9 @@ public class Player {
 	public int xoffset = 0;
 	public int yoffset = 0;
 	
-	public Player(long seed) {
+	public Player(long seed, Matrix m) {
 		
-		matrix = new Matrix();
+		matrix = m;
 		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
 		popup = new Popup();
@@ -55,7 +44,11 @@ public class Player {
 		piece = new Piece(matrix, queue, score, this);
 		timer = new Timer(120);
 		
-		garbage.add(4);
+	//	garbage.add(4);
+	}
+	
+	public Player(long seed) {
+		this(seed, new Matrix());
 	}
 	
 	public void act(float t){
