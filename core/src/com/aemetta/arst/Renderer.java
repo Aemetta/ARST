@@ -10,24 +10,26 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
 
-public class Renderer {
+public class Renderer implements Disposable {
 	
-	Player players[];
+	private boolean disposed = false;
+	private Player players[];
 	
-	MinoConfig mino;
-	PlayfieldConfig playfield;
+	private MinoConfig mino;
+	private PlayfieldConfig playfield;
 	
-	Texture minosheet;
-	Texture[] blocks;
+	private Texture minosheet;
+	private Texture[] blocks;
 	
-	Texture background;
-	Texture warning;
+	private Texture background;
+	private Texture warning;
 	
-	BitmapFont scorefont;
-	BitmapFont timefont;
-	TextureAtlas popups;
+	private BitmapFont scorefont;
+	private BitmapFont timefont;
+	private TextureAtlas popups;
 	
 	int[] blockref;
 	
@@ -88,6 +90,8 @@ public class Renderer {
 	
 	
 	public void draw(Batch batch, OrthographicCamera cam) {
+		
+		if(disposed) return;
 		
 		for(int i = 0; i < 7; i++)
 			for(Player p : players) {
@@ -196,9 +200,21 @@ public class Renderer {
 					playfield.height - playfield.popupOffsetY);
 	}
 		
-		private void combo(Batch batch, Player p) {
+	private void combo(Batch batch, Player p) {
 		if(p.popup.image2 != null)
 			batch.draw(p.popup.image2, playfield.comboOffsetX, 
 					playfield.height - playfield.comboOffsetY);
+	}
+	
+	public void dispose() {
+		disposed = true;
+		minosheet.dispose();
+		for(Texture t : blocks)
+			t.dispose();
+		background.dispose();
+		warning.dispose();
+		scorefont.dispose();
+		timefont.dispose();
+		popups.dispose();
 	}
 }

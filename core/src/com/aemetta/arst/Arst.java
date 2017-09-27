@@ -138,5 +138,7 @@ public class Arst extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		manager.dispose();
+		renderer.dispose();
 	}
 }
