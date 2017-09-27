@@ -12,7 +12,10 @@ public class Popup {
 	boolean alive = false;
 	long life = 0;
 	
-	public Popup(TextureAtlas a) {
+	public Popup() {
+	}
+	
+	public void setAtlas(TextureAtlas a) {
 		atlas = a;
 	}
 	

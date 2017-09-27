@@ -26,6 +26,8 @@ public class Arst extends ApplicationAdapter {
 	Player human;
 	Player human2; //Second player for hotseat games
 	
+	Renderer renderer;
+	
 	@Override
 	public void create () {
 		cam = new OrthographicCamera();
@@ -34,16 +36,17 @@ public class Arst extends ApplicationAdapter {
 		manager.load("Backgrounds/017.png", Texture.class);
 		//TODO add random backgrounds
 		
-		players = new Player[1];
+		players = new Player[2];
 		
 		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(seed, "purple-20", "candy-20");
-	//	players[1] = new Player(seed, "green-20", "candy-20");
-	//	players[2] = new Player(seed, "untitled-10", "candy-10");
+		players[0] = new Player(seed);
+		players[1] = new Player(seed);
 		human = players[0];
-	//	human2 = players[1];
-	//	players[0].score.setTarget(players[1]);
-	//	players[1].score.setTarget(players[0]);
+		human2 = players[1];
+		players[0].score.setTarget(players[1]);
+		players[1].score.setTarget(players[0]);
+		
+		renderer = new Renderer("purple-20", "candy-20", players);
 		
 		Controllers.addListener(new ControllerAdapter () {
 			@Override
@@ -121,17 +124,7 @@ public class Arst extends ApplicationAdapter {
 		batch.begin();
 		
 		batch.draw(background, -background.getWidth()/2, -background.getHeight()/2);
-		for(int i = 0; i < players.length; i++) {
-			int w = players[i].playfield.width/2;
-			int h = players[i].playfield.height/2;
-			cam.translate(w,h);
-			cam.update();
-			batch.setProjectionMatrix(cam.combined);
-			players[i].draw(batch);
-			cam.translate(-w,-h);
-			cam.update();
-			batch.setProjectionMatrix(cam.combined);
-		}
+		renderer.draw(batch, cam);
 		
 		batch.end();
 	}

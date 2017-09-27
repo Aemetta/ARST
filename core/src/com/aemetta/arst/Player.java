@@ -42,68 +42,15 @@ public class Player {
 	final static int HOLD = 6;
 	final static int DEPLOY = 7;
 	
-	Texture minosheet;
-	Texture[] blocks;
+	public int xoffset = 0;
+	public int yoffset = 0;
 	
-	Texture background;
-	Texture warning;
-	
-	BitmapFont scorefont;
-	BitmapFont timefont;
-	
-	TextureAtlas popups;
-	
-	int[] blockref;
-	
-	MinoConfig mino;
-	PlayfieldConfig playfield;
-	
-	public Player(long seed, String fieldpath, String minopath) {
-		minopath = "Minos/"+minopath+"/";
-		fieldpath = "Playfields/"+fieldpath+"/";
+	public Player(long seed) {
 		
-		Json json = new Json();
-		mino = json.fromJson(MinoConfig.class,
-				Gdx.files.internal(minopath+"mino.json"));
-		playfield = json.fromJson(PlayfieldConfig.class,
-				Gdx.files.internal(fieldpath+"playfield.json"));
-		
-		if(mino.size != playfield.minoSize)
-			System.err.println("Playfield and mino theme size don't match!");
-
-		blocks = new Texture[mino.blockpath.length];
-		minosheet = new Texture(minopath+mino.path);
-		for(int i = 0; i < mino.blockpath.length; i++){
-			blocks = Arrays.copyOf(blocks,blocks.length+1);
-			blocks[i] = new Texture(minopath+mino.blockpath[i]);
-		}
-		if(mino.randomized) {
-			piece.randomized = true;
-			piece.randomamount = mino.randomamount;
-			piece.randomperpiece = mino.randomPerPiece;
-		}
-
-		background = new Texture(fieldpath+playfield.path);
-		warning = new Texture(fieldpath+playfield.warningPath);
-		
-		blockref = new int[playfield.blockcoords.length];
-		for(int i = 0; i < playfield.blockcoords.length; i++){
-			blockref[i] = 0;
-			for(int j = 0; j < mino.blocksize.length; j++){
-				if(playfield.blockcoords[i][3] == mino.blocksize[j]) blockref[i] = j;
-			}
-		}
-		
-		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.scoreFontPath),
-				new FileHandle(fieldpath + playfield.scoreFontImagePath),false);
-		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.timeFontPath),
-				new FileHandle(fieldpath + playfield.timeFontImagePath),false);
-		
-		popup = new Popup(new TextureAtlas(fieldpath + playfield.popupPath));
-		
-		queue = new Queue(seed);
 		matrix = new Matrix();
+		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
+		popup = new Popup();
 		score = new Score(matrix, garbage, popup);
 		piece = new Piece(matrix, queue, score, this);
 		timer = new Timer(120);
@@ -175,86 +122,5 @@ public class Player {
 		popup.create(true, method);
 	}
 	
-	public void draw(Batch batch) {
-		//background
-		batch.draw(background, playfield.imageOffsetX, playfield.imageOffsetY);
-		
-		//minos
-		for(int x = 0; x < matrix.WIDTH; x++)
-			for(int y = 0; y < matrix.HEIGHT-matrix.TOP; y++)
-			{
-				if(matrix.getColor(x, y)==0) continue;
-				if(matrix.getShape(x, y)==null) continue;
-				Sprite sprite;
-				if(matrix.hasUpdated(x, y)) {
-					int dspx = x * mino.size + playfield.matrixOffsetX;
-					int dspy = y * mino.size + playfield.matrixOffsetY;
-					int srcx = 0;
-					int srcy = 0;
-					
-					if(mino.colored)
-						srcy = matrix.getColor(x,y);
-					
-					if(mino.randomized){
-						srcx = matrix.getTexture(x,y);
-					}
-					
-					if(mino.shaped){
-						srcx = srcx*4+matrix.getShape(x,y).x;
-						srcy = srcy*4+matrix.getShape(x,y).y;
-					}
-					
-					srcx *= mino.size;
-					srcy *= mino.size;
-					
-					sprite = new Sprite(minosheet, srcx, srcy, mino.size, mino.size);
-					sprite.setBounds(dspx, dspy, mino.size, mino.size);
-					matrix.setSprite(x, y, sprite);
-					if(!mino.colored)
-						sprite.setColor(mino.colorset[matrix.color[y][x]]);
-				} else {
-					sprite = matrix.getSprite(x, y);
-				}
-				sprite.draw(batch);
-			}
-		
-		//queue
-		for(int i = 0; i < blockref.length; i++){
-			int a = mino.blocksize[blockref[i]];
-			int b;
-			if(i==0){
-				if(queue.held!=null)
-					b = queue.held.color-1;
-				else continue;
-			}
-			else b = queue.que[i-1].color-1;
-			
-			Sprite sprite = new Sprite(blocks[blockref[i]], 0, b*a, a, a);
-			sprite.setBounds(playfield.blockcoords[i][0],playfield.height-playfield.blockcoords[i][1]-playfield.blockcoords[i][3],
-					playfield.blockcoords[i][2],playfield.blockcoords[i][3]);
-			sprite.draw(batch);
-		}
-		
-		//garbage
-		batch.draw(warning, playfield.warningOffsetX, playfield.height-playfield.warningOffsetY,
-				playfield.warningWidth, mino.size*garbage.warning);
-		
-		//score
-		scorefont.draw(batch, Integer.toString(score.score),
-				playfield.scoreOffsetX, playfield.height - playfield.scoreOffsetY);
-
-		//time
-		timefont.draw(batch, timer.view(),
-				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY,
-				playfield.timeWidth, playfield.timeAlign, false);
-		//popup
-		if(popup.alive)
-			batch.draw(popup.image, playfield.popupOffsetX, 
-					playfield.height - playfield.popupOffsetY);
-		
-		//combo
-		if(popup.image2 != null)
-			batch.draw(popup.image2, playfield.comboOffsetX, 
-					playfield.height - playfield.comboOffsetY);
-	}
+	
 }
