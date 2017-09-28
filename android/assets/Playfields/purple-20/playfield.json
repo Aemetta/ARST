@@ -18,36 +18,36 @@ blockcoords: [
 	[ 315, 310, 50, 50 ]
 ]
 score: {
-		FontPath: fonts/score.fnt
-		FontImagePath: fonts/score.png
-		OffsetX: 100
-		OffsetY: 0
-		Width: 100
-		Align: 0
+		fontPath: fonts/score.fnt
+		fontImagePath: fonts/score.png
+		offsetX: 100
+		offsetY: 0
+		width: 100
+		align: 0
 }
 level: {
-		FontPath: fonts/time.fnt
-		FontImagePath: fonts/time.png
-		OffsetX: 0
-		OffsetY: 140
-		Width: 60
-		Align: 2
+		fontPath: fonts/time.fnt
+		fontImagePath: fonts/time.png
+		offsetX: 0
+		offsetY: 140
+		width: 60
+		align: 2
 }
 lines: {
-		FontPath: fonts/time.fnt
-		FontImagePath: fonts/time.png
-		OffsetX: 0
-		OffsetY: 240
-		Width: 60
-		Align: 2
+		fontPath: fonts/time.fnt
+		fontImagePath: fonts/time.png
+		offsetX: 0
+		offsetY: 240
+		width: 60
+		align: 2
 }
 time: {
-		FontPath: fonts/time.fnt
-		FontImagePath: fonts/time.png
-		OffsetX: 200
-		OffsetY: -10
-		Width: 100
-		Align: 2
+		fontPath: fonts/time.fnt
+		fontImagePath: fonts/time.png
+		offsetX: 200
+		offsetY: -10
+		width: 100
+		align: 2
 }
 popupPath: popups-packed/pack.atlas
 popupOffsetX: 320

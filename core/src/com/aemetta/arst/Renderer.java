@@ -77,14 +77,14 @@ public class Renderer implements Disposable {
 				continue blo;
 			}
 		
-		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.score.FontPath),
-				new FileHandle(fieldpath + playfield.score.FontImagePath),false);
-		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.time.FontPath),
-				new FileHandle(fieldpath + playfield.time.FontImagePath),false);
-		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.level.FontPath),
-				new FileHandle(fieldpath + playfield.level.FontImagePath),false);
-		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.lines.FontPath),
-				new FileHandle(fieldpath + playfield.lines.FontImagePath),false);
+		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.score.fontPath),
+				new FileHandle(fieldpath + playfield.score.fontImagePath),false);
+		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.time.fontPath),
+				new FileHandle(fieldpath + playfield.time.fontImagePath),false);
+		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.level.fontPath),
+				new FileHandle(fieldpath + playfield.level.fontImagePath),false);
+		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.lines.fontPath),
+				new FileHandle(fieldpath + playfield.lines.fontImagePath),false);
 		
 		players = pl;
 		
@@ -121,10 +121,10 @@ public class Renderer implements Disposable {
 				case 0: background(batch, p); break;
 				case 1: queue(batch, p); break;
 				case 2: garbage(batch, p); break;
-				case 3: text(batch, p, scorefont, playfield.score); break;
-				case 4: text(batch, p, timefont, playfield.time); break;
-				case 5: text(batch, p, linesfont, playfield.lines); break;
-				case 6: text(batch, p, levelfont, playfield.level); break;
+				case 3: text(batch, p, scorefont, playfield.score, Integer.toString(p.score.score)); break;
+				case 4: text(batch, p, timefont, playfield.time, p.timer.view()); break;
+				case 5: text(batch, p, linesfont, playfield.lines, Integer.toString(p.level.getLines())); break;
+				case 6: text(batch, p, levelfont, playfield.level, Integer.toString(p.level.getLevel())); break;
 				case 7: popup(batch, p); break;
 				case 8: combo(batch, p); break;
 				case 9: minos(batch, p); break;
@@ -202,10 +202,10 @@ public class Renderer implements Disposable {
 				playfield.warningWidth, mino.size*p.garbage.warning);
 	}
 		
-	private void text(Batch batch, Player p, BitmapFont font, TextConfig config) {
-		scorefont.draw(batch, Integer.toString(p.score.score),
-				config.OffsetX, playfield.height - config.OffsetY,
-				config.Width, config.Align, false);
+	private void text(Batch batch, Player p, BitmapFont font, TextConfig config, String text) {
+		font.draw(batch, text,
+				config.offsetX, playfield.height - config.offsetY,
+				config.width, config.align, false);
 	}
 	
 	private void popup(Batch batch, Player p) {
