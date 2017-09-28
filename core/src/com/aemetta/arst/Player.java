@@ -9,6 +9,7 @@ public class Player {
 	Garbage garbage;
 	Timer timer;
 	Popup popup;
+	LevelTracker level;
 	
 	int das = 80;
 	int arr = 18;
@@ -40,7 +41,8 @@ public class Player {
 		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
 		popup = new Popup();
-		score = new Score(matrix, garbage, popup);
+		level = new LevelTracker(1, 15, 10, true);
+		score = new Score(matrix, garbage, popup, level);
 		piece = new Piece(matrix, queue, score, this);
 		timer = new Timer(120);
 		

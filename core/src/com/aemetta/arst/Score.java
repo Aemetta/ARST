@@ -6,8 +6,8 @@ public class Score {
 	Matrix matrix;
 	Garbage garbage;
 	Popup popup;
+	LevelTracker level;
 	
-	int level = 1;
 	int score = 0;
 	boolean backtoback = false;
 	int combo = 0;
@@ -18,6 +18,11 @@ public class Score {
 		matrix = b;
 		garbage = g;
 		popup = p;
+	}
+	
+	public Score(Matrix b, Garbage g, Popup p, LevelTracker l) {
+		this(b, g, p);
+		level = l;
 	}
 	
 	public void setTarget(Player t) {
@@ -49,7 +54,10 @@ public class Score {
 		if(backtoback) add *= 1.5;
 		
 		add += 50*combo;
-		add *= level;
+		if(level != null) {
+			level.clearLines(lines);
+			add *= level.level;
+		}
 		add += cells;
 		score += add;
 		

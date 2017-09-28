@@ -29,6 +29,8 @@ public class Renderer implements Disposable {
 	
 	private BitmapFont scorefont;
 	private BitmapFont timefont;
+	private BitmapFont levelfont;
+	private BitmapFont linesfont;
 	
 	int[] blockref;
 	
@@ -79,6 +81,10 @@ public class Renderer implements Disposable {
 				new FileHandle(fieldpath + playfield.scoreFontImagePath),false);
 		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.timeFontPath),
 				new FileHandle(fieldpath + playfield.timeFontImagePath),false);
+		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.levelFontPath),
+				new FileHandle(fieldpath + playfield.levelFontImagePath),false);
+		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.linesFontPath),
+				new FileHandle(fieldpath + playfield.linesFontImagePath),false);
 		
 		players = pl;
 		
@@ -96,7 +102,7 @@ public class Renderer implements Disposable {
 		
 		if(disposed) return;
 		
-		for(int i = 0; i < 7; i++)
+		for(int i = 0; i < 9; i++)
 			for(Player p : players) {
 				
 				int w = playfield.width/2 + p.xoffset;
@@ -111,8 +117,10 @@ public class Renderer implements Disposable {
 				case 2: garbage(batch, p); break;
 				case 3: score(batch, p); break;
 				case 4: timer(batch, p); break;
-				case 5: popup(batch, p); break;
-				case 6: combo(batch, p); break;
+				case 5: level(batch, p); break;
+				case 6: lines(batch, p); break;
+				case 7: popup(batch, p); break;
+				case 8: combo(batch, p); break;
 				}
 				cam.translate(-w,-h);
 				cam.update();
@@ -188,13 +196,26 @@ public class Renderer implements Disposable {
 		
 	private void score(Batch batch, Player p) {
 		scorefont.draw(batch, Integer.toString(p.score.score),
-				playfield.scoreOffsetX, playfield.height - playfield.scoreOffsetY);
+				playfield.scoreOffsetX, playfield.height - playfield.scoreOffsetY,
+				playfield.scoreWidth, playfield.scoreAlign, false);
 	}
 
 	private void timer(Batch batch, Player p) {
 		timefont.draw(batch, p.timer.view(),
 				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY,
 				playfield.timeWidth, playfield.timeAlign, false);
+	}
+	
+	private void level(Batch batch, Player p) {
+		levelfont.draw(batch, Integer.toString(p.level.level),
+				playfield.levelOffsetX, playfield.height - playfield.levelOffsetY,
+				playfield.levelWidth, playfield.levelAlign, false);
+	}
+
+	private void lines(Batch batch, Player p) {
+		linesfont.draw(batch, Integer.toString(p.level.lines),
+				playfield.linesOffsetX, playfield.height - playfield.linesOffsetY,
+				playfield.linesWidth, playfield.linesAlign, false);
 	}
 	
 	private void popup(Batch batch, Player p) {

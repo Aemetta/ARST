@@ -33,6 +33,20 @@ public class PlayfieldConfig {
 	int timeWidth;
 	int timeAlign;
 	
+	String levelFontPath;
+	String levelFontImagePath;
+	int levelOffsetX;
+	int levelOffsetY;
+	int levelWidth;
+	int levelAlign;
+	
+	String linesFontPath;
+	String linesFontImagePath;
+	int linesOffsetX;
+	int linesOffsetY;
+	int linesWidth;
+	int linesAlign;
+	
 	String popupPath;
 	int popupOffsetX;
 	int popupOffsetY;
