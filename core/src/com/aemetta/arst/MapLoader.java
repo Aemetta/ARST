@@ -3,7 +3,7 @@ package com.aemetta.arst;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 
-public class mapLoader {
+public class MapLoader {
 	
 	public static Matrix load(String path) {
 		
