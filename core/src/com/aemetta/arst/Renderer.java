@@ -77,14 +77,14 @@ public class Renderer implements Disposable {
 				continue blo;
 			}
 		
-		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.scoreFontPath),
-				new FileHandle(fieldpath + playfield.scoreFontImagePath),false);
-		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.timeFontPath),
-				new FileHandle(fieldpath + playfield.timeFontImagePath),false);
-		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.levelFontPath),
-				new FileHandle(fieldpath + playfield.levelFontImagePath),false);
-		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.linesFontPath),
-				new FileHandle(fieldpath + playfield.linesFontImagePath),false);
+		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.score.FontPath),
+				new FileHandle(fieldpath + playfield.score.FontImagePath),false);
+		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.time.FontPath),
+				new FileHandle(fieldpath + playfield.time.FontImagePath),false);
+		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.level.FontPath),
+				new FileHandle(fieldpath + playfield.level.FontImagePath),false);
+		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.lines.FontPath),
+				new FileHandle(fieldpath + playfield.lines.FontImagePath),false);
 		
 		players = pl;
 		
@@ -97,12 +97,18 @@ public class Renderer implements Disposable {
 			p.popup.setAtlas(new TextureAtlas(fieldpath + playfield.popupPath));
 	}
 	
-	
+	/*
+	 * Drawing each playfield is now handled outside the player object.
+	 * This is more efficient.
+	 * For each element of the display, it iterates through
+	 * each player and draws it, requiring less texture
+	 * updates in the GPU.
+	 */
 	public void draw(Batch batch, OrthographicCamera cam) {
 		
 		if(disposed) return;
 		
-		for(int i = 0; i < 9; i++)
+		for(int i = 0; i < 10; i++)
 			for(Player p : players) {
 				
 				int w = playfield.width/2 + p.xoffset;
@@ -115,12 +121,13 @@ public class Renderer implements Disposable {
 				case 0: background(batch, p); break;
 				case 1: queue(batch, p); break;
 				case 2: garbage(batch, p); break;
-				case 3: score(batch, p); break;
-				case 4: timer(batch, p); break;
-				case 5: level(batch, p); break;
-				case 6: lines(batch, p); break;
+				case 3: text(batch, p, scorefont, playfield.score); break;
+				case 4: text(batch, p, timefont, playfield.time); break;
+				case 5: text(batch, p, linesfont, playfield.lines); break;
+				case 6: text(batch, p, levelfont, playfield.level); break;
 				case 7: popup(batch, p); break;
 				case 8: combo(batch, p); break;
+				case 9: minos(batch, p); break;
 				}
 				cam.translate(-w,-h);
 				cam.update();
@@ -130,8 +137,9 @@ public class Renderer implements Disposable {
 	
 	private void background(Batch batch, Player p) {
 		batch.draw(background, playfield.imageOffsetX, playfield.imageOffsetY);
+	}
 		
-		//minos
+	private void minos(Batch batch, Player p) {
 		for(int x = 0; x < p.matrix.WIDTH; x++)
 			for(int y = 0; y < p.matrix.HEIGHT-p.matrix.TOP; y++)
 			{
@@ -194,28 +202,10 @@ public class Renderer implements Disposable {
 				playfield.warningWidth, mino.size*p.garbage.warning);
 	}
 		
-	private void score(Batch batch, Player p) {
+	private void text(Batch batch, Player p, BitmapFont font, TextConfig config) {
 		scorefont.draw(batch, Integer.toString(p.score.score),
-				playfield.scoreOffsetX, playfield.height - playfield.scoreOffsetY,
-				playfield.scoreWidth, playfield.scoreAlign, false);
-	}
-
-	private void timer(Batch batch, Player p) {
-		timefont.draw(batch, p.timer.view(),
-				playfield.timeOffsetX, playfield.height - playfield.timeOffsetY,
-				playfield.timeWidth, playfield.timeAlign, false);
-	}
-	
-	private void level(Batch batch, Player p) {
-		levelfont.draw(batch, Integer.toString(p.level.level),
-				playfield.levelOffsetX, playfield.height - playfield.levelOffsetY,
-				playfield.levelWidth, playfield.levelAlign, false);
-	}
-
-	private void lines(Batch batch, Player p) {
-		linesfont.draw(batch, Integer.toString(p.level.lines),
-				playfield.linesOffsetX, playfield.height - playfield.linesOffsetY,
-				playfield.linesWidth, playfield.linesAlign, false);
+				config.OffsetX, playfield.height - config.OffsetY,
+				config.Width, config.Align, false);
 	}
 	
 	private void popup(Batch batch, Player p) {

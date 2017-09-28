@@ -19,33 +19,10 @@ public class PlayfieldConfig {
 	
 	int[][] blockcoords;
 	
-	String scoreFontPath;
-	String scoreFontImagePath;
-	int scoreOffsetX;
-	int scoreOffsetY;
-	int scoreWidth;
-	int scoreAlign;
-	
-	String timeFontPath;
-	String timeFontImagePath;
-	int timeOffsetX;
-	int timeOffsetY;
-	int timeWidth;
-	int timeAlign;
-	
-	String levelFontPath;
-	String levelFontImagePath;
-	int levelOffsetX;
-	int levelOffsetY;
-	int levelWidth;
-	int levelAlign;
-	
-	String linesFontPath;
-	String linesFontImagePath;
-	int linesOffsetX;
-	int linesOffsetY;
-	int linesWidth;
-	int linesAlign;
+	TextConfig time;
+	TextConfig score;
+	TextConfig level;
+	TextConfig lines;
 	
 	String popupPath;
 	int popupOffsetX;

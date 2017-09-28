@@ -17,30 +17,38 @@ blockcoords: [
 	[ 315, 250, 50, 50 ]
 	[ 315, 310, 50, 50 ]
 ]
-scoreFontPath: fonts/score.fnt
-scoreFontImagePath: fonts/score.png
-scoreOffsetX: 100
-scoreOffsetY: 0
-scoreWidth: 100
-scoreAlign: 0
-levelFontPath: fonts/time.fnt
-levelFontImagePath: fonts/time.png
-levelOffsetX: 0
-levelOffsetY: 140
-levelWidth: 60
-levelAlign: 2
-linesFontPath: fonts/time.fnt
-linesFontImagePath: fonts/time.png
-linesOffsetX: 0
-linesOffsetY: 240
-linesWidth: 60
-linesAlign: 2
-timeFontPath: fonts/time.fnt
-timeFontImagePath: fonts/time.png
-timeOffsetX: 200
-timeOffsetY: -10
-timeWidth: 100
-timeAlign: 2
+score: {
+		FontPath: fonts/score.fnt
+		FontImagePath: fonts/score.png
+		OffsetX: 100
+		OffsetY: 0
+		Width: 100
+		Align: 0
+}
+level: {
+		FontPath: fonts/time.fnt
+		FontImagePath: fonts/time.png
+		OffsetX: 0
+		OffsetY: 140
+		Width: 60
+		Align: 2
+}
+lines: {
+		FontPath: fonts/time.fnt
+		FontImagePath: fonts/time.png
+		OffsetX: 0
+		OffsetY: 240
+		Width: 60
+		Align: 2
+}
+time: {
+		FontPath: fonts/time.fnt
+		FontImagePath: fonts/time.png
+		OffsetX: 200
+		OffsetY: -10
+		Width: 100
+		Align: 2
+}
 popupPath: popups-packed/pack.atlas
 popupOffsetX: 320
 popupOffsetY: 425
