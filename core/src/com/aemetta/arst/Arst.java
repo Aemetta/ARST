@@ -1,5 +1,7 @@
 package com.aemetta.arst;
 
+import com.aemetta.arst.gamemodes.Gamemode;
+import com.aemetta.arst.gamemodes.Marathon;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -21,10 +24,9 @@ public class Arst extends ApplicationAdapter {
 	
 	Texture background;
 	
-	Controller cont;
-	Player[] players;
-	Player human;
-	Player human2; //Second player for hotseat games
+	Gamemode game;
+	
+	Preferences prefs;
 	
 	Renderer renderer;
 	
@@ -36,18 +38,10 @@ public class Arst extends ApplicationAdapter {
 		manager.load("Backgrounds/017.png", Texture.class);
 		//TODO add random backgrounds
 		
-		players = new Player[1];
+		game = new Marathon();
 		
-		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(seed, mapLoader.load("Maps/Untitled.png"));
-	//	players[1] = new Player(seed, mapLoader.load("Maps/Untitled.png"));
-		human = players[0];
-	//	human2 = players[1];
-	//	players[0].score.setTarget(players[1]);
-	//	players[1].score.setTarget(players[0]);
-		
-		renderer = new Renderer("purple-20", "candy-20", players);
-		
+		renderer = new Renderer("purple-20", "candy-20", game.players);
+		/*
 		Controllers.addListener(new ControllerAdapter () {
 			@Override
 			public boolean buttonDown(Controller controller, int buttonCode) {
@@ -81,31 +75,31 @@ public class Arst extends ApplicationAdapter {
 				}
 				return true;
 			}
-		});
+		});*/
 		
 		Gdx.input.setInputProcessor(new InputAdapter () {
 			
 			public boolean keyDown (int keycode) {
-					if(keycode == Keys.LEFT) human.setInput(Player.LEFT, true);
-					if(keycode == Keys.RIGHT) human.setInput(Player.RIGHT, true);
-					if(keycode == Keys.DOWN) human.setInput(Player.SOFT_DROP, true);
-					if(keycode == Keys.UP) human.setInput(Player.HARD_DROP, true);
-					if(keycode == Keys.SPACE) human.setInput(Player.DEPLOY, true);
-					if(keycode == Keys.C) human.setInput(Player.HOLD, true);
-					if(keycode == Keys.Z) human.setInput(Player.ROTATE_LEFT, true);
-					if(keycode == Keys.X) human.setInput(Player.ROTATE_RIGHT, true);
+					if(keycode == Keys.LEFT) game.setInput(Player.LEFT, true);
+					if(keycode == Keys.RIGHT) game.setInput(Player.RIGHT, true);
+					if(keycode == Keys.DOWN) game.setInput(Player.SOFT_DROP, true);
+					if(keycode == Keys.UP) game.setInput(Player.HARD_DROP, true);
+					if(keycode == Keys.SPACE) game.setInput(Player.DEPLOY, true);
+					if(keycode == Keys.C) game.setInput(Player.HOLD, true);
+					if(keycode == Keys.Z) game.setInput(Player.ROTATE_LEFT, true);
+					if(keycode == Keys.X) game.setInput(Player.ROTATE_RIGHT, true);
 					return true;
 			   }
 
 			   public boolean keyUp (int keycode) {
-				   if(keycode == Keys.LEFT) human.setInput(Player.LEFT, false);
-					if(keycode == Keys.RIGHT) human.setInput(Player.RIGHT, false);
-					if(keycode == Keys.DOWN) human.setInput(Player.SOFT_DROP, false);
-					if(keycode == Keys.UP) human.setInput(Player.HARD_DROP, false);
-					if(keycode == Keys.SPACE) human.setInput(Player.DEPLOY, false);
-					if(keycode == Keys.C) human.setInput(Player.HOLD, false);
-					if(keycode == Keys.Z) human.setInput(Player.ROTATE_LEFT, false);
-					if(keycode == Keys.X) human.setInput(Player.ROTATE_RIGHT, false);
+				   if(keycode == Keys.LEFT) game.setInput(Player.LEFT, false);
+					if(keycode == Keys.RIGHT) game.setInput(Player.RIGHT, false);
+					if(keycode == Keys.DOWN) game.setInput(Player.SOFT_DROP, false);
+					if(keycode == Keys.UP) game.setInput(Player.HARD_DROP, false);
+					if(keycode == Keys.SPACE) game.setInput(Player.DEPLOY, false);
+					if(keycode == Keys.C) game.setInput(Player.HOLD, false);
+					if(keycode == Keys.Z) game.setInput(Player.ROTATE_LEFT, false);
+					if(keycode == Keys.X) game.setInput(Player.ROTATE_RIGHT, false);
 					return true;
 			   }
 			});
@@ -116,8 +110,7 @@ public class Arst extends ApplicationAdapter {
 
 	public void render () {
 		float delta = Gdx.graphics.getRawDeltaTime();
-		for(int i = 0; i < players.length; i++)
-			players[i].act(delta);
+		game.act(delta);
 		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.setProjectionMatrix(cam.combined);

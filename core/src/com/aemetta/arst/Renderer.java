@@ -121,10 +121,17 @@ public class Renderer implements Disposable {
 				case 0: background(batch, p); break;
 				case 1: queue(batch, p); break;
 				case 2: garbage(batch, p); break;
-				case 3: text(batch, p, scorefont, playfield.score, Integer.toString(p.score.score)); break;
-				case 4: text(batch, p, timefont, playfield.time, p.timer.view()); break;
-				case 5: text(batch, p, linesfont, playfield.lines, Integer.toString(p.level.getLines())); break;
-				case 6: text(batch, p, levelfont, playfield.level, Integer.toString(p.level.getLevel())); break;
+				case 3: text(batch, p, scorefont, playfield.score,
+						Integer.toString(p.score.score)); break;
+				case 4: if(p.hasTimer())
+							text(batch, p, timefont, playfield.time,
+							p.timer.view()); break;
+				case 5: if(p.hasLevelTracker())
+							text(batch, p, linesfont, playfield.lines,
+							Integer.toString(p.level.getLines())); break;
+				case 6: if(p.hasLevelTracker())
+							text(batch, p, levelfont, playfield.level,
+							Integer.toString(p.level.getLevel())); break;
 				case 7: popup(batch, p); break;
 				case 8: combo(batch, p); break;
 				case 9: minos(batch, p); break;

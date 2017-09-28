@@ -5,7 +5,7 @@ public class Player {
 	Matrix matrix;
 	Queue queue;
 	Piece piece;
-	Score score;
+	public Score score;
 	Garbage garbage;
 	Timer timer;
 	Popup popup;
@@ -41,10 +41,8 @@ public class Player {
 		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
 		popup = new Popup();
-		level = new LevelTracker(1, 15, 10, true);
 		score = new Score(matrix, garbage, popup, level);
 		piece = new Piece(matrix, queue, score, this);
-		timer = new Timer(120);
 		
 	//	garbage.add(4);
 	}
@@ -60,7 +58,7 @@ public class Player {
 		nextRepeat -= time;
 		nextFall -= time;
 		
-		if(!timer.update(time)) lose(0);
+		if(timer != null && !timer.update(time)) lose(0);
 		popup.update(time);
 		
 		if(nextRepeat < 0 && shiftDir != 0){
@@ -79,7 +77,7 @@ public class Player {
 		}
 	}
 	
-	public void setInput(int key, boolean pressed){
+	public void input(int key, boolean pressed){
 		if(gameover) return;
 		if(pressed){
 			if(key == LEFT){
@@ -117,5 +115,21 @@ public class Player {
 		popup.create(true, method);
 	}
 	
+	public void setLevelTracker(LevelTracker t) {
+		level = t;
+	}
 	
+	public void setTimer(Timer t) {
+		timer = t;
+	}
+	
+	public boolean hasTimer() {
+		if(timer != null) return true;
+		else return false;
+	}
+	
+	public boolean hasLevelTracker() {
+		if(level != null) return true;
+		else return false;
+	}
 }
