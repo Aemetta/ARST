@@ -15,7 +15,7 @@ public class Marathon extends Gamemode{
 		players[0] = new Player(this, seed);
 		human = players[0];
 
-		human.setLevelTracker(new LevelTracker(human, 1, 15, 10, true));
+		human.setLevelTracker(new LevelTracker(human, 1, 16, 10, true));
 	}
 
 	@Override

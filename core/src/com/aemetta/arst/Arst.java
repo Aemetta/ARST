@@ -83,6 +83,9 @@ public class Arst extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(new InputAdapter () {
 			
 			public boolean keyDown (int keycode) {
+				
+					if(keycode == Keys.F2) game.players[0].level.clearLines(5);
+				
 					if(keycode == Keys.LEFT) game.setInput(Player.LEFT, true);
 					if(keycode == Keys.RIGHT) game.setInput(Player.RIGHT, true);
 					if(keycode == Keys.DOWN) game.setInput(Player.SOFT_DROP, true);
