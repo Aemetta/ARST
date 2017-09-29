@@ -179,4 +179,13 @@ public class Matrix {
 		m.sprite = this.sprite.clone();
 		return m;
 	}
+	
+	public boolean isEmpty() {
+		boolean r = true;
+		
+		for(int i = 0; i < WIDTH; i++)
+			if(isSolid(i, 0)) r = false;
+			
+		return r;
+	}
 }

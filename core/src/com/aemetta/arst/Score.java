@@ -3,26 +3,16 @@ package com.aemetta.arst;
 public class Score {
 	
 	Player target;
-	Matrix matrix;
-	Garbage garbage;
-	Popup popup;
-	LevelTracker level;
+	Player host;
 	
 	int score = 0;
 	boolean backtoback = false;
 	int combo = 0;
 	final int[] table = {0,0,1,1,1,2,2,3,3,4,4,4,5,5};
 	
-	public Score(Matrix b, Garbage g, Popup p){
+	public Score(Player p){
 		target = null;
-		matrix = b;
-		garbage = g;
-		popup = p;
-	}
-	
-	public Score(Matrix b, Garbage g, Popup p, LevelTracker l) {
-		this(b, g, p);
-		level = l;
+		host = p;
 	}
 	
 	public void setTarget(Player t) {
@@ -54,18 +44,25 @@ public class Score {
 		if(backtoback) add *= 1.5;
 		
 		add += 50*combo;
-		if(level != null) {
-			level.clearLines(lines);
-			add *= level.level;
+		if(host.level != null) {
+			host.level.clearLines(lines);
+			add *= host.level.level;
 		}
 		add += cells;
 		score += add;
 		
+		//handle perfect clear
+		if(host.matrix.isEmpty()) {
+			score += 1000;
+			host.popup.perfectClear();
+			host.handle(Player.PERFECT_CLEAR);
+		}
+		
 		//create a popup
-		popup.create(lines, tspin, backtoback, combo, height);
+		host.popup.create(lines, tspin, backtoback, combo, height);
 		
 		if(lines == 0){
-			garbage.fill();
+			host.garbage.fill();
 		}
 		else{
 			if((lines==4 || tspin)) backtoback = true;
@@ -74,7 +71,7 @@ public class Score {
 			lines--;
 			if(lines == 3) lines++;
 			lines += table[combo];
-			lines = garbage.remove(lines);
+			lines = host.garbage.remove(lines);
 			combo++;
 			if(target != null)
 				target.garbage.add(lines);

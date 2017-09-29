@@ -2,6 +2,8 @@ package com.aemetta.arst;
 
 public class LevelTracker {
 	
+	Player host;
+	
 	int level;
 	int maxLevel;
 	int lines;
@@ -9,8 +11,9 @@ public class LevelTracker {
 	
 	boolean lineIncrements; //Whether the lines cleared indicator goes up or down
 	
-	public LevelTracker(int level, int maxLevel, int lines, boolean increments){
+	public LevelTracker(Player host, int level, int maxLevel, int lines, boolean increments){
 		
+		this.host = host;
 		this.level = level;
 		this.maxLevel = maxLevel;
 		this.lines = 0;
@@ -21,11 +24,15 @@ public class LevelTracker {
 	}
 	
 	public void clearLines(int count) {
+		boolean r = false;
 		lines += count;
 		while(lines >= levelUpThreshold) {
 			lines -= levelUpThreshold;
 			level++;
+			host.handle(Player.LEVEL_UP);
 		}
+		if(level >= maxLevel)
+			host.handle(Player.LEVEL_MAX);
 	}
 	
 	public int getLevel() {

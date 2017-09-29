@@ -12,10 +12,10 @@ public class Marathon extends Gamemode{
 		players = new Player[1];
 		
 		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(seed);
+		players[0] = new Player(this, seed);
 		human = players[0];
 
-		human.setLevelTracker(new LevelTracker(1, 15, 10, true));
+		human.setLevelTracker(new LevelTracker(human, 1, 15, 10, true));
 	}
 
 	@Override
@@ -28,4 +28,16 @@ public class Marathon extends Gamemode{
 		human.input(key, pressed);
 	}
 	
+	@Override
+	public boolean handle(int event) {
+		switch(event) {
+		default: return false;
+		case Player.LEVEL_UP:
+			int fs = (int) (human.getFallSpeed() * 0.8);
+			human.setFallSpeed(fs);
+			int ds = human.getDropSpeed();
+			human.setDropSpeed((ds < fs/2) ? ds : fs/2);
+			return true;
+		}
+	}
 }

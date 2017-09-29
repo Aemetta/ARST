@@ -41,7 +41,7 @@ public class Arst extends ApplicationAdapter {
 		manager.load("Backgrounds/017.png", Texture.class);
 		//TODO add random backgrounds
 		
-		game = new Ultra();
+		game = new Marathon();
 		
 		renderer = new Renderer("purple-20", "candy-20", game.players);
 		/*

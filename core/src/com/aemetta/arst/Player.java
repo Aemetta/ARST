@@ -1,6 +1,10 @@
 package com.aemetta.arst;
 
+import com.aemetta.arst.gamemodes.Gamemode;
+
 public class Player {
+	
+	Gamemode game;
 	
 	Matrix matrix;
 	Queue queue;
@@ -23,14 +27,20 @@ public class Player {
 	
 	boolean gameover = false;
 	
-	final static int LEFT = 0;
-	final static int RIGHT = 1;
-	final static int ROTATE_LEFT = 2;
-	final static int ROTATE_RIGHT = 3;
-	final static int SOFT_DROP = 4;
-	final static int HARD_DROP = 5;
-	final static int HOLD = 6;
-	final static int DEPLOY = 7;
+	final static public int LEFT = 0;
+	final static public int RIGHT = 1;
+	final static public int ROTATE_LEFT = 2;
+	final static public int ROTATE_RIGHT = 3;
+	final static public int SOFT_DROP = 4;
+	final static public int HARD_DROP = 5;
+	final static public int HOLD = 6;
+	final static public int DEPLOY = 7;
+	
+	final static public int TOP_OUT = 100;
+	final static public int TIME_UP = 101;
+	final static public int LEVEL_MAX = 102;
+	final static public int LEVEL_UP = 200;
+	final static public int PERFECT_CLEAR = 201;
 	
 	public int xoffset = 0;
 	public int yoffset = 0;
@@ -40,20 +50,22 @@ public class Player {
 	public boolean timeVisible = false;
 	public boolean scoreVisible = true;
 	
-	public Player(long seed, Matrix m) {
+	public Player(Gamemode g, long seed, Matrix m) {
+		
+		game = g;
 		
 		matrix = m;
 		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
 		popup = new Popup();
-		score = new Score(matrix, garbage, popup);
+		score = new Score(this);
 		piece = new Piece(matrix, queue, score, this);
 		
 	//	garbage.add(4);
 	}
 	
-	public Player(long seed) {
-		this(seed, new Matrix());
+	public Player(Gamemode g, long seed) {
+		this(g, seed, new Matrix());
 	}
 	
 	public void act(float t){
@@ -63,14 +75,14 @@ public class Player {
 		nextRepeat -= time;
 		nextFall -= time;
 		
-		if(timer != null && !timer.update(time)) lose(0);
+		if(timer != null && !timer.update(time)) handle(TIME_UP);
 		popup.update(time);
 		
-		if(nextRepeat < 0 && shiftDir != 0){
+		while(nextRepeat <= 0 && shiftDir != 0){
 			piece.shift(shiftDir, 0, 0);
 			nextRepeat += arr;
 		}
-		if(nextFall < 0){
+		while(nextFall <= 0){
 			if(piece.warn == 0) piece.shift(0, -1, 0);
 			else{
 				piece.warn++;
@@ -114,15 +126,24 @@ public class Player {
 		}
 	}
 	
-	public void lose(int method){
-		gameover = true;
-		
-		popup.create(true, method);
+	public void handle(int event){
+		if(!game.handle(event)) {
+			switch(event) {
+			case TOP_OUT:	gameover = true;
+							popup.create(true, 1);
+							break;
+			case TIME_UP:	gameover = true;
+							popup.create(true, 0);
+							break;
+			case LEVEL_MAX:	gameover = true;
+							popup.create(true, 3);
+							break;
+			}
+		}
 	}
 	
 	public void setLevelTracker(LevelTracker t) {
 		level = t;
-		score.level = t;
 		levelsVisible = true;
 		linesVisible = true;
 	}
@@ -154,5 +175,21 @@ public class Player {
 	
 	public boolean hasScore() {
 		return scoreVisible;
+	}
+	
+	public int getFallSpeed() {
+		return fall;
+	}
+	
+	public void setFallSpeed(int f) {
+		fall = f;
+	}
+	
+	public int getDropSpeed() {
+		return drop;
+	}
+	
+	public void setDropSpeed(int d) {
+		drop = d;
 	}
 }

@@ -58,7 +58,7 @@ public class Piece {
 		boolean survive = false;
 		for(int i = 0; i < 4; i++)
 			if(y[i] < 20) survive = true;
-		if(!survive) player.lose(1);
+		if(!survive) player.handle(Player.TOP_OUT);
 		
 		//T-spin check
 				boolean tspin = false;
@@ -128,7 +128,7 @@ public class Piece {
 		}
 		
 		if(!shift(0,-2,2)) //Move the piece to its new current position
-			player.lose(1);
+			player.handle(Player.TOP_OUT);
 		shift(0,-1,1);
 		rotation = 0;
 		countCells();
