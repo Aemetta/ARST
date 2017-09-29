@@ -16,8 +16,10 @@ public class LineClear extends Gamemode {
 		players[0] = new Player(seed);
 		human = players[0];
 
-		human.setLevelTracker(new LevelTracker(1, 15, 10, true));
+		human.setLevelTracker(new LevelTracker(0, 1, 40, false));
 		human.setTimer(new Timer(0));
+		human.hideScore();
+		human.hideLevels();
 	}
 
 	@Override

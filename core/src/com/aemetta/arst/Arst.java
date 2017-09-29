@@ -1,7 +1,10 @@
 package com.aemetta.arst;
 
 import com.aemetta.arst.gamemodes.Gamemode;
+import com.aemetta.arst.gamemodes.LineClear;
 import com.aemetta.arst.gamemodes.Marathon;
+import com.aemetta.arst.gamemodes.Ultra;
+import com.aemetta.arst.gamemodes.Versus;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -38,7 +41,7 @@ public class Arst extends ApplicationAdapter {
 		manager.load("Backgrounds/017.png", Texture.class);
 		//TODO add random backgrounds
 		
-		game = new Marathon();
+		game = new Ultra();
 		
 		renderer = new Renderer("purple-20", "candy-20", game.players);
 		/*

@@ -34,6 +34,11 @@ public class Player {
 	
 	public int xoffset = 0;
 	public int yoffset = 0;
+
+	public boolean levelsVisible = false;
+	public boolean linesVisible = false;
+	public boolean timeVisible = false;
+	public boolean scoreVisible = true;
 	
 	public Player(long seed, Matrix m) {
 		
@@ -41,7 +46,7 @@ public class Player {
 		queue = new Queue(seed);
 		garbage = new Garbage(matrix, seed);
 		popup = new Popup();
-		score = new Score(matrix, garbage, popup, level);
+		score = new Score(matrix, garbage, popup);
 		piece = new Piece(matrix, queue, score, this);
 		
 	//	garbage.add(4);
@@ -117,19 +122,37 @@ public class Player {
 	
 	public void setLevelTracker(LevelTracker t) {
 		level = t;
+		score.level = t;
+		levelsVisible = true;
+		linesVisible = true;
 	}
 	
 	public void setTimer(Timer t) {
 		timer = t;
+		timeVisible = true;
+	}
+	
+	public void hideScore() {
+		scoreVisible = false;
+	}
+	
+	public void hideLevels() {
+		levelsVisible = false;
 	}
 	
 	public boolean hasTimer() {
-		if(timer != null) return true;
-		else return false;
+		return timeVisible;
 	}
 	
 	public boolean hasLevelTracker() {
-		if(level != null) return true;
-		else return false;
+		return levelsVisible;
+	}
+	
+	public boolean hasLineTracker() {
+		return linesVisible;
+	}
+	
+	public boolean hasScore() {
+		return scoreVisible;
 	}
 }

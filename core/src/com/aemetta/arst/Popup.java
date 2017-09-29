@@ -25,16 +25,16 @@ public class Popup {
 			if(btb) {
 				switch(lines) {
 				case 0: image = atlas.findRegion("tspin-btb"); break;
-				case 1: image = atlas.findRegion("tspin-single-btb"); break;
-				case 2: image = atlas.findRegion("tspin-double-btb"); break;
-				case 3: image = atlas.findRegion("tspin-triple-btb"); break;
+				case 1: image = atlas.findRegion("ts-single-btb"); break;
+				case 2: image = atlas.findRegion("ts-double-btb"); break;
+				case 3: image = atlas.findRegion("ts-triple-btb"); break;
 				}
 			} else {
 				switch(lines) {
 				case 0: image = atlas.findRegion("tspin"); break;
-				case 1: image = atlas.findRegion("tspin-single"); break;
-				case 2: image = atlas.findRegion("tspin-double"); break;
-				case 3: image = atlas.findRegion("tspin-triple"); break;
+				case 1: image = atlas.findRegion("ts-single"); break;
+				case 2: image = atlas.findRegion("ts-double"); break;
+				case 3: image = atlas.findRegion("ts-triple"); break;
 				}
 			}
 		} else {
