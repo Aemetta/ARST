@@ -58,42 +58,23 @@ public class Arst extends ApplicationAdapter {
 		game.init();
 		
 		prefs = Gdx.app.getPreferences("arst");
-		
-		das[0] = prefs.getInteger("P1 DAS", 200);
-		das[1] = prefs.getInteger("P2 DAS", 200);
-		arr[0] = prefs.getInteger("P1 ARR", 40);
-		arr[1] = prefs.getInteger("P2 ARR", 40);
-		drop[0] = prefs.getInteger("P1 Drop", 75);
-		drop[1] = prefs.getInteger("P2 Drop", 75);
-		
-		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
-		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
-		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
-		controls[3] = prefs.getInteger("Menu Down", Keys.DOWN);
-		controls[4] = prefs.getInteger("Left", Keys.LEFT);
-		controls[5] = prefs.getInteger("Right", Keys.RIGHT);
-		controls[6] = prefs.getInteger("Hard Drop", Keys.UP);
-		controls[7] = prefs.getInteger("Soft Drop", Keys.DOWN);
-		controls[9] = prefs.getInteger("Rotate Left", Keys.Z);
-		controls[8] = prefs.getInteger("Rotate Right", Keys.X);
-		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
-		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
-		controls[12] = prefs.getInteger("Deploy", Keys.V);
+		loadPrefs();
+		applyPrefs();
 		
 		if(game.player2 != null)
 		Controllers.addListener(new ControllerAdapter () {
 			@Override
 			public boolean buttonDown(Controller controller, int buttonCode) {
-				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, true);
 				if(buttonCode == 0) game.player2.input(ROTATE_LEFT, true);
+				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, true);
 				if(buttonCode == 4) game.player2.input(HOLD, true);
 				if(buttonCode == 5) game.player2.input(HOLD, true);
 				return true;
 			}
 			@Override
 			public boolean buttonUp(Controller controller, int buttonCode) {
-				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, false);
 				if(buttonCode == 0) game.player2.input(ROTATE_LEFT, false);
+				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, false);
 				if(buttonCode == 4) game.player2.input(HOLD, false);
 				if(buttonCode == 5) game.player2.input(HOLD, false);
 				return true;
@@ -118,6 +99,7 @@ public class Arst extends ApplicationAdapter {
 			}
 		});
 		
+		if(game.player1 != null)
 		Gdx.input.setInputProcessor(new InputAdapter () {
 			
 			public boolean keyDown (int keycode) {
@@ -146,6 +128,31 @@ public class Arst extends ApplicationAdapter {
 		
 	}
 	
+	private void loadPrefs() {
+		
+		das[0] = prefs.getInteger("P1 DAS", 200);
+		das[1] = prefs.getInteger("P2 DAS", 200);
+		arr[0] = prefs.getInteger("P1 ARR", 80);
+		arr[1] = prefs.getInteger("P2 ARR", 80);
+		drop[0] = prefs.getInteger("P1 Drop", 75);
+		drop[1] = prefs.getInteger("P2 Drop", 75);
+		
+		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
+		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
+		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
+		controls[3] = prefs.getInteger("Menu Down", Keys.DOWN);
+		controls[4] = prefs.getInteger("Left", Keys.LEFT);
+		controls[5] = prefs.getInteger("Right", Keys.RIGHT);
+		controls[6] = prefs.getInteger("Hard Drop", Keys.UP);
+		controls[7] = prefs.getInteger("Soft Drop", Keys.DOWN);
+		controls[9] = prefs.getInteger("Rotate Left", Keys.Z);
+		controls[8] = prefs.getInteger("Rotate Right", Keys.X);
+		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
+		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
+		controls[12] = prefs.getInteger("Deploy", Keys.V);
+		
+	}
+	
 	private void writePrefs() {
 		prefs.putInteger("P1 DAS", das[0]);
 		prefs.putInteger("P2 DAS", das[1]);
@@ -167,6 +174,23 @@ public class Arst extends ApplicationAdapter {
 		prefs.putInteger("Rotate 180", controls[10]);
 		prefs.putInteger("Hold", controls[11]);
 		prefs.putInteger("Deploy", controls[12]);
+		
+		prefs.flush();
+	}
+	
+	private void applyPrefs() {
+		if(game.player1 != null) {
+			game.player1.das = das[0];
+			game.player1.arr = arr[0];
+			game.player1.drop = drop[0];
+		}
+		
+		if(game.player2 != null) {
+			game.player2.das = das[1];
+			game.player2.arr = arr[1];
+			game.player2.drop = drop[1];
+			
+		}
 	}
 
 	public void render () {
