@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import java.util.Arrays;
 
@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Matrix {
 	
-	final int WIDTH;
-	final int HEIGHT;
-	final int TOP;
+	private final int WIDTH;
+	private final int HEIGHT;
+	private final int TOP;
 	boolean[][] solid;
 	int[][] color;
 	Wang[][] wang;
@@ -31,24 +31,24 @@ public class Matrix {
 		HEIGHT = h;
 		TOP = t;
 		
-		solid = new boolean[HEIGHT][WIDTH];
-		color = new int[HEIGHT][WIDTH];
-		wang = new Wang[HEIGHT][WIDTH];
-		texture = new int[HEIGHT][WIDTH];
-		updated = new boolean[HEIGHT][WIDTH];
-		sprite = new Sprite[HEIGHT][WIDTH];
+		solid = new boolean[getHeight()][getWidth()];
+		color = new int[getHeight()][getWidth()];
+		wang = new Wang[getHeight()][getWidth()];
+		texture = new int[getHeight()][getWidth()];
+		updated = new boolean[getHeight()][getWidth()];
+		sprite = new Sprite[getHeight()][getWidth()];
 	}
 	
 	public int consolidate(){
 		int cleared = 0;
-		for(int i = HEIGHT-1; i >= 0; i--){
+		for(int i = getHeight()-1; i >= 0; i--){
 			boolean c = true;
-			for(int j = 0; j < WIDTH; j++)
+			for(int j = 0; j < getWidth(); j++)
 				if(!solid[i][j]) c = false;
 			if(c){
 				cleared++;
 				shift(i, false);
-				for(int j = 0; j < WIDTH; j++){
+				for(int j = 0; j < getWidth(); j++){
 					if(solid[i][j])
 						wang[i][j] = wang[i][j].shear(true);
 					if(i > 0)
@@ -64,43 +64,43 @@ public class Matrix {
 	
 	public void shift(int line, boolean up){
 		if(!up){ //Shift everything down, clearing lines
-			for(int i = line; i < HEIGHT-1; i++){
+			for(int i = line; i < getHeight()-1; i++){
 				solid[i] = solid[i+1];
 				color[i] = color[i+1];
 				wang[i] = wang[i+1];
-				for(int j = 0; j < WIDTH; j++)
+				for(int j = 0; j < getWidth(); j++)
 					updated[i][j] = true;
 			}
-			solid[HEIGHT-1] = new boolean[WIDTH];
-			color[HEIGHT-1] = new int[WIDTH];
-			wang[HEIGHT-1] = new Wang[WIDTH];
-			updated[HEIGHT-1] = new boolean[WIDTH];
-			Arrays.fill(updated[HEIGHT-1], true);
+			solid[getHeight()-1] = new boolean[getWidth()];
+			color[getHeight()-1] = new int[getWidth()];
+			wang[getHeight()-1] = new Wang[getWidth()];
+			updated[getHeight()-1] = new boolean[getWidth()];
+			Arrays.fill(updated[getHeight()-1], true);
 		}
 		else{ //shift everything up, adding garbage
-			for(int i = HEIGHT-1; i > line; i--){
+			for(int i = getHeight()-1; i > line; i--){
 				solid[i] = solid[i-1];
 				color[i] = color[i-1];
 				wang[i] = wang[i-1];
-				for(int j = 0; j < WIDTH; j++)
+				for(int j = 0; j < getWidth(); j++)
 					updated[i][j] = true;
 			}
-			solid[line] = new boolean[WIDTH];
-			color[line] = new int[WIDTH];
-			wang[line] = new Wang[WIDTH];
-			updated[line] = new boolean[WIDTH];
-			Arrays.fill(updated[HEIGHT-1], true);
+			solid[line] = new boolean[getWidth()];
+			color[line] = new int[getWidth()];
+			wang[line] = new Wang[getWidth()];
+			updated[line] = new boolean[getWidth()];
+			Arrays.fill(updated[getHeight()-1], true);
 		}
 	}
 	
 	public void smooth(int start, int end){
 		if(start > end){int c = start; start = end; end = c;}
 		for(int i = start; i <= end; i++){
-			for(int j = 0; j < WIDTH; j++){
+			for(int j = 0; j < getWidth(); j++){
 				wang[i][j] = Wang.MIDDLE;
 				if(j == 0 || color[i][j] != color[i][j-1])
 					wang[i][j] = Wang.WTEE;
-				if(j == WIDTH-1 || color[i][j] != color[i][j+1]){
+				if(j == getWidth()-1 || color[i][j] != color[i][j+1]){
 					if(wang[i][j] == Wang.WTEE) wang[i][j] = Wang.VERT;
 					else wang[i][j] = Wang.ETEE;
 				}
@@ -170,7 +170,7 @@ public class Matrix {
 	}
 	
 	public Matrix clone() {
-		Matrix m = new Matrix(this.WIDTH, this.HEIGHT, this.TOP);
+		Matrix m = new Matrix(this.getWidth(), this.getHeight(), this.getTopOffset());
 		m.solid = this.solid.clone();
 		m.color = this.color.clone();
 		m.wang = this.wang.clone();
@@ -183,9 +183,30 @@ public class Matrix {
 	public boolean isEmpty() {
 		boolean r = true;
 		
-		for(int i = 0; i < WIDTH; i++)
+		for(int i = 0; i < getWidth(); i++)
 			if(isSolid(i, 0)) r = false;
 			
 		return r;
+	}
+
+	/**
+	 * @return the wIDTH
+	 */
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	/**
+	 * @return the hEIGHT
+	 */
+	public int getHeight() {
+		return HEIGHT;
+	}
+
+	/**
+	 * @return the tOP
+	 */
+	public int getTopOffset() {
+		return TOP;
 	}
 }

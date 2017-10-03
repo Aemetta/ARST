@@ -1,11 +1,11 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import java.util.Random;
 
 public class Queue {
 	
 	Shape[] que = new Shape[10];
-	Shape held = null;
+	private Shape held = null;
 	boolean justHeld = false;
 	Random rand;
 	int[] inventory = new int[7];
@@ -65,8 +65,8 @@ public class Queue {
 	
 	public Shape hold(Shape put){
 		if(!justHeld) {
-			Shape h = held;
-			held = put;
+			Shape h = getHeldShape();
+			setHeldShape(put);
 			justHeld = true;
 			return h;
 		} else return put;
@@ -74,5 +74,35 @@ public class Queue {
 	
 	public void resetHeldStatus() {
 		justHeld = false;
+	}
+
+	/**
+	 * @return The shape in the hold spot
+	 */
+	public Shape getHeldShape() {
+		return held;
+	}
+
+	/**
+	 * @param The shape in the hold spot
+	 */
+	public void setHeldShape(Shape shape) {
+		held = shape;
+	}
+	
+	/**
+	 * @return The shape in the queue at the specified spot
+	 * @param spot The spot to get
+	 */
+	public Shape getQueSpot(int spot) {
+		return que[spot];
+	}
+
+	/**
+	 * @param shape The shape to put in the queue at the specified spot
+	 * @param spot The spot to set
+	 */
+	public void setQueSpot(Shape shape, int spot) {
+		que[spot] = shape;
 	}
 }

@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 public enum Wang {
 	
@@ -19,8 +19,8 @@ public enum Wang {
 	SWCORN(0, 3),
 	SECORN(2, 3);
 	
-	int x;
-	int y;
+	public int x;
+	public int y;
 	
 	Wang(int x, int y){
 		this.x = x;

@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import java.util.Arrays;
 
@@ -39,9 +39,9 @@ public class Piece {
 						{1,1,1,0,0},
 						{1,1,1,-1,2}};
 	
-	boolean randomized = false;
-	int randomamount = 0;
-	boolean randomperpiece = false;
+	private boolean randomized = false;
+	private int randomamount = 0;
+	private boolean randomperpiece = false;
 	
 	public Piece(Matrix b, Queue q, Score s, Player p){
 		matrix = b;
@@ -106,14 +106,14 @@ public class Piece {
 			gy[i] = y[i]; //Move the ghost away from its old position to avoid glitchy
 		}
 		
-		if(randomized){
-			if(randomperpiece)
-				Arrays.fill(texture, (int)(Math.random()*randomamount));
+		if(isRandomized()){
+			if(isRandomperpiece())
+				Arrays.fill(texture, (int)(Math.random()*getRandomamount()));
 			else{
-				texture[0] = (int)(Math.random()*randomamount);
-				texture[1] = (int)(Math.random()*randomamount);
-				texture[2] = (int)(Math.random()*randomamount);
-				texture[3] = (int)(Math.random()*randomamount);
+				texture[0] = (int)(Math.random()*getRandomamount());
+				texture[1] = (int)(Math.random()*getRandomamount());
+				texture[2] = (int)(Math.random()*getRandomamount());
+				texture[3] = (int)(Math.random()*getRandomamount());
 			}
 		}
 		
@@ -219,7 +219,7 @@ public class Piece {
 	
 	private void countCells() {
 		cells = 0;
-		boolean[] filled = new boolean[matrix.WIDTH];
+		boolean[] filled = new boolean[matrix.getWidth()];
 		for(int i = 0; i < 4; i++)
 			if(!filled[x[i]]) {
 				filled[x[i]] = true;
@@ -233,5 +233,47 @@ public class Piece {
 		j++; //Adjust for off-by-one error
 		shift(0, j, 0);
 		place(true);
+	}
+
+	/**
+	 * @return the randomized
+	 */
+	public boolean isRandomized() {
+		return randomized;
+	}
+
+	/**
+	 * @param randomized the randomized to set
+	 */
+	public void setRandomized(boolean randomized) {
+		this.randomized = randomized;
+	}
+
+	/**
+	 * @return the randomamount
+	 */
+	public int getRandomamount() {
+		return randomamount;
+	}
+
+	/**
+	 * @param randomamount the randomamount to set
+	 */
+	public void setRandomamount(int randomamount) {
+		this.randomamount = randomamount;
+	}
+
+	/**
+	 * @return the randomperpiece
+	 */
+	public boolean isRandomperpiece() {
+		return randomperpiece;
+	}
+
+	/**
+	 * @param randomperpiece the randomperpiece to set
+	 */
+	public void setRandomperpiece(boolean randomperpiece) {
+		this.randomperpiece = randomperpiece;
 	}
 }

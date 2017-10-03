@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 public enum Shape {
 	
@@ -43,10 +43,10 @@ public enum Shape {
 			new int[]{22},
 			new Wang[]{Wang.LONER});
 	
-	int color;
-	int[] x;
-	int[] y;
-	Wang[] wang;
+	public int color;
+	public int[] x;
+	public int[] y;
+	public Wang[] wang;
 	
 	Shape(int color, int[] x, int[] y, Wang[] shape){
 		this.color = color;

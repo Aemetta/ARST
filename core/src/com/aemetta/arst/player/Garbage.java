@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -7,7 +7,7 @@ public class Garbage {
 	
 	final Matrix matrix;
 	final Random rand;
-	int warning = 0;
+	private int warning = 0;
 	int[] fillings = new int[]{};
 	
 	public Garbage(Matrix b, long s){
@@ -17,7 +17,7 @@ public class Garbage {
 	
 	public void add(int amt){
 		if(amt==0) return;
-		warning += amt;
+		setWarningAmount(getWarningAmount() + amt);
 		fillings = Arrays.copyOf(fillings, fillings.length+1);
 		fillings[fillings.length-1] = amt;
 	}
@@ -27,12 +27,12 @@ public class Garbage {
 			if(fillings.length != 0)
 				if(fillings[0] > amt){
 					fillings[0] -= amt;
-					warning -= amt;
+					setWarningAmount(getWarningAmount() - amt);
 					amt = 0;
 				}
 				else{
 					amt -= fillings[0];
-					warning -= fillings[0];
+					setWarningAmount(getWarningAmount() - fillings[0]);
 					fillings = Arrays.copyOfRange(fillings, 1, fillings.length);
 				}
 			else
@@ -42,14 +42,14 @@ public class Garbage {
 	}
 	
 	public void fill(){
-		warning = 0;
+		setWarningAmount(0);
 		for(int z = 0; z < fillings.length; z++){
 			int a = fillings[z];
 			for(int i = 0; i < a; i++)
 				matrix.shift(0, true);
-			int b = (int)(rand.nextDouble()*matrix.WIDTH);
+			int b = (int)(rand.nextDouble()*matrix.getWidth());
 			for(int i = 0; i < a; i++)
-				for(int j = 0; j < matrix.WIDTH; j++){
+				for(int j = 0; j < matrix.getWidth(); j++){
 					if(j==b) continue;
 					matrix.makeSolid(j, i);
 					matrix.setSquare(j, i, 9, Wang.LONER);
@@ -57,5 +57,19 @@ public class Garbage {
 			matrix.smooth(0, a-1);
 		}
 		fillings = new int[]{};
+	}
+
+	/**
+	 * @return the warning
+	 */
+	public int getWarningAmount() {
+		return warning;
+	}
+
+	/**
+	 * @param warning the warning to set
+	 */
+	public void setWarningAmount(int warning) {
+		this.warning = warning;
 	}
 }

@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Popup {
 	
 	TextureAtlas atlas;
-	TextureRegion image;
-	TextureRegion image2;
+	public TextureRegion image1;
+	public TextureRegion image2;
 	
-	boolean alive = false;
 	long life = 0;
 	
 	public Popup() {
@@ -21,7 +20,7 @@ public class Popup {
 	
 	public void create(int lines, boolean tspin, boolean btb, int combo, int height) {
 		
-		image = null;
+		image1 = null;
 		if(tspin) {
 			if(btb) {
 				switch(lines) {
@@ -65,22 +64,17 @@ public class Popup {
 		case 11: set(2, "combo-12"); break;
 		}
 		
-		if(image != null) {
-			alive = true;
+		if(image1 != null)
 			life = 500;
-		} else {
-			alive = false;
-		}
 	}
 	
 	public void perfectClear() {
 		set(1, "perfect-clear");
-		alive = true;
 		life = 1000;
 	}
 	
 	public void create(boolean singleplayer, int place) {
-		image = null;
+		image1 = null;
 		if(singleplayer)
 			switch(place) {
 			case 0: set(1, "end-timer"); break;
@@ -91,19 +85,17 @@ public class Popup {
 		else
 			set(1, "end-place-" + place);
 		
-		if(image != null) {
-			alive = true;
+		if(image1 != null)
 			life = 3000;
-		}
 	}
 	
 	private void set(int i, String thing) {
-		if(i==1)image = atlas.findRegion(thing);
+		if(i==1)image1 = atlas.findRegion(thing);
 		if(i==2)image2 = atlas.findRegion(thing);
 	}
 	
 	public void update(long delta) {
 		life -= delta;
-		if(life <= 0) alive = false;
+		if(life <= 0) image1 = null;
 	}
 }

@@ -1,7 +1,7 @@
 package com.aemetta.arst.gamemodes;
 
-import com.aemetta.arst.Player;
 import com.aemetta.arst.Renderer;
+import com.aemetta.arst.player.Player;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;

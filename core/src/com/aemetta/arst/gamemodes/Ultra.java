@@ -1,7 +1,7 @@
 package com.aemetta.arst.gamemodes;
 
-import com.aemetta.arst.Player;
-import com.aemetta.arst.Timer;
+import com.aemetta.arst.player.Player;
+import com.aemetta.arst.player.Timer;
 
 public class Ultra extends Gamemode {
 	

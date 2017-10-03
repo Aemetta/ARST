@@ -105,7 +105,7 @@ public class Arst extends ApplicationAdapter {
 			public boolean keyDown (int keycode) {
 					
 				//Debug hotkeys
-				if(keycode == Keys.F2) game.players[0].level.clearLines(5);
+				if(keycode == Keys.F2) game.players[0].getLevelTracker().clearLines(5);
 				
 				for(int i = 0; i < controls.length; i++)
 					if(keycode == controls[i]) {
@@ -180,15 +180,15 @@ public class Arst extends ApplicationAdapter {
 	
 	private void applyPrefs() {
 		if(game.player1 != null) {
-			game.player1.das = das[0];
-			game.player1.arr = arr[0];
-			game.player1.drop = drop[0];
+			game.player1.setDAS(das[0]);
+			game.player1.setARR(arr[0]);
+			game.player1.setDropRate(drop[0]);
 		}
 		
 		if(game.player2 != null) {
-			game.player2.das = das[1];
-			game.player2.arr = arr[1];
-			game.player2.drop = drop[1];
+			game.player2.setDAS(das[1]);
+			game.player2.setARR(arr[1]);
+			game.player2.setDropRate(drop[1]);
 			
 		}
 	}

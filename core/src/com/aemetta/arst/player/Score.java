@@ -1,11 +1,11 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 public class Score {
 	
 	Player target;
 	Player host;
 	
-	int score = 0;
+	private int score = 0;
 	boolean backtoback = false;
 	int combo = 0;
 	final int[] table = {0,0,1,1,1,2,2,3,3,4,4,4,5,5};
@@ -49,11 +49,11 @@ public class Score {
 			add *= host.level.level;
 		}
 		add += cells;
-		score += add;
+		setScore(getScore() + add);
 		
 		//handle perfect clear
 		if(host.matrix.isEmpty()) {
-			score += 1000;
+			setScore(getScore() + 1000);
 			host.popup.perfectClear();
 			host.handle(Player.PERFECT_CLEAR);
 		}
@@ -76,5 +76,19 @@ public class Score {
 			if(target != null)
 				target.garbage.add(lines);
 		}
+	}
+
+	/**
+	 * @return the score
+	 */
+	public int getScore() {
+		return score;
+	}
+
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(int score) {
+		this.score = score;
 	}
 }

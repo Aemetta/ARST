@@ -2,6 +2,7 @@ package com.aemetta.arst;
 
 import java.util.Arrays;
 
+import com.aemetta.arst.player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
@@ -56,9 +57,9 @@ public class Renderer implements Disposable {
 		
 		if(mino.randomized) {
 			for(Player p : players) {
-				p.piece.randomized = true;
-				p.piece.randomamount = mino.randomamount;
-				p.piece.randomperpiece = mino.randomPerPiece;
+				p.piece.setRandomized(true);
+				p.piece.setRandomamount(mino.randomamount);
+				p.piece.setRandomperpiece(mino.randomPerPiece);
 			}
 		}
 		
@@ -144,7 +145,7 @@ public class Renderer implements Disposable {
 				case 2: garbage(batch, p); break;
 				case 3: if(p.hasScore())
 							text(batch, p, scorefont, playfield.score,
-							Integer.toString(p.score.score)); break;
+							Integer.toString(p.score.getScore())); break;
 				case 4: if(p.hasTimer())
 							text(batch, p, timefont, playfield.time,
 							p.timer.view()); break;
@@ -169,8 +170,8 @@ public class Renderer implements Disposable {
 	}
 		
 	private void minos(Batch batch, Player p) {
-		for(int x = 0; x < p.matrix.WIDTH; x++)
-			for(int y = 0; y < p.matrix.HEIGHT-p.matrix.TOP; y++)
+		for(int x = 0; x < p.matrix.getWidth(); x++)
+			for(int y = 0; y < p.matrix.getHeight()-p.matrix.getTopOffset(); y++)
 			{
 				if(p.matrix.getColor(x, y)==0) continue;
 				if(p.matrix.getShape(x, y)==null) continue;
@@ -200,7 +201,7 @@ public class Renderer implements Disposable {
 					sprite.setBounds(dspx, dspy, mino.size, mino.size);
 					p.matrix.setSprite(x, y, sprite);
 					if(!mino.colored)
-						sprite.setColor(mino.colorset[p.matrix.color[y][x]]);
+						sprite.setColor(mino.colorset[p.matrix.getColor(x, y)]);
 				} else {
 					sprite = p.matrix.getSprite(x, y);
 				}
@@ -213,11 +214,11 @@ public class Renderer implements Disposable {
 			int a = mino.blocksize[blockref[i]];
 			int b;
 			if(i==0){
-				if(p.queue.held!=null)
-					b = p.queue.held.color-1;
+				if(p.queue.getHeldShape()!=null)
+					b = p.queue.getHeldShape().color-1;
 				else continue;
 			}
-			else b = p.queue.que[i-1].color-1;
+			else b = p.queue.getQueSpot(i-1).color-1;
 			
 			Sprite sprite = new Sprite(blocks[blockref[i]], 0, b*a, a, a);
 			sprite.setBounds(playfield.blockcoords[i][0],playfield.height-playfield.blockcoords[i][1]-playfield.blockcoords[i][3],
@@ -228,7 +229,7 @@ public class Renderer implements Disposable {
 		
 	private void garbage(Batch batch, Player p) {
 		batch.draw(warning, playfield.warningOffsetX, playfield.height-playfield.warningOffsetY,
-				playfield.warningWidth, mino.size*p.garbage.warning);
+				playfield.warningWidth, mino.size*p.garbage.getWarningAmount());
 	}
 		
 	private void text(Batch batch, Player p, BitmapFont font, TextConfig config, String text) {
@@ -238,8 +239,8 @@ public class Renderer implements Disposable {
 	}
 	
 	private void popup(Batch batch, Player p) {
-		if(p.popup.alive)
-			batch.draw(p.popup.image, playfield.popupOffsetX, 
+		if(p.popup.image1 != null)
+			batch.draw(p.popup.image1, playfield.popupOffsetX, 
 					playfield.height - playfield.popupOffsetY);
 	}
 		

@@ -1,27 +1,28 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
+import com.aemetta.arst.Arst;
 import com.aemetta.arst.gamemodes.Gamemode;
 
 public class Player {
 	
 	Gamemode game;
 	
-	Matrix matrix;
-	Queue queue;
-	Piece piece;
+	public Matrix matrix;
+	public Queue queue;
+	public Piece piece;
 	public Score score;
-	Garbage garbage;
-	Timer timer;
-	Popup popup;
-	LevelTracker level;
+	public Garbage garbage;
+	public Timer timer;
+	public Popup popup;
+	public LevelTracker level;
 	
-	int das = 80;
-	int arr = 18;
+	private int das = 80;
+	private int arr = 18;
 	long nextRepeat = -1;
 	int shiftDir = 0;
 	
 	int fall = 800;
-	int drop = 75;
+	private int drop = 75;
 	int lockDelay = 800;
 	boolean dropping = false;
 	boolean onGround = false;
@@ -73,11 +74,11 @@ public class Player {
 		
 		while(nextRepeat <= 0 && shiftDir != 0 && 
 				piece.shift(shiftDir, 0, 0)){
-			nextRepeat += arr;
+			nextRepeat += getARR();
 		}
 		while(nextFall <= 0){
 			if(piece.shift(0, -1, 0)) {
-				nextFall += drop;
+				nextFall += getDropRate();
 				if(!dropping)nextFall += fall;
 			}
 			else{
@@ -97,12 +98,12 @@ public class Player {
 		if(pressed){
 			if(key == Arst.LEFT){
 				piece.shift(-1, 0, 0);
-				nextRepeat = das;
+				nextRepeat = getDAS();
 				shiftDir = -1;
 			}
 			if(key == Arst.RIGHT){
 				piece.shift(1, 0, 0);
-				nextRepeat = das;
+				nextRepeat = getDAS();
 				shiftDir = 1;
 			}
 			if(key == Arst.SOFT_DROP){
@@ -187,11 +188,11 @@ public class Player {
 	}
 	
 	public int getDropSpeed() {
-		return drop;
+		return getDropRate();
 	}
 	
 	public void setDropSpeed(int d) {
-		drop = d;
+		setDropRate(d);
 	}
 	
 	public int getLockDelay() {
@@ -200,5 +201,51 @@ public class Player {
 	
 	public void setLockDelay(int delay) {
 		lockDelay = delay;
+	}
+
+	public LevelTracker getLevelTracker() {
+		return level;
+	}
+
+	/**
+	 * @return Delayed Auto Shift, the delay between first pressing left or right and starting to repeat
+	 */
+	public int getDAS() {
+		return das;
+	}
+
+	/**
+	 * @param das Delayed Auto Shift, the delay between first pressing left or right and starting to repeat
+	 */
+	public void setDAS(int das) {
+		this.das = das;
+	}
+
+	/**
+	 * @return Auto Repeat Rate, the rate at which a piece moves when holding left or right
+	 */
+	public int getARR() {
+		return arr;
+	}
+	
+	/**
+	 * @param arr Auto Repeat Rate, the rate at which a piece moves when holding left or right
+	 */
+	public void setARR(int arr) {
+		this.arr = arr;
+	}
+
+	/**
+	 * @return The rate at which a piece falls when soft drop is used
+	 */
+	public int getDropRate() {
+		return drop;
+	}
+
+	/**
+	 * @param rate The rate at which a piece falls when soft drop is used
+	 */
+	public void setDropRate(int rate) {
+		this.drop = rate;
 	}
 }

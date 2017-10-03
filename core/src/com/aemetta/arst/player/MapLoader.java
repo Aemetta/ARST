@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,8 +10,8 @@ public class MapLoader {
 		Pixmap p = new Pixmap(Gdx.files.internal(path));
 		Matrix m = new Matrix(p.getWidth(), p.getHeight());
 
-		for(int x = 0; x < m.WIDTH; x++)
-			for(int y = 0; y < m.HEIGHT; y++) {
+		for(int x = 0; x < m.getWidth(); x++)
+			for(int y = 0; y < m.getHeight(); y++) {
 				int v = p.getPixel(x, y);
 				switch(v) {
 				case 0xffffffff: set(m, x, y, 0); break;
@@ -26,13 +26,13 @@ public class MapLoader {
 				}
 			}
 		
-		m.smooth(0, m.HEIGHT-1);
+		m.smooth(0, m.getHeight()-1);
 		return m;
 	}
 	
 	private static void set(Matrix m, int x, int y, int c) {
-		m.setSquare(x, m.HEIGHT-m.TOP-y-1, c, Wang.LONER);
+		m.setSquare(x, m.getHeight()-m.getTopOffset()-y-1, c, Wang.LONER);
 		if(c != 0)
-			m.makeSolid(x, m.HEIGHT-m.TOP-y-1);
+			m.makeSolid(x, m.getHeight()-m.getTopOffset()-y-1);
 	}
 }
