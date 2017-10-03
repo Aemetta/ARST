@@ -54,7 +54,7 @@ public class Arst extends ApplicationAdapter {
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
 		
-		game = new Versus();
+		game = new Marathon();
 		game.init();
 		
 		prefs = Gdx.app.getPreferences("arst");
