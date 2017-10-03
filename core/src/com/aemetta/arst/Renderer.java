@@ -3,6 +3,7 @@ package com.aemetta.arst;
 import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +18,9 @@ public class Renderer implements Disposable {
 	
 	private boolean disposed = false;
 	private Player players[];
+	
+	private String fieldpath;
+	private String minopath;
 	
 	private MinoConfig mino;
 	private PlayfieldConfig playfield;
@@ -34,10 +38,12 @@ public class Renderer implements Disposable {
 	
 	int[] blockref;
 	
-	public Renderer(String fieldpath, String minopath, Player[] pl) {
+	public Renderer(String fpath, String mpath, Player[] pl, AssetManager manager) {
+
+		players = pl;
 		
-		minopath = "Minos/"+minopath+"/";
-		fieldpath = "Playfields/"+fieldpath+"/";
+		this.minopath = "Minos/"+mpath+"/";
+		this.fieldpath = "Playfields/"+fpath+"/";
 		
 		Json json = new Json();
 		mino = json.fromJson(MinoConfig.class,
@@ -47,9 +53,6 @@ public class Renderer implements Disposable {
 		
 		if(mino.size != playfield.minoSize)
 			System.err.println("Playfield and mino theme size don't match!");
-
-		blocks = new Texture[mino.blockpath.length];
-		minosheet = new Texture(minopath+mino.path);
 		
 		if(mino.randomized) {
 			for(Player p : players) {
@@ -58,9 +61,7 @@ public class Renderer implements Disposable {
 				p.piece.randomperpiece = mino.randomPerPiece;
 			}
 		}
-
-		background = new Texture(fieldpath+playfield.path);
-		warning = new Texture(fieldpath+playfield.warningPath);
+		
 		
 		blockref = new int[playfield.blockcoords.length];
 		for(int i = 0; i < playfield.blockcoords.length; i++){
@@ -69,32 +70,52 @@ public class Renderer implements Disposable {
 				if(playfield.blockcoords[i][3] == mino.blocksize[j]) blockref[i] = j;
 			}
 		}
-		blo: for(int i = 0; i < mino.blockpath.length; i++)
-			for(int j : blockref)
-			if(i == j){
-				blocks = Arrays.copyOf(blocks,blocks.length+1);
-				blocks[i] = new Texture(minopath+mino.blockpath[i]);
-				continue blo;
-			}
-		
-		scorefont = new BitmapFont(new FileHandle(fieldpath + playfield.score.fontPath),
-				new FileHandle(fieldpath + playfield.score.fontImagePath),false);
-		timefont = new BitmapFont(new FileHandle(fieldpath + playfield.time.fontPath),
-				new FileHandle(fieldpath + playfield.time.fontImagePath),false);
-		levelfont = new BitmapFont(new FileHandle(fieldpath + playfield.level.fontPath),
-				new FileHandle(fieldpath + playfield.level.fontImagePath),false);
-		linesfont = new BitmapFont(new FileHandle(fieldpath + playfield.lines.fontPath),
-				new FileHandle(fieldpath + playfield.lines.fontImagePath),false);
-		
-		players = pl;
 		
 		for(int i = 0; i < players.length; i++) {
 			players[i].xoffset = (int) ((((players.length-1)/2f-i)*1.1)*playfield.width);
 			players[i].yoffset = 0;
 		}
 		
+		manager.load(minopath+mino.path, Texture.class);
+		manager.load(fieldpath+playfield.path, Texture.class);
+		manager.load(fieldpath+playfield.warningPath, Texture.class);
+		for(int i = 0; i < mino.blockpath.length; i++)
+			manager.load(minopath+mino.blockpath[i], Texture.class);
+		
+		manager.load(fieldpath + playfield.popupPath, TextureAtlas.class);
+		
+		manager.load(fieldpath + playfield.score.fontPath, BitmapFont.class);
+		manager.load(fieldpath + playfield.time.fontPath, BitmapFont.class);
+		manager.load(fieldpath + playfield.level.fontPath, BitmapFont.class);
+		manager.load(fieldpath + playfield.lines.fontPath, BitmapFont.class);
+	}
+	
+	public void init(AssetManager manager) {
+		
+		minosheet = manager.get(minopath+mino.path, Texture.class);
+		
+		background = manager.get(fieldpath+playfield.path, Texture.class);
+		warning = manager.get(fieldpath+playfield.warningPath, Texture.class);
+
+		blocks = new Texture[mino.blockpath.length];
+		blo: for(int i = 0; i < mino.blockpath.length; i++)
+			for(int j : blockref)
+				if(i == j){
+					blocks = Arrays.copyOf(blocks,blocks.length+1);
+					blocks[i] = manager.get(minopath+mino.blockpath[i], Texture.class);
+					continue blo;
+				}
+		
+		scorefont = manager.get(fieldpath + playfield.score.fontPath, BitmapFont.class);
+		timefont = manager.get(fieldpath + playfield.time.fontPath, BitmapFont.class);
+		levelfont = manager.get(fieldpath + playfield.level.fontPath, BitmapFont.class);
+		linesfont = manager.get(fieldpath + playfield.lines.fontPath, BitmapFont.class);
+		
+		TextureAtlas ta = manager.get(fieldpath + playfield.popupPath, TextureAtlas.class);
+		
 		for(Player p : players)
-			p.popup.setAtlas(new TextureAtlas(fieldpath + playfield.popupPath));
+			p.popup.setAtlas(ta);
+		
 	}
 	
 	/*

@@ -21,45 +21,81 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 
 public class Arst extends ApplicationAdapter {
+	
 	SpriteBatch batch;
 	OrthographicCamera cam;
-	AssetManager manager;
-	
-	Texture background;
 	
 	Gamemode game;
-	
 	Preferences prefs;
 	
-	Renderer renderer;
+	
+	private int[] das = new int[2];
+	private int[] arr = new int[2];
+	private int[] drop = new int[2];
+	
+	private int[] controls = new int[13];
+
+	final static public int MENU_LEFT = 0;
+	final static public int MENU_RIGHT = 1;
+	final static public int MENU_UP = 2;
+	final static public int MENU_DOWN = 3;
+	final static public int LEFT = 4;
+	final static public int RIGHT = 5;
+	final static public int HARD_DROP = 6;
+	final static public int SOFT_DROP = 7;
+	final static public int ROTATE_LEFT = 8;
+	final static public int ROTATE_RIGHT = 9;
+	final static public int ROTATE_180 = 10;
+	final static public int HOLD = 11;
+	final static public int DEPLOY = 12;
 	
 	@Override
 	public void create () {
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
-		manager = new AssetManager();
-		manager.load("Backgrounds/017.png", Texture.class);
-		//TODO add random backgrounds
 		
-		game = new Marathon();
+		game = new Versus();
+		game.init();
 		
-		renderer = new Renderer("purple-20", "candy-20", game.players);
-		/*
+		prefs = Gdx.app.getPreferences("arst");
+		
+		das[0] = prefs.getInteger("P1 DAS", 200);
+		das[1] = prefs.getInteger("P2 DAS", 200);
+		arr[0] = prefs.getInteger("P1 ARR", 40);
+		arr[1] = prefs.getInteger("P2 ARR", 40);
+		drop[0] = prefs.getInteger("P1 Drop", 75);
+		drop[1] = prefs.getInteger("P2 Drop", 75);
+		
+		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
+		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
+		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
+		controls[3] = prefs.getInteger("Menu Down", Keys.DOWN);
+		controls[4] = prefs.getInteger("Left", Keys.LEFT);
+		controls[5] = prefs.getInteger("Right", Keys.RIGHT);
+		controls[6] = prefs.getInteger("Hard Drop", Keys.UP);
+		controls[7] = prefs.getInteger("Soft Drop", Keys.DOWN);
+		controls[9] = prefs.getInteger("Rotate Left", Keys.Z);
+		controls[8] = prefs.getInteger("Rotate Right", Keys.X);
+		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
+		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
+		controls[12] = prefs.getInteger("Deploy", Keys.V);
+		
+		if(game.player2 != null)
 		Controllers.addListener(new ControllerAdapter () {
 			@Override
 			public boolean buttonDown(Controller controller, int buttonCode) {
-				if(buttonCode == 1) human2.setInput(Player.ROTATE_RIGHT, true);
-				if(buttonCode == 0) human2.setInput(Player.ROTATE_LEFT, true);
-				if(buttonCode == 4) human2.setInput(Player.HOLD, true);
-				if(buttonCode == 5) human2.setInput(Player.HOLD, true);
+				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, true);
+				if(buttonCode == 0) game.player2.input(ROTATE_LEFT, true);
+				if(buttonCode == 4) game.player2.input(HOLD, true);
+				if(buttonCode == 5) game.player2.input(HOLD, true);
 				return true;
 			}
 			@Override
 			public boolean buttonUp(Controller controller, int buttonCode) {
-				if(buttonCode == 1) human2.setInput(Player.ROTATE_RIGHT, false);
-				if(buttonCode == 0) human2.setInput(Player.ROTATE_LEFT, false);
-				if(buttonCode == 4) human2.setInput(Player.HOLD, false);
-				if(buttonCode == 5) human2.setInput(Player.HOLD, false);
+				if(buttonCode == 1) game.player2.input(ROTATE_RIGHT, false);
+				if(buttonCode == 0) game.player2.input(ROTATE_LEFT, false);
+				if(buttonCode == 4) game.player2.input(HOLD, false);
+				if(buttonCode == 5) game.player2.input(HOLD, false);
 				return true;
 			}
 			@Override
@@ -68,50 +104,69 @@ public class Arst extends ApplicationAdapter {
 			}
 			@Override
 			public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-				if(value == PovDirection.east) human2.setInput(Player.RIGHT, true);
-				if(value == PovDirection.west) human2.setInput(Player.LEFT, true);
-				if(value == PovDirection.north) human2.setInput(Player.HARD_DROP, true);
-				if(value == PovDirection.south) human2.setInput(Player.SOFT_DROP, true);
+				if(value == PovDirection.east) game.player2.input(RIGHT, true);
+				if(value == PovDirection.west) game.player2.input(LEFT, true);
+				if(value == PovDirection.north) game.player2.input(HARD_DROP, true);
+				if(value == PovDirection.south) game.player2.input(SOFT_DROP, true);
 				if(value == PovDirection.center) {
-					human2.setInput(Player.LEFT, false);
-					human2.setInput(Player.RIGHT, false);
+					game.player2.input(LEFT, false);
+					game.player2.input(RIGHT, false);
+					game.player2.input(SOFT_DROP, false);
+					
 				}
 				return true;
 			}
-		});*/
+		});
 		
 		Gdx.input.setInputProcessor(new InputAdapter () {
 			
 			public boolean keyDown (int keycode) {
+					
+				//Debug hotkeys
+				if(keycode == Keys.F2) game.players[0].level.clearLines(5);
 				
-					if(keycode == Keys.F2) game.players[0].level.clearLines(5);
+				for(int i = 0; i < controls.length; i++)
+					if(keycode == controls[i]) {
+						game.player1.input(i, true);
+					}
 				
-					if(keycode == Keys.LEFT) game.setInput(Player.LEFT, true);
-					if(keycode == Keys.RIGHT) game.setInput(Player.RIGHT, true);
-					if(keycode == Keys.DOWN) game.setInput(Player.SOFT_DROP, true);
-					if(keycode == Keys.UP) game.setInput(Player.HARD_DROP, true);
-					if(keycode == Keys.SPACE) game.setInput(Player.DEPLOY, true);
-					if(keycode == Keys.C) game.setInput(Player.HOLD, true);
-					if(keycode == Keys.Z) game.setInput(Player.ROTATE_LEFT, true);
-					if(keycode == Keys.X) game.setInput(Player.ROTATE_RIGHT, true);
-					return true;
-			   }
+				return true;
+				}
 
-			   public boolean keyUp (int keycode) {
-				   if(keycode == Keys.LEFT) game.setInput(Player.LEFT, false);
-					if(keycode == Keys.RIGHT) game.setInput(Player.RIGHT, false);
-					if(keycode == Keys.DOWN) game.setInput(Player.SOFT_DROP, false);
-					if(keycode == Keys.UP) game.setInput(Player.HARD_DROP, false);
-					if(keycode == Keys.SPACE) game.setInput(Player.DEPLOY, false);
-					if(keycode == Keys.C) game.setInput(Player.HOLD, false);
-					if(keycode == Keys.Z) game.setInput(Player.ROTATE_LEFT, false);
-					if(keycode == Keys.X) game.setInput(Player.ROTATE_RIGHT, false);
-					return true;
-			   }
+			public boolean keyUp (int keycode) {
+					
+				for(int i = 0; i < controls.length; i++)
+					if(keycode == controls[i]) {
+						game.player1.input(i, false);
+					}
+				
+				return true;
+				}
 			});
 		
-		manager.finishLoading();
-		background = manager.get("Backgrounds/017.png", Texture.class);
+	}
+	
+	private void writePrefs() {
+		prefs.putInteger("P1 DAS", das[0]);
+		prefs.putInteger("P2 DAS", das[1]);
+		prefs.putInteger("P1 ARR", arr[0]);
+		prefs.putInteger("P2 ARR", arr[1]);
+		prefs.putInteger("P1 Drop", drop[0]);
+		prefs.putInteger("P2 Drop", drop[1]);
+		
+		prefs.putInteger("Menu Left", controls[0]);
+		prefs.putInteger("Menu Right", controls[1]);
+		prefs.putInteger("Menu Up", controls[2]);
+		prefs.putInteger("Menu Down", controls[3]);
+		prefs.putInteger("Left", controls[4]);
+		prefs.putInteger("Right", controls[5]);
+		prefs.putInteger("Hard Drop", controls[6]);
+		prefs.putInteger("Soft Drop", controls[7]);
+		prefs.putInteger("Rotate Left", controls[8]);
+		prefs.putInteger("Rotate Right", controls[9]);
+		prefs.putInteger("Rotate 180", controls[10]);
+		prefs.putInteger("Hold", controls[11]);
+		prefs.putInteger("Deploy", controls[12]);
 	}
 
 	public void render () {
@@ -122,8 +177,7 @@ public class Arst extends ApplicationAdapter {
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		
-		batch.draw(background, -background.getWidth()/2, -background.getHeight()/2);
-		renderer.draw(batch, cam);
+		game.draw(batch, cam);
 		
 		batch.end();
 	}
@@ -136,8 +190,11 @@ public class Arst extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+		writePrefs();
+		
 		batch.dispose();
-		manager.dispose();
-		renderer.dispose();
+		game.manager.dispose();
+		for(Renderer d : game.displays)
+			d.dispose();
 	}
 }

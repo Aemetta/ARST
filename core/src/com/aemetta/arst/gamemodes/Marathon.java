@@ -5,10 +5,11 @@ import com.aemetta.arst.Player;
 
 public class Marathon extends Gamemode{
 	
+	private final float SPEED_DECAY = 0.7f;
+	
 	Player human;
 	
 	public Marathon() {
-		
 		players = new Player[1];
 		
 		long seed = Double.doubleToLongBits(Math.random());
@@ -17,23 +18,13 @@ public class Marathon extends Gamemode{
 
 		human.setLevelTracker(new LevelTracker(human, 1, 16, 10, true));
 	}
-
-	@Override
-	public void act(float delta) {
-		human.act(delta);
-	}
-
-	@Override
-	public void setInput(int key, boolean pressed) {
-		human.input(key, pressed);
-	}
 	
 	@Override
 	public boolean handle(int event) {
 		switch(event) {
 		default: return false;
 		case Player.LEVEL_UP:
-			int fs = (int) (human.getFallSpeed() * 0.8);
+			int fs = (int) (human.getFallSpeed() * SPEED_DECAY);
 			human.setFallSpeed(fs);
 			int ds = human.getDropSpeed();
 			human.setDropSpeed((ds < fs/2) ? ds : fs/2);

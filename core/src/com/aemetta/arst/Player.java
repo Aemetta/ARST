@@ -27,15 +27,6 @@ public class Player {
 	
 	boolean gameover = false;
 	
-	final static public int LEFT = 0;
-	final static public int RIGHT = 1;
-	final static public int ROTATE_LEFT = 2;
-	final static public int ROTATE_RIGHT = 3;
-	final static public int SOFT_DROP = 4;
-	final static public int HARD_DROP = 5;
-	final static public int HOLD = 6;
-	final static public int DEPLOY = 7;
-	
 	final static public int TOP_OUT = 100;
 	final static public int TIME_UP = 101;
 	final static public int LEVEL_MAX = 102;
@@ -97,31 +88,31 @@ public class Player {
 	public void input(int key, boolean pressed){
 		if(gameover) return;
 		if(pressed){
-			if(key == LEFT){
+			if(key == Arst.LEFT){
 				piece.shift(-1, 0, 0);
 				nextRepeat = das;
 				shiftDir = -1;
 			}
-			if(key == RIGHT){
+			if(key == Arst.RIGHT){
 				piece.shift(1, 0, 0);
 				nextRepeat = das;
 				shiftDir = 1;
 			}
-			if(key == SOFT_DROP){
+			if(key == Arst.SOFT_DROP){
 				dropping = true;
 				nextFall = 0;
 			}
-			if(key == HARD_DROP) piece.hardDrop();
-			if(key == DEPLOY) ;
-			if(key == HOLD) piece.hold();
-			if(key == ROTATE_LEFT) piece.rotate(-1);
-			if(key == ROTATE_RIGHT) piece.rotate(1);
+			if(key == Arst.HARD_DROP) piece.hardDrop();
+			if(key == Arst.DEPLOY) ;
+			if(key == Arst.HOLD) piece.hold();
+			if(key == Arst.ROTATE_LEFT) piece.rotate(1);
+			if(key == Arst.ROTATE_RIGHT) piece.rotate(-1);
 		}
 		else{
 			
-			if(key == LEFT) shiftDir = 0;
-			if(key == RIGHT) shiftDir = 0;
-			if(key == SOFT_DROP) dropping = false;
+			if(key == Arst.LEFT) shiftDir = 0;
+			if(key == Arst.RIGHT) shiftDir = 0;
+			if(key == Arst.SOFT_DROP) dropping = false;
 			
 		}
 	}

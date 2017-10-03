@@ -22,14 +22,4 @@ public class LineClear extends Gamemode {
 		human.hideLevels();
 	}
 
-	@Override
-	public void act(float delta) {
-		human.act(delta);
-	}
-
-	@Override
-	public void setInput(int key, boolean pressed) {
-		human.input(key, pressed);
-	}
-
 }
