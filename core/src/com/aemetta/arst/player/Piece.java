@@ -20,6 +20,7 @@ public class Piece {
 	
 	int cells = 0; //number of cells it takes up horizontally
 					//used to calculate the score of placing a piece
+	boolean onGround = false; //Used for lock delay
 
 	int rotation;
 	int[][] offsetx = { {0,0,0,0,0},
@@ -62,10 +63,10 @@ public class Piece {
 		boolean tspin = false;
 		if(shape==Shape.T){
 			int corners = 0;
-			if(!matrix.isSolid(x[2]+1, y[2]+1)) corners++;
-			if(!matrix.isSolid(x[2]-1, y[2]+1)) corners++;
-			if(!matrix.isSolid(x[2]+1, y[2]-1)) corners++;
-			if(!matrix.isSolid(x[2]-1, y[2]-1)) corners++;
+			if(matrix.isSolid(x[2]+1, y[2]+1)) corners++;
+			if(matrix.isSolid(x[2]-1, y[2]+1)) corners++;
+			if(matrix.isSolid(x[2]+1, y[2]-1)) corners++;
+			if(matrix.isSolid(x[2]-1, y[2]-1)) corners++;
 			if(corners >= 3) tspin = true;
 		}
 		
@@ -81,6 +82,7 @@ public class Piece {
 		shape = queue.pull();
 		newPiece();
 		queue.resetHeldStatus();
+		onGround = false;
 	}
 	
 	void hold(){

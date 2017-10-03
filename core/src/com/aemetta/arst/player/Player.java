@@ -25,7 +25,6 @@ public class Player {
 	private int drop = 75;
 	int lockDelay = 800;
 	boolean dropping = false;
-	boolean onGround = false;
 	long nextFall = -1;
 	
 	boolean gameover = false;
@@ -82,13 +81,13 @@ public class Player {
 				if(!dropping)nextFall += fall;
 			}
 			else{
-				if(onGround) {
+				if(piece.onGround)
 					piece.place(false);
-					onGround = false;
+				else {
+					nextFall += lockDelay;
+					dropping = false;
+					piece.onGround = true;
 				}
-				nextFall += lockDelay;
-				dropping = false;
-				onGround = true;
 			}
 		}
 	}
@@ -107,16 +106,16 @@ public class Player {
 				shiftDir = 1;
 			}
 			if(key == Arst.SOFT_DROP){
-				if(onGround) {
+				if(piece.onGround)
 					piece.place(false);
-					onGround = false;
-				}
 				else {
 					dropping = true;
 					nextFall = 0;
 				}
 			}
-			if(key == Arst.HARD_DROP) piece.hardDrop();
+			if(key == Arst.HARD_DROP) {
+				piece.hardDrop();
+			}
 			if(key == Arst.DEPLOY) ;
 			if(key == Arst.HOLD) piece.hold();
 			if(key == Arst.ROTATE_LEFT) piece.rotate(-1);

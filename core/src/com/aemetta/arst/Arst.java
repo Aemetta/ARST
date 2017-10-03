@@ -28,11 +28,6 @@ public class Arst extends ApplicationAdapter {
 	Gamemode game;
 	Preferences prefs;
 	
-	
-	private int[] das = new int[2];
-	private int[] arr = new int[2];
-	private int[] drop = new int[2];
-	
 	private int[] controls = new int[13];
 
 	final static public int MENU_LEFT = 0;
@@ -54,7 +49,7 @@ public class Arst extends ApplicationAdapter {
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
 		
-		game = new Marathon();
+		game = new Versus();
 		game.init();
 		
 		prefs = Gdx.app.getPreferences("arst");
@@ -130,13 +125,6 @@ public class Arst extends ApplicationAdapter {
 	
 	private void loadPrefs() {
 		
-		das[0] = prefs.getInteger("P1 DAS", 200);
-		das[1] = prefs.getInteger("P2 DAS", 200);
-		arr[0] = prefs.getInteger("P1 ARR", 80);
-		arr[1] = prefs.getInteger("P2 ARR", 80);
-		drop[0] = prefs.getInteger("P1 Drop", 75);
-		drop[1] = prefs.getInteger("P2 Drop", 75);
-		
 		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
 		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
 		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
@@ -150,16 +138,9 @@ public class Arst extends ApplicationAdapter {
 		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
 		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
 		controls[12] = prefs.getInteger("Deploy", Keys.V);
-		
 	}
 	
 	private void writePrefs() {
-		prefs.putInteger("P1 DAS", das[0]);
-		prefs.putInteger("P2 DAS", das[1]);
-		prefs.putInteger("P1 ARR", arr[0]);
-		prefs.putInteger("P2 ARR", arr[1]);
-		prefs.putInteger("P1 Drop", drop[0]);
-		prefs.putInteger("P2 Drop", drop[1]);
 		
 		prefs.putInteger("Menu Left", controls[0]);
 		prefs.putInteger("Menu Right", controls[1]);
@@ -180,15 +161,15 @@ public class Arst extends ApplicationAdapter {
 	
 	private void applyPrefs() {
 		if(game.player1 != null) {
-			game.player1.setDAS(das[0]);
-			game.player1.setARR(arr[0]);
-			game.player1.setDropRate(drop[0]);
+			game.player1.setDAS(prefs.getInteger("P1 DAS", 200));
+			game.player1.setARR(prefs.getInteger("P1 ARR", 80));
+			game.player1.setDropRate(prefs.getInteger("P1 Drop", 75));
 		}
 		
 		if(game.player2 != null) {
-			game.player2.setDAS(das[1]);
-			game.player2.setARR(arr[1]);
-			game.player2.setDropRate(drop[1]);
+			game.player2.setDAS(prefs.getInteger("P2 DAS", 200));
+			game.player2.setARR(prefs.getInteger("P2 ARR", 80));
+			game.player2.setDropRate(prefs.getInteger("P2 Drop", 75));
 			
 		}
 	}
