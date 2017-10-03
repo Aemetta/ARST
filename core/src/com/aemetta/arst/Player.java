@@ -22,7 +22,9 @@ public class Player {
 	
 	int fall = 800;
 	int drop = 75;
+	int lockDelay = 800;
 	boolean dropping = false;
+	boolean onGround = false;
 	long nextFall = -1;
 	
 	boolean gameover = false;
@@ -69,19 +71,24 @@ public class Player {
 		if(timer != null && !timer.update(time)) handle(TIME_UP);
 		popup.update(time);
 		
-		while(nextRepeat <= 0 && shiftDir != 0){
-			piece.shift(shiftDir, 0, 0);
+		while(nextRepeat <= 0 && shiftDir != 0 && 
+				piece.shift(shiftDir, 0, 0)){
 			nextRepeat += arr;
 		}
 		while(nextFall <= 0){
-			if(piece.warn == 0) piece.shift(0, -1, 0);
-			else{
-				piece.warn++;
-				dropping = false;
-				if(piece.warn > 2) piece.place(false);
+			if(piece.shift(0, -1, 0)) {
+				nextFall += drop;
+				if(!dropping)nextFall += fall;
 			}
-			nextFall += drop;
-			if(!dropping)nextFall += fall;
+			else{
+				if(onGround) {
+					piece.place(false);
+					onGround = false;
+				}
+				nextFall += lockDelay;
+				dropping = false;
+				onGround = true;
+			}
 		}
 	}
 	
@@ -99,21 +106,24 @@ public class Player {
 				shiftDir = 1;
 			}
 			if(key == Arst.SOFT_DROP){
-				dropping = true;
-				nextFall = 0;
+				if(onGround) {
+					piece.place(false);
+					onGround = false;
+				}
+				else {
+					dropping = true;
+					nextFall = 0;
+				}
 			}
 			if(key == Arst.HARD_DROP) piece.hardDrop();
 			if(key == Arst.DEPLOY) ;
 			if(key == Arst.HOLD) piece.hold();
-			if(key == Arst.ROTATE_LEFT) piece.rotate(1);
-			if(key == Arst.ROTATE_RIGHT) piece.rotate(-1);
-		}
-		else{
-			
+			if(key == Arst.ROTATE_LEFT) piece.rotate(-1);
+			if(key == Arst.ROTATE_RIGHT) piece.rotate(1);
+		} else {
 			if(key == Arst.LEFT) shiftDir = 0;
 			if(key == Arst.RIGHT) shiftDir = 0;
 			if(key == Arst.SOFT_DROP) dropping = false;
-			
 		}
 	}
 	
@@ -182,5 +192,13 @@ public class Player {
 	
 	public void setDropSpeed(int d) {
 		drop = d;
+	}
+	
+	public int getLockDelay() {
+		return lockDelay;
+	}
+	
+	public void setLockDelay(int delay) {
+		lockDelay = delay;
 	}
 }

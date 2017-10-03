@@ -15,13 +15,11 @@ public class Piece {
 	int[] y;
 	int[] gx = new int[4];
 	int[] gy = new int[4];
-	Wang[] wang = new Wang[4]; //The shape is what image to use for the mino
+	Wang[] wang = new Wang[4]; //The wang is what image to use for the mino
 	int[] texture = new int[4];
 	
 	int cells = 0; //number of cells it takes up horizontally
-	int warn = 0; //0 falling, 1 on ground, 2 on ground and about to be placed
-	
-//	boolean moving = false; //so multiple threads aren't both yanking...
+					//used to calculate the score of placing a piece
 
 	int rotation;
 	int[][] offsetx = { {0,0,0,0,0},
@@ -60,24 +58,16 @@ public class Piece {
 			if(y[i] < 20) survive = true;
 		if(!survive) player.handle(Player.TOP_OUT);
 		
-		//T-spin check
-				boolean tspin = false;
-				if(shape==Shape.T){
-					tspin = true;
-					if(canShift(0,-1)) tspin = false;
-					if(canShift(0,1)) tspin = false;
-					if(canShift(-1,0)) tspin = false;
-					if(canShift(1,0)) tspin = false;
-				/*	if(x[2]!=x[1]) {
-						if(!matrix.isSolid(x[2], y[0])) break;
-						if(!matrix.isSolid(x[2], y[3])) break;
-						tspin++;
-					} else {
-						if(!matrix.isSolid(x[0], y[2])) break;
-						if(!matrix.isSolid(x[3], y[2])) break;
-						tspin++;
-					}*/
-				}
+		//T-spin 3-corner check
+		boolean tspin = false;
+		if(shape==Shape.T){
+			int corners = 0;
+			if(!matrix.isSolid(x[2]+1, y[2]+1)) corners++;
+			if(!matrix.isSolid(x[2]-1, y[2]+1)) corners++;
+			if(!matrix.isSolid(x[2]+1, y[2]-1)) corners++;
+			if(!matrix.isSolid(x[2]-1, y[2]-1)) corners++;
+			if(corners >= 3) tspin = true;
+		}
 		
 		int lowy = 20;
 		for(int i = 0; i < 4; i++) {
@@ -164,8 +154,7 @@ public class Piece {
 		int j = 0;
 		while(canShift(0, j)) j--; //Check how far down it can go
 		j++; //Above code goes one more down than needed...off by one error
-		if(j == 0) warn = 1; else{ //If the piece is on the ground
-			warn = 0;
+		if(j != 0) { //Make sure the piece is above the ground
 			for(int i = 0; i < 4; i++){
 				gx[i] = x[i]; //Set the ghost's position
 				gy[i] = y[i]+j;
@@ -241,7 +230,7 @@ public class Piece {
 	public void hardDrop(){
 		int j = 0;
 		while(canShift(0, j)) j--; //Check how far down it can go
-		j++;
+		j++; //Adjust for off-by-one error
 		shift(0, j, 0);
 		place(true);
 	}
