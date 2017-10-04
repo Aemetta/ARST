@@ -16,6 +16,8 @@ public class Player {
 	public Popup popup;
 	public LevelTracker level;
 	
+	long clock;
+	
 	private int das = 80;
 	private int arr = 18;
 	long nextRepeat = -1;
@@ -26,6 +28,8 @@ public class Player {
 	int lockDelay = 800;
 	boolean dropping = false;
 	long nextFall = -1;
+	boolean onGround = false;
+	long toForcedLock = -1;
 	
 	boolean gameover = false;
 	
@@ -64,29 +68,27 @@ public class Player {
 	public void act(float t){
 		if(gameover) return;
 		long time = (long) (1000*t);
-		
-		nextRepeat -= time;
-		nextFall -= time;
+		clock += time;
 		
 		if(timer != null && !timer.update(time)) handle(TIME_UP);
 		popup.update(time);
 		
-		while(nextRepeat <= 0 && shiftDir != 0 && 
+		while(nextRepeat <= clock && shiftDir != 0 && 
 				piece.shift(shiftDir, 0, 0)){
 			nextRepeat += getARR();
 		}
-		while(nextFall <= 0){
-			if(piece.shift(0, -1, 0)) {
-				nextFall += getDropRate();
-				if(!dropping)nextFall += fall;
-			}
-			else{
-				if(piece.onGround)
-					piece.place(false);
-				else {
-					nextFall += lockDelay;
+		while(nextFall <= clock){
+			nextFall += drop;
+			if(piece.shift(0, -1, 1)) {
+				if(!dropping) nextFall += fall;
+			} else {
+				if(onGround) {
+					if(toForcedLock <= clock)
+						place(false);
+				} else {
+					toForcedLock = lockDelay + clock;
 					dropping = false;
-					piece.onGround = true;
+					onGround = true;
 				}
 			}
 		}
@@ -97,24 +99,25 @@ public class Player {
 		if(pressed){
 			if(key == Arst.LEFT){
 				piece.shift(-1, 0, 0);
-				nextRepeat = getDAS();
+				nextRepeat = das + clock;
 				shiftDir = -1;
 			}
 			if(key == Arst.RIGHT){
 				piece.shift(1, 0, 0);
-				nextRepeat = getDAS();
+				nextRepeat = das + clock;
 				shiftDir = 1;
 			}
 			if(key == Arst.SOFT_DROP){
-				if(piece.onGround)
-					piece.place(false);
+				if(onGround)
+					place(false);
 				else {
 					dropping = true;
-					nextFall = 0;
+					nextFall = clock;
 				}
 			}
 			if(key == Arst.HARD_DROP) {
-				piece.hardDrop();
+				piece.fullyMove(0, -1);
+				place(true);
 			}
 			if(key == Arst.DEPLOY) ;
 			if(key == Arst.HOLD) piece.hold();
@@ -141,6 +144,13 @@ public class Player {
 							break;
 			}
 		}
+	}
+	
+	private void place(boolean hardDrop) {
+		piece.place(hardDrop);
+		onGround = false;
+		dropping = false;
+		nextFall = fall + clock;
 	}
 	
 	public void setLevelTracker(LevelTracker t) {

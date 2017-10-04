@@ -20,7 +20,6 @@ public class Piece {
 	
 	int cells = 0; //number of cells it takes up horizontally
 					//used to calculate the score of placing a piece
-	boolean onGround = false; //Used for lock delay
 
 	int rotation;
 	int[][] offsetx = { {0,0,0,0,0},
@@ -82,7 +81,6 @@ public class Piece {
 		shape = queue.pull();
 		newPiece();
 		queue.resetHeldStatus();
-		onGround = false;
 	}
 	
 	void hold(){
@@ -131,18 +129,23 @@ public class Piece {
 			if(matrix.isSolid(x[i]+sx,y[i]+sy)) return false;
 		return true;
 	}
-	
-	public boolean shift(int sx, int sy, int mode){ //0 normal, 1 falling, 2 rotating/spawning
-		if(!canShift(sx, sy)) return false;
+	/*
+	 * @return whether or not it was able to shift
+	 * @param x Horizontal movement
+	 * @param y Vertical movement
+	 * @param mode One of the following: 0 for regular movement, 1 for vertical, 3 for rotating and spawning
+	 */
+	public boolean shift(int x, int y, int mode){
+		if(!canShift(x, y)) return false;
 		
 		for(int i = 0; i < 4; i++){
 			if(mode != 2)
-				matrix.hideSquare(x[i], y[i]); //Hide the piece
-			y[i] += sy; x[i] += sx; //Shift
+				matrix.hideSquare(this.x[i], this.y[i]); //Hide the piece
+			this.y[i] += y; this.x[i] += x; //Shift
 		}
 		if(mode != 1) placeGhost(); //The ghost won't move when falling, so there's a boolean to update the ghost
 		for(int i = 0; i < 4; i++){
-			matrix.setSquare(x[i], y[i], shape.color, wang[i], texture[i]); //Show the piece
+			matrix.setSquare(this.x[i], this.y[i], shape.color, wang[i], texture[i]); //Show the piece
 		}
 		
 		return true;
@@ -229,12 +232,11 @@ public class Piece {
 			}
 	}
 	
-	public void hardDrop(){
+	public void fullyMove(int x, int y){
 		int j = 0;
-		while(canShift(0, j)) j--; //Check how far down it can go
-		j++; //Adjust for off-by-one error
-		shift(0, j, 0);
-		place(true);
+		while(canShift(x*j, y*j)) j++; //Check how far down it can go
+		j--; //Adjust for off-by-one error
+		shift(x*j, y*j, 0);
 	}
 
 	/**

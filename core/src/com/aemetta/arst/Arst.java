@@ -49,7 +49,7 @@ public class Arst extends ApplicationAdapter {
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
 		
-		game = new Versus();
+		game = new Marathon();
 		game.init();
 		
 		prefs = Gdx.app.getPreferences("arst");
@@ -120,7 +120,6 @@ public class Arst extends ApplicationAdapter {
 				return true;
 				}
 			});
-		
 	}
 	
 	private void loadPrefs() {
@@ -133,8 +132,8 @@ public class Arst extends ApplicationAdapter {
 		controls[5] = prefs.getInteger("Right", Keys.RIGHT);
 		controls[6] = prefs.getInteger("Hard Drop", Keys.UP);
 		controls[7] = prefs.getInteger("Soft Drop", Keys.DOWN);
-		controls[9] = prefs.getInteger("Rotate Left", Keys.Z);
-		controls[8] = prefs.getInteger("Rotate Right", Keys.X);
+		controls[8] = prefs.getInteger("Rotate Left", Keys.Z);
+		controls[9] = prefs.getInteger("Rotate Right", Keys.X);
 		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
 		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
 		controls[12] = prefs.getInteger("Deploy", Keys.V);
@@ -185,6 +184,8 @@ public class Arst extends ApplicationAdapter {
 		game.draw(batch, cam);
 		
 		batch.end();
+		
+		Gdx.graphics.setTitle("" + Gdx.graphics.getFramesPerSecond());
 	}
 	
 	public void resize(int width, int height) {
