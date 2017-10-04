@@ -6,7 +6,12 @@ import com.aemetta.arst.Arst;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
+		
+		Arst a = new Arst();
+		if(arg.length == 1)
+			a.setGamemode(arg[0].toLowerCase());
+		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Arst(), config);
+		new LwjglApplication(a, config);
 	}
 }

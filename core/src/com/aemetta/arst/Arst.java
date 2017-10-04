@@ -11,11 +11,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
@@ -26,6 +24,7 @@ public class Arst extends ApplicationAdapter {
 	SpriteBatch batch;
 	OrthographicCamera cam;
 	
+	String gamemode = null;
 	Gamemode game;
 	Preferences prefs;
 	
@@ -47,11 +46,20 @@ public class Arst extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		
+		if(gamemode == null) game = new Marathon();
+		else switch(gamemode) {
+		case "marathon": game = new Marathon(); break;
+		case "lineclear": game = new LineClear(); break;
+		case "ultra": game = new Ultra(); break;
+		case "versus": game = new Versus(); break;
+		default: game = new Marathon(); break;
+		}
+		
+		game.init();
+		
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
-		
-		game = new Marathon();
-		game.init();
 		
 		prefs = Gdx.app.getPreferences("arst");
 		loadPrefs();
@@ -220,5 +228,9 @@ public class Arst extends ApplicationAdapter {
 		game.manager.dispose();
 		for(Renderer d : game.displays)
 			d.dispose();
+	}
+	
+	public void setGamemode(String g) {
+		gamemode = g;
 	}
 }
