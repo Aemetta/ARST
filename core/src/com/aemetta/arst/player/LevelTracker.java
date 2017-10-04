@@ -24,7 +24,6 @@ public class LevelTracker {
 	}
 	
 	public void clearLines(int count) {
-		boolean r = false;
 		lines += count;
 		while(lines >= levelUpThreshold) {
 			lines -= levelUpThreshold;

@@ -8,6 +8,7 @@ import com.aemetta.arst.gamemodes.Versus;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -92,6 +93,7 @@ public class Arst extends ApplicationAdapter {
 				}
 				return true;
 			}
+			
 		});
 		
 		if(game.player1 != null)
@@ -108,7 +110,7 @@ public class Arst extends ApplicationAdapter {
 					}
 				
 				return true;
-				}
+			}
 
 			public boolean keyUp (int keycode) {
 					
@@ -118,7 +120,23 @@ public class Arst extends ApplicationAdapter {
 					}
 				
 				return true;
-				}
+			}
+			
+			public boolean mouseMoved(int x, int y) {
+				
+				CursorPos cp = new CursorPos(x, y, game.displays[0]);
+				if(cp.valid) Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
+				else Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
+				return true;
+			}
+			
+			public boolean touchDown (int x, int y, int pointer, int button) {
+				
+				Gdx.graphics.setSystemCursor(SystemCursor.Hand);
+				
+				return true;
+			}
+			
 			});
 	}
 	

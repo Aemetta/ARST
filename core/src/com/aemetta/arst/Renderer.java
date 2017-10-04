@@ -5,7 +5,6 @@ import java.util.Arrays;
 import com.aemetta.arst.player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -41,80 +40,80 @@ public class Renderer implements Disposable {
 	
 	public Renderer(String fpath, String mpath, Player[] pl, AssetManager manager) {
 
-		players = pl;
+		setPlayers(pl);
 		
 		this.minopath = "Minos/"+mpath+"/";
 		this.fieldpath = "Playfields/"+fpath+"/";
 		
 		Json json = new Json();
-		mino = json.fromJson(MinoConfig.class,
-				Gdx.files.internal(minopath+"mino.json"));
-		playfield = json.fromJson(PlayfieldConfig.class,
-				Gdx.files.internal(fieldpath+"playfield.json"));
+		setMinoConfig(json.fromJson(MinoConfig.class,
+				Gdx.files.internal(minopath+"mino.json")));
+		setPlayfieldConfig(json.fromJson(PlayfieldConfig.class,
+				Gdx.files.internal(fieldpath+"playfield.json")));
 		
-		if(mino.size != playfield.minoSize)
+		if(getMinoConfig().size != getPlayfieldConfig().minoSize)
 			System.err.println("Playfield and mino theme size don't match!");
 		
-		if(mino.randomized) {
-			for(Player p : players) {
+		if(getMinoConfig().randomized) {
+			for(Player p : getPlayers()) {
 				p.piece.setRandomized(true);
-				p.piece.setRandomamount(mino.randomamount);
-				p.piece.setRandomperpiece(mino.randomPerPiece);
+				p.piece.setRandomamount(getMinoConfig().randomamount);
+				p.piece.setRandomperpiece(getMinoConfig().randomPerPiece);
 			}
 		}
 		
 		
-		blockref = new int[playfield.blockcoords.length];
-		for(int i = 0; i < playfield.blockcoords.length; i++){
+		blockref = new int[getPlayfieldConfig().blockcoords.length];
+		for(int i = 0; i < getPlayfieldConfig().blockcoords.length; i++){
 			blockref[i] = 0;
-			for(int j = 0; j < mino.blocksize.length; j++){
-				if(playfield.blockcoords[i][3] == mino.blocksize[j]) blockref[i] = j;
+			for(int j = 0; j < getMinoConfig().blocksize.length; j++){
+				if(getPlayfieldConfig().blockcoords[i][3] == getMinoConfig().blocksize[j]) blockref[i] = j;
 			}
 		}
 		
-		for(int i = 0; i < players.length; i++) {
-			players[i].xoffset = (int) ((((players.length-1)/2f-i)*1.1)*playfield.width);
-			players[i].yoffset = 0;
+		for(int i = 0; i < getPlayers().length; i++) {
+			getPlayers()[i].xoffset = (int) ((((getPlayers().length-1)/2f-i)*1.1)*getPlayfieldConfig().width);
+			getPlayers()[i].yoffset = 0;
 		}
 		
-		manager.load(minopath+mino.path, Texture.class);
-		manager.load(fieldpath+playfield.path, Texture.class);
-		manager.load(fieldpath+playfield.warningPath, Texture.class);
-		for(int i = 0; i < mino.blockpath.length; i++)
-			manager.load(minopath+mino.blockpath[i], Texture.class);
+		manager.load(minopath+getMinoConfig().path, Texture.class);
+		manager.load(fieldpath+getPlayfieldConfig().path, Texture.class);
+		manager.load(fieldpath+getPlayfieldConfig().warningPath, Texture.class);
+		for(int i = 0; i < getMinoConfig().blockpath.length; i++)
+			manager.load(minopath+getMinoConfig().blockpath[i], Texture.class);
 		
-		manager.load(fieldpath + playfield.popupPath, TextureAtlas.class);
+		manager.load(fieldpath + getPlayfieldConfig().popupPath, TextureAtlas.class);
 		
-		manager.load(fieldpath + playfield.score.fontPath, BitmapFont.class);
-		manager.load(fieldpath + playfield.time.fontPath, BitmapFont.class);
-		manager.load(fieldpath + playfield.level.fontPath, BitmapFont.class);
-		manager.load(fieldpath + playfield.lines.fontPath, BitmapFont.class);
+		manager.load(fieldpath + getPlayfieldConfig().score.fontPath, BitmapFont.class);
+		manager.load(fieldpath + getPlayfieldConfig().time.fontPath, BitmapFont.class);
+		manager.load(fieldpath + getPlayfieldConfig().level.fontPath, BitmapFont.class);
+		manager.load(fieldpath + getPlayfieldConfig().lines.fontPath, BitmapFont.class);
 	}
 	
 	public void init(AssetManager manager) {
 		
-		minosheet = manager.get(minopath+mino.path, Texture.class);
+		minosheet = manager.get(minopath+getMinoConfig().path, Texture.class);
 		
-		background = manager.get(fieldpath+playfield.path, Texture.class);
-		warning = manager.get(fieldpath+playfield.warningPath, Texture.class);
+		background = manager.get(fieldpath+getPlayfieldConfig().path, Texture.class);
+		warning = manager.get(fieldpath+getPlayfieldConfig().warningPath, Texture.class);
 
-		blocks = new Texture[mino.blockpath.length];
-		blo: for(int i = 0; i < mino.blockpath.length; i++)
+		blocks = new Texture[getMinoConfig().blockpath.length];
+		blo: for(int i = 0; i < getMinoConfig().blockpath.length; i++)
 			for(int j : blockref)
 				if(i == j){
 					blocks = Arrays.copyOf(blocks,blocks.length+1);
-					blocks[i] = manager.get(minopath+mino.blockpath[i], Texture.class);
+					blocks[i] = manager.get(minopath+getMinoConfig().blockpath[i], Texture.class);
 					continue blo;
 				}
 		
-		scorefont = manager.get(fieldpath + playfield.score.fontPath, BitmapFont.class);
-		timefont = manager.get(fieldpath + playfield.time.fontPath, BitmapFont.class);
-		levelfont = manager.get(fieldpath + playfield.level.fontPath, BitmapFont.class);
-		linesfont = manager.get(fieldpath + playfield.lines.fontPath, BitmapFont.class);
+		scorefont = manager.get(fieldpath + getPlayfieldConfig().score.fontPath, BitmapFont.class);
+		timefont = manager.get(fieldpath + getPlayfieldConfig().time.fontPath, BitmapFont.class);
+		levelfont = manager.get(fieldpath + getPlayfieldConfig().level.fontPath, BitmapFont.class);
+		linesfont = manager.get(fieldpath + getPlayfieldConfig().lines.fontPath, BitmapFont.class);
 		
-		TextureAtlas ta = manager.get(fieldpath + playfield.popupPath, TextureAtlas.class);
+		TextureAtlas ta = manager.get(fieldpath + getPlayfieldConfig().popupPath, TextureAtlas.class);
 		
-		for(Player p : players)
+		for(Player p : getPlayers())
 			p.popup.setAtlas(ta);
 		
 	}
@@ -131,10 +130,10 @@ public class Renderer implements Disposable {
 		if(disposed) return;
 		
 		for(int i = 0; i < 10; i++)
-			for(Player p : players) {
+			for(Player p : getPlayers()) {
 				
-				int w = playfield.width/2 + p.xoffset;
-				int h = playfield.height/2 + p.yoffset;
+				int w = getPlayfieldConfig().width/2 + p.xoffset;
+				int h = getPlayfieldConfig().height/2 + p.yoffset;
 				cam.translate(w,h);
 				cam.update();
 				batch.setProjectionMatrix(cam.combined);
@@ -144,16 +143,16 @@ public class Renderer implements Disposable {
 				case 1: queue(batch, p); break;
 				case 2: garbage(batch, p); break;
 				case 3: if(p.hasScore())
-							text(batch, p, scorefont, playfield.score,
+							text(batch, p, scorefont, getPlayfieldConfig().score,
 							Integer.toString(p.score.getScore())); break;
 				case 4: if(p.hasTimer())
-							text(batch, p, timefont, playfield.time,
+							text(batch, p, timefont, getPlayfieldConfig().time,
 							p.timer.view()); break;
 				case 5: if(p.hasLineTracker())
-							text(batch, p, linesfont, playfield.lines,
+							text(batch, p, linesfont, getPlayfieldConfig().lines,
 							Integer.toString(p.level.getLines())); break;
 				case 6: if(p.hasLevelTracker())
-							text(batch, p, levelfont, playfield.level,
+							text(batch, p, levelfont, getPlayfieldConfig().level,
 							Integer.toString(p.level.getLevel())); break;
 				case 7: popup(batch, p); break;
 				case 8: combo(batch, p); break;
@@ -166,7 +165,7 @@ public class Renderer implements Disposable {
 	}
 	
 	private void background(Batch batch, Player p) {
-		batch.draw(background, playfield.imageOffsetX, playfield.imageOffsetY);
+		batch.draw(background, getPlayfieldConfig().imageOffsetX, getPlayfieldConfig().imageOffsetY);
 	}
 		
 	private void minos(Batch batch, Player p) {
@@ -177,31 +176,31 @@ public class Renderer implements Disposable {
 				if(p.matrix.getShape(x, y)==null) continue;
 				Sprite sprite;
 				if(p.matrix.hasUpdated(x, y)) {
-					int dspx = x * mino.size + playfield.matrixOffsetX;
-					int dspy = y * mino.size + playfield.matrixOffsetY;
+					int dspx = x * getMinoConfig().size + getPlayfieldConfig().matrixOffsetX;
+					int dspy = y * getMinoConfig().size + getPlayfieldConfig().matrixOffsetY;
 					int srcx = 0;
 					int srcy = 0;
 					
-					if(mino.colored)
+					if(getMinoConfig().colored)
 						srcy = p.matrix.getColor(x,y);
 					
-					if(mino.randomized){
+					if(getMinoConfig().randomized){
 						srcx = p.matrix.getTexture(x,y);
 					}
 					
-					if(mino.shaped){
+					if(getMinoConfig().shaped){
 						srcx = srcx*4+p.matrix.getShape(x,y).x;
 						srcy = srcy*4+p.matrix.getShape(x,y).y;
 					}
 					
-					srcx *= mino.size;
-					srcy *= mino.size;
+					srcx *= getMinoConfig().size;
+					srcy *= getMinoConfig().size;
 					
-					sprite = new Sprite(minosheet, srcx, srcy, mino.size, mino.size);
-					sprite.setBounds(dspx, dspy, mino.size, mino.size);
+					sprite = new Sprite(minosheet, srcx, srcy, getMinoConfig().size, getMinoConfig().size);
+					sprite.setBounds(dspx, dspy, getMinoConfig().size, getMinoConfig().size);
 					p.matrix.setSprite(x, y, sprite);
-					if(!mino.colored)
-						sprite.setColor(mino.colorset[p.matrix.getColor(x, y)]);
+					if(!getMinoConfig().colored)
+						sprite.setColor(getMinoConfig().colorset[p.matrix.getColor(x, y)]);
 				} else {
 					sprite = p.matrix.getSprite(x, y);
 				}
@@ -211,7 +210,7 @@ public class Renderer implements Disposable {
 	
 	private void queue(Batch batch, Player p) {
 		for(int i = 0; i < blockref.length; i++){
-			int a = mino.blocksize[blockref[i]];
+			int a = getMinoConfig().blocksize[blockref[i]];
 			int b;
 			if(i==0){
 				if(p.queue.getHeldShape()!=null)
@@ -221,33 +220,33 @@ public class Renderer implements Disposable {
 			else b = p.queue.getQueSpot(i-1).color-1;
 			
 			Sprite sprite = new Sprite(blocks[blockref[i]], 0, b*a, a, a);
-			sprite.setBounds(playfield.blockcoords[i][0],playfield.height-playfield.blockcoords[i][1]-playfield.blockcoords[i][3],
-					playfield.blockcoords[i][2],playfield.blockcoords[i][3]);
+			sprite.setBounds(getPlayfieldConfig().blockcoords[i][0],getPlayfieldConfig().height-getPlayfieldConfig().blockcoords[i][1]-getPlayfieldConfig().blockcoords[i][3],
+					getPlayfieldConfig().blockcoords[i][2],getPlayfieldConfig().blockcoords[i][3]);
 			sprite.draw(batch);
 		}
 	}
 		
 	private void garbage(Batch batch, Player p) {
-		batch.draw(warning, playfield.warningOffsetX, playfield.height-playfield.warningOffsetY,
-				playfield.warningWidth, mino.size*p.garbage.getWarningAmount());
+		batch.draw(warning, getPlayfieldConfig().warningOffsetX, getPlayfieldConfig().height-getPlayfieldConfig().warningOffsetY,
+				getPlayfieldConfig().warningWidth, getMinoConfig().size*p.garbage.getWarningAmount());
 	}
 		
 	private void text(Batch batch, Player p, BitmapFont font, TextConfig config, String text) {
 		font.draw(batch, text,
-				config.offsetX, playfield.height - config.offsetY,
+				config.offsetX, getPlayfieldConfig().height - config.offsetY,
 				config.width, config.align, false);
 	}
 	
 	private void popup(Batch batch, Player p) {
 		if(p.popup.image1 != null)
-			batch.draw(p.popup.image1, playfield.popupOffsetX, 
-					playfield.height - playfield.popupOffsetY);
+			batch.draw(p.popup.image1, getPlayfieldConfig().popupOffsetX, 
+					getPlayfieldConfig().height - getPlayfieldConfig().popupOffsetY);
 	}
 		
 	private void combo(Batch batch, Player p) {
 		if(p.popup.image2 != null)
-			batch.draw(p.popup.image2, playfield.comboOffsetX, 
-					playfield.height - playfield.comboOffsetY);
+			batch.draw(p.popup.image2, getPlayfieldConfig().comboOffsetX, 
+					getPlayfieldConfig().height - getPlayfieldConfig().comboOffsetY);
 	}
 	
 	public void dispose() {
@@ -260,5 +259,47 @@ public class Renderer implements Disposable {
 		warning.dispose();
 		scorefont.dispose();
 		timefont.dispose();
+	}
+
+	/**
+	 * @return the players
+	 */
+	public Player[] getPlayers() {
+		return players;
+	}
+
+	/**
+	 * @param players the players to set
+	 */
+	public void setPlayers(Player players[]) {
+		this.players = players;
+	}
+
+	/**
+	 * @return the playfield
+	 */
+	public PlayfieldConfig getPlayfieldConfig() {
+		return playfield;
+	}
+
+	/**
+	 * @param playfield the playfield to set
+	 */
+	public void setPlayfieldConfig(PlayfieldConfig playfield) {
+		this.playfield = playfield;
+	}
+
+	/**
+	 * @return the mino
+	 */
+	public MinoConfig getMinoConfig() {
+		return mino;
+	}
+
+	/**
+	 * @param mino the mino to set
+	 */
+	public void setMinoConfig(MinoConfig mino) {
+		this.mino = mino;
 	}
 }
