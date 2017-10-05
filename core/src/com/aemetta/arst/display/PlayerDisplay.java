@@ -11,10 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
 
-public class Renderer implements Disposable {
+public class PlayerDisplay implements Display {
 	
 	private boolean disposed = false;
 	private Player players[];
@@ -38,7 +37,7 @@ public class Renderer implements Disposable {
 	
 	int[] blockref;
 	
-	public Renderer(String fpath, String mpath, Player[] pl, AssetManager manager) {
+	public PlayerDisplay(String fpath, String mpath, Player[] pl, AssetManager manager) {
 
 		setPlayers(pl);
 		

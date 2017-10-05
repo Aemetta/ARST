@@ -12,7 +12,7 @@ public class CursorPos {
 	
 	public boolean valid = false;
 	
-	public CursorPos(int x, int y, Renderer r) {
+	public CursorPos(int x, int y, PlayerDisplay r) {
 		xPixel = x;
 		yPixel = y;
 		

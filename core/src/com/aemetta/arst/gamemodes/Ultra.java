@@ -11,9 +11,9 @@ public class Ultra extends Gamemode {
 		
 		long seed = Double.doubleToLongBits(Math.random());
 		players[0] = new Player(this, seed);
-		player1 = players[0];
+		human1 = players[0];
 
-		player1.setTimer(new Timer(120));
+		players[0].setTimer(new Timer(120));
 	}
 
 }

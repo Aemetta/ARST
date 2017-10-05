@@ -1,29 +1,25 @@
 package com.aemetta.arst.gamemodes;
 
-import com.aemetta.arst.display.Renderer;
+import com.aemetta.arst.Wrapper;
+import com.aemetta.arst.display.Display;
+import com.aemetta.arst.display.PlayerDisplay;
 import com.aemetta.arst.player.Player;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Gamemode {
+public class Gamemode extends Wrapper {
 	
-	public AssetManager manager;
-	
-	public Texture background;
-	public Renderer[] displays;
-	
-	public Player players[];
-	public Player player1;
-	public Player player2;
+	public Player[] players;
 	
 	public void init() {
 		manager = new AssetManager();
 		manager.load("Backgrounds/017.png", Texture.class);
 		
-		displays = new Renderer[1];
-		displays[0] = new Renderer("purple-20", "candy-20", players, manager);
+		displays = new PlayerDisplay[1];
+		displays[0] = new PlayerDisplay("purple-20", "candy-20", players, manager);
 
 		manager.finishLoading();
 		background = manager.get("Backgrounds/017.png", Texture.class);
@@ -33,7 +29,7 @@ public class Gamemode {
 	public void draw(SpriteBatch batch, OrthographicCamera cam) {
 		if(background != null)
 			batch.draw(background, -background.getWidth()/2, -background.getHeight()/2);
-		for(Renderer d : displays)
+		for(Display d : displays)
 			d.draw(batch, cam);
 	}
 	
@@ -44,5 +40,10 @@ public class Gamemode {
 	
 	public boolean handle(int event) {
 		return false;
+	}
+
+	public void debug(int keycode) {
+		if(keycode == Keys.F2)
+			players[0].getLevelTracker().clearLines(5);
 	}
 }

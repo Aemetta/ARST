@@ -12,12 +12,12 @@ public class LineClear extends Gamemode {
 		
 		long seed = Double.doubleToLongBits(Math.random());
 		players[0] = new Player(this, seed);
-		player1 = players[0];
+		human1 = players[0];
 
-		player1.setLevelTracker(new LevelTracker(player1, 0, 1, 40, false));
-		player1.setTimer(new Timer(0));
-		player1.hideScore();
-		player1.hideLevels();
+		players[0].setLevelTracker(new LevelTracker(players[0], 0, 1, 40, false));
+		players[0].setTimer(new Timer(0));
+		players[0].hideScore();
+		players[0].hideLevels();
 	}
 
 }

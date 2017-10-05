@@ -1,9 +1,10 @@
 package com.aemetta.arst.player;
 
 import com.aemetta.arst.Arst;
+import com.aemetta.arst.Controllable;
 import com.aemetta.arst.gamemodes.Gamemode;
 
-public class Player {
+public class Player implements Controllable {
 	
 	Gamemode game;
 	

@@ -11,12 +11,12 @@ public class Versus extends Gamemode {
 		long seed = Double.doubleToLongBits(Math.random());
 		players[0] = new Player(this, seed, MapLoader.load("Maps/Untitled.png"));
 		players[1] = new Player(this, seed, MapLoader.load("Maps/Untitled.png"));
-		player1 = players[0];
-		player2 = players[1];
-		player1.score.setTarget(player2);
-		player2.score.setTarget(player1);
-		player1.hideScore();
-		player2.hideScore();
+		human1 = players[0];
+		human2 = players[1];
+		players[0].score.setTarget(players[1]);
+		players[1].score.setTarget(players[0]);
+		players[0].hideScore();
+		players[1].hideScore();
 	}
 
 }
