@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.display;
 
 import com.aemetta.arst.player.Player;
 
@@ -10,7 +10,7 @@ public class CursorPos {
 	int x;
 	int y;
 	
-	boolean valid = false;
+	public boolean valid = false;
 	
 	public CursorPos(int x, int y, Renderer r) {
 		xPixel = x;

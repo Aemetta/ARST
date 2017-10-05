@@ -1,4 +1,4 @@
-package com.aemetta.arst;
+package com.aemetta.arst.display;
 
 public class PlayfieldConfig {
 	

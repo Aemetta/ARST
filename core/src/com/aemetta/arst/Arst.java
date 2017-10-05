@@ -1,5 +1,7 @@
 package com.aemetta.arst;
 
+import com.aemetta.arst.display.CursorPos;
+import com.aemetta.arst.display.Renderer;
 import com.aemetta.arst.gamemodes.Gamemode;
 import com.aemetta.arst.gamemodes.LineClear;
 import com.aemetta.arst.gamemodes.Marathon;
