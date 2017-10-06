@@ -23,7 +23,7 @@ public class Marathon extends Gamemode{
 	@Override
 	public boolean handle(int event) {
 		switch(event) {
-		default: return false;
+		default: return super.handle(event);
 		case Player.LEVEL_UP:
 			int fs = (int) (players[0].getFallSpeed() * SPEED_DECAY);
 			players[0].setFallSpeed(fs);

@@ -34,6 +34,7 @@ public class Player implements Controllable {
 	
 	boolean gameover = false;
 	
+	final static public int FINISHED = 99;
 	final static public int TOP_OUT = 100;
 	final static public int TIME_UP = 101;
 	final static public int LEVEL_MAX = 102;
@@ -67,12 +68,12 @@ public class Player implements Controllable {
 	}
 	
 	public void act(float t){
-		if(gameover) return;
 		long time = (long) (1000*t);
+		if(!popup.update(time)) handle(FINISHED);
+		if(gameover) return;
 		clock += time;
 		
 		if(timer != null && !timer.update(time)) handle(TIME_UP);
-		popup.update(time);
 		
 		while(nextRepeat <= clock && shiftDir != 0 && 
 				piece.shift(shiftDir, 0, 0)){
@@ -141,7 +142,7 @@ public class Player implements Controllable {
 							popup.create(true, 0);
 							break;
 			case LEVEL_MAX:	gameover = true;
-							popup.create(true, 2);
+							popup.create(true, 3);
 							break;
 			}
 		}

@@ -10,6 +10,7 @@ public class Popup {
 	public TextureRegion image2;
 	
 	long life = 0;
+	boolean end = false;
 	
 	public Popup() {
 	}
@@ -85,8 +86,10 @@ public class Popup {
 		else
 			set(1, "end-place-" + place);
 		
-		if(image1 != null)
+		if(image1 != null) {
 			life = 3000;
+			end = true;
+		}
 	}
 	
 	private void set(int i, String thing) {
@@ -94,8 +97,12 @@ public class Popup {
 		if(i==2)image2 = atlas.findRegion(thing);
 	}
 	
-	public void update(long delta) {
+	public boolean update(long delta) {
 		life -= delta;
-		if(life <= 0) image1 = null;
+		if(life <= 0) {
+			image1 = null;
+			if(end) return false;
+		}
+		return true;
 	}
 }
