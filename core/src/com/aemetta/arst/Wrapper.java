@@ -14,8 +14,16 @@ public abstract class Wrapper {
 	
 	public Controllable human1;
 	public Controllable human2;
+	
+	protected Arst arst;
+	
+	public Wrapper(Arst arst) {
+		this.arst = arst;
+	}
+	
 	abstract public void init();
 	abstract public void act(float delta);
 	abstract public void draw(SpriteBatch batch, OrthographicCamera cam);
 	abstract public void debug(int keycode);
+	abstract public boolean handle(int event);
 }

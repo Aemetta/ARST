@@ -1,12 +1,14 @@
 package com.aemetta.arst.gamemodes;
 
+import com.aemetta.arst.Arst;
 import com.aemetta.arst.player.LevelTracker;
 import com.aemetta.arst.player.Player;
 import com.aemetta.arst.player.Timer;
 
 public class LineClear extends Gamemode {
 	
-	public LineClear() {
+	public LineClear(Arst arst) {
+		super(arst);
 		
 		players = new Player[1];
 		

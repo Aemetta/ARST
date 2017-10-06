@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		
 		Arst a = new Arst();
 		if(arg.length == 1)
-			a.setGamemode(arg[0].toLowerCase());
+			a.setStartupGamemode(arg[0].toLowerCase());
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(a, config);

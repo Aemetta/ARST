@@ -141,7 +141,7 @@ public class Player implements Controllable {
 							popup.create(true, 0);
 							break;
 			case LEVEL_MAX:	gameover = true;
-							popup.create(true, 3);
+							popup.create(true, 2);
 							break;
 			}
 		}

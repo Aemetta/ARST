@@ -1,5 +1,6 @@
 package com.aemetta.arst.gamemodes;
 
+import com.aemetta.arst.Arst;
 import com.aemetta.arst.player.LevelTracker;
 import com.aemetta.arst.player.Player;
 
@@ -7,7 +8,9 @@ public class Marathon extends Gamemode{
 	
 	private final float SPEED_DECAY = 0.7f;
 	
-	public Marathon() {
+	public Marathon(Arst arst) {
+		super(arst);
+		
 		players = new Player[1];
 		
 		long seed = Double.doubleToLongBits(Math.random());

@@ -30,7 +30,7 @@ public class Arst extends ApplicationAdapter {
 	Wrapper game;
 	Preferences prefs;
 	
-	private int[] controls = new int[13];
+	private int[] controls = new int[15];
 
 	final static public int MENU_LEFT = 0;
 	final static public int MENU_RIGHT = 1;
@@ -45,111 +45,120 @@ public class Arst extends ApplicationAdapter {
 	final static public int ROTATE_180 = 10;
 	final static public int HOLD = 11;
 	final static public int DEPLOY = 12;
+	final static public int MENU_SELECT = 13;
+	final static public int MENU_BACK = 14;
 	
 	boolean debug = false;
 	
 	@Override
 	public void create () {
 		
-		if(gamemode == null) game = new Menu();
-		else switch(gamemode) {
-		case "marathon": game = new Marathon(); break;
-		case "lineclear": game = new LineClear(); break;
-		case "ultra": game = new Ultra(); break;
-		case "versus": game = new Versus(); break;
-		default: game = new Menu(); break;
-		}
-		
-		game.init();
-		
 		cam = new OrthographicCamera();
 		batch = new SpriteBatch();
 		
 		prefs = Gdx.app.getPreferences("arst");
 		loadPrefs();
-		applyPrefs();
+		
+		if(gamemode != null) newGame(gamemode);
+		else newGame("");
+	}
+	
+	public void newGame(String gamemode) {
+		
+		switch(gamemode) {
+		case "marathon": game = new Marathon(this); break;
+		case "lineclear": game = new LineClear(this); break;
+		case "line clear": game = new LineClear(this); break;
+		case "ultra": game = new Ultra(this); break;
+		case "versus": game = new Versus(this); break;
+		default: game = new Menu(this); break;
+		}
+		
+		game.init();
 		
 		if(game.human2 != null)
-		Controllers.addListener(new ControllerAdapter () {
-			@Override
-			public boolean buttonDown(Controller controller, int buttonCode) {
-				if(buttonCode == 0) game.human2.input(ROTATE_LEFT, true);
-				if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, true);
-				if(buttonCode == 4) game.human2.input(HOLD, true);
-				if(buttonCode == 5) game.human2.input(HOLD, true);
-				return true;
-			}
-			@Override
-			public boolean buttonUp(Controller controller, int buttonCode) {
-				if(buttonCode == 0) game.human2.input(ROTATE_LEFT, false);
-				if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, false);
-				if(buttonCode == 4) game.human2.input(HOLD, false);
-				if(buttonCode == 5) game.human2.input(HOLD, false);
-				return true;
-			}
-			@Override
-			public boolean axisMoved(Controller controller, int axisCode, float value) {
-				return true;
-			}
-			@Override
-			public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-				if(value == PovDirection.east) game.human2.input(RIGHT, true);
-				if(value == PovDirection.west) game.human2.input(LEFT, true);
-				if(value == PovDirection.north) game.human2.input(HARD_DROP, true);
-				if(value == PovDirection.south) game.human2.input(SOFT_DROP, true);
-				if(value == PovDirection.center) {
-					game.human2.input(LEFT, false);
-					game.human2.input(RIGHT, false);
-					game.human2.input(SOFT_DROP, false);
-					
+			Controllers.addListener(new ControllerAdapter () {
+				@Override
+				public boolean buttonDown(Controller controller, int buttonCode) {
+					if(buttonCode == 0) game.human2.input(ROTATE_LEFT, true);
+					if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, true);
+					if(buttonCode == 4) game.human2.input(HOLD, true);
+					if(buttonCode == 5) game.human2.input(HOLD, true);
+					return true;
 				}
-				return true;
-			}
-			
-		});
-		
-		if(game.human1 != null)
-		Gdx.input.setInputProcessor(new InputAdapter () {
-			
-			public boolean keyDown (int keycode) {
-					
-				//Debug hotkeys
-				if(debug) game.debug(keycode);
-				
-				for(int i = 0; i < controls.length; i++)
-					if(keycode == controls[i]) {
-						game.human1.input(i, true);
+				@Override
+				public boolean buttonUp(Controller controller, int buttonCode) {
+					if(buttonCode == 0) game.human2.input(ROTATE_LEFT, false);
+					if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, false);
+					if(buttonCode == 4) game.human2.input(HOLD, false);
+					if(buttonCode == 5) game.human2.input(HOLD, false);
+					return true;
+				}
+				@Override
+				public boolean axisMoved(Controller controller, int axisCode, float value) {
+					return true;
+				}
+				@Override
+				public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+					if(value == PovDirection.east) game.human2.input(RIGHT, true);
+					if(value == PovDirection.west) game.human2.input(LEFT, true);
+					if(value == PovDirection.north) game.human2.input(HARD_DROP, true);
+					if(value == PovDirection.south) game.human2.input(SOFT_DROP, true);
+					if(value == PovDirection.center) {
+						game.human2.input(LEFT, false);
+						game.human2.input(RIGHT, false);
+						game.human2.input(SOFT_DROP, false);
+						
 					}
+					return true;
+				}
 				
-				return true;
-			}
-
-			public boolean keyUp (int keycode) {
-					
-				for(int i = 0; i < controls.length; i++)
-					if(keycode == controls[i]) {
-						game.human1.input(i, false);
-					}
-				
-				return true;
-			}
-			
-			public boolean mouseMoved(int x, int y) {
-				
-			//	CursorPos cp = new CursorPos(x, y, game.displays[0]);
-			//	if(cp.valid) Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
-			//	else Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
-				return true;
-			}
-			
-			public boolean touchDown (int x, int y, int pointer, int button) {
-				
-				Gdx.graphics.setSystemCursor(SystemCursor.Hand);
-				
-				return true;
-			}
-			
 			});
+			
+			if(game.human1 != null)
+			Gdx.input.setInputProcessor(new InputAdapter () {
+				
+				public boolean keyDown (int keycode) {
+						
+					//Debug hotkeys
+					if(debug) game.debug(keycode);
+					
+					for(int i = 0; i < controls.length; i++)
+						if(keycode == controls[i]) {
+							game.human1.input(i, true);
+						}
+					
+					return true;
+				}
+
+				public boolean keyUp (int keycode) {
+						
+					for(int i = 0; i < controls.length; i++)
+						if(keycode == controls[i]) {
+							game.human1.input(i, false);
+						}
+					
+					return true;
+				}
+				
+				public boolean mouseMoved(int x, int y) {
+					
+				//	CursorPos cp = new CursorPos(x, y, game.displays[0]);
+				//	if(cp.valid) Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
+				//	else Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
+					return true;
+				}
+				
+				public boolean touchDown (int x, int y, int pointer, int button) {
+					
+					Gdx.graphics.setSystemCursor(SystemCursor.Hand);
+					
+					return true;
+				}
+				
+				});
+			
+			applyPrefs();
 	}
 	
 	private void loadPrefs() {
@@ -167,6 +176,8 @@ public class Arst extends ApplicationAdapter {
 		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
 		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
 		controls[12] = prefs.getInteger("Deploy", Keys.V);
+		controls[13] = prefs.getInteger("Menu Select", Keys.ENTER);
+		controls[14] = prefs.getInteger("Menu Back", Keys.ESCAPE);
 		
 		debug = prefs.getBoolean("Debug Mode", false);
 	}
@@ -186,6 +197,8 @@ public class Arst extends ApplicationAdapter {
 		prefs.putInteger("Rotate 180", controls[10]);
 		prefs.putInteger("Hold", controls[11]);
 		prefs.putInteger("Deploy", controls[12]);
+		prefs.putInteger("Menu Select", controls[13]);
+		prefs.putInteger("Menu Back", controls[14]);
 		
 		prefs.putBoolean("Debug Mode", debug);
 		
@@ -193,16 +206,16 @@ public class Arst extends ApplicationAdapter {
 	}
 	
 	private void applyPrefs() {/*
-		if(game.player1 != null) {
-			game.player1.setDAS(prefs.getInteger("P1 DAS", 200));
-			game.player1.setARR(prefs.getInteger("P1 ARR", 80));
-			game.player1.setDropRate(prefs.getInteger("P1 Drop", 75));
+		if(game.human1 != null) {
+			game.human1.setDAS(prefs.getInteger("P1 DAS", 200));
+			game.human1.setARR(prefs.getInteger("P1 ARR", 80));
+			game.human1.setDropRate(prefs.getInteger("P1 Drop", 75));
 		}
 		
-		if(game.player2 != null) {
-			game.player2.setDAS(prefs.getInteger("P2 DAS", 200));
-			game.player2.setARR(prefs.getInteger("P2 ARR", 80));
-			game.player2.setDropRate(prefs.getInteger("P2 Drop", 75));
+		if(game.human2 != null) {
+			game.human2.setDAS(prefs.getInteger("P2 DAS", 200));
+			game.human2.setARR(prefs.getInteger("P2 ARR", 80));
+			game.human2.setDropRate(prefs.getInteger("P2 Drop", 75));
 			
 		}*/
 	}
@@ -238,7 +251,7 @@ public class Arst extends ApplicationAdapter {
 			d.dispose();
 	}
 	
-	public void setGamemode(String g) {
+	public void setStartupGamemode(String g) {
 		gamemode = g;
 	}
 }

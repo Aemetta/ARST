@@ -1,11 +1,14 @@
 package com.aemetta.arst.gamemodes;
 
+import com.aemetta.arst.Arst;
 import com.aemetta.arst.player.MapLoader;
 import com.aemetta.arst.player.Player;
 
 public class Versus extends Gamemode {
 	
-	public Versus() {
+	public Versus(Arst arst) {
+		super(arst);
+		
 		players = new Player[2];
 		
 		long seed = Double.doubleToLongBits(Math.random());

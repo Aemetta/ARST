@@ -1,5 +1,6 @@
 package com.aemetta.arst.gamemodes;
 
+import com.aemetta.arst.Arst;
 import com.aemetta.arst.Wrapper;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.display.PlayerDisplay;
@@ -13,6 +14,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Gamemode extends Wrapper {
 	
 	public Player[] players;
+	
+	public Gamemode(Arst arst) {
+		super(arst);
+	}
 	
 	public void init() {
 		manager = new AssetManager();
