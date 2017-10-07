@@ -21,6 +21,9 @@ public class Score {
 	
 	public void place(int lines, int cells, boolean tspin, int height){
 		
+		//create a popup
+		host.popup.create(lines, tspin, backtoback, combo, height);
+		
 		if(lines==0) combo = 0;
 		if(!(lines==4 || lines==0 || tspin)) backtoback = false;
 		
@@ -57,9 +60,6 @@ public class Score {
 			host.popup.perfectClear();
 			host.handle(Player.PERFECT_CLEAR);
 		}
-		
-		//create a popup
-		host.popup.create(lines, tspin, backtoback, combo, height);
 		
 		if(lines == 0){
 			host.garbage.fill();
