@@ -21,14 +21,14 @@ public class Marathon extends Gamemode{
 	}
 	
 	@Override
-	public boolean handle(int event) {
+	public boolean handle(Player p, int event) {
 		switch(event) {
-		default: return super.handle(event);
+		default: return super.handle(p, event);
 		case Player.LEVEL_UP:
-			int fs = (int) (players[0].getFallSpeed() * SPEED_DECAY);
-			players[0].setFallSpeed(fs);
-			int ds = players[0].getDropSpeed();
-			players[0].setDropSpeed((ds < fs/2) ? ds : fs/2);
+			int fs = (int) (p.getFallSpeed() * SPEED_DECAY);
+			p.setFallSpeed(fs);
+			int ds = p.getDropSpeed();
+			p.setDropSpeed((ds < fs/2) ? ds : fs/2);
 			return true;
 		}
 	}

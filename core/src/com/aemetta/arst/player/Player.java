@@ -32,7 +32,7 @@ public class Player implements Controllable {
 	boolean onGround = false;
 	long toForcedLock = -1;
 	
-	boolean gameover = false;
+	public boolean gameover = false;
 	
 	final static public int FINISHED = 99;
 	final static public int TOP_OUT = 100;
@@ -122,7 +122,12 @@ public class Player implements Controllable {
 				place(true);
 			}
 			if(key == Arst.DEPLOY) ;
-			if(key == Arst.HOLD) piece.hold();
+			if(key == Arst.HOLD) {
+				piece.hold();
+				onGround = false;
+				dropping = false;
+				nextFall = fall + clock;
+			}
 			if(key == Arst.ROTATE_LEFT) piece.rotate(-1);
 			if(key == Arst.ROTATE_RIGHT) piece.rotate(1);
 		} else {
@@ -133,7 +138,7 @@ public class Player implements Controllable {
 	}
 	
 	public void handle(int event){
-		if(!game.handle(event)) {
+		if(!game.handle(this, event)) {
 			switch(event) {
 			case TOP_OUT:	gameover = true;
 							popup.create(true, 1);

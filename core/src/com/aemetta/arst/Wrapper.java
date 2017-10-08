@@ -25,5 +25,4 @@ public abstract class Wrapper {
 	abstract public void act(float delta);
 	abstract public void draw(SpriteBatch batch, OrthographicCamera cam);
 	abstract public void debug(int keycode);
-	abstract public boolean handle(int event);
 }

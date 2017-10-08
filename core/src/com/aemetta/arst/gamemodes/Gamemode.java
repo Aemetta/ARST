@@ -43,7 +43,7 @@ public class Gamemode extends Wrapper {
 			p.act(delta);
 	}
 	
-	public boolean handle(int event) {
+	public boolean handle(Player p, int event) {
 		if(event==Player.FINISHED)
 			arst.newGame("menu");
 		return false;
