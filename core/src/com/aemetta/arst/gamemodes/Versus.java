@@ -21,5 +21,17 @@ public class Versus extends Gamemode {
 		players[0].hideScore();
 		players[1].hideScore();
 	}
-
+	
+	public boolean handle(Player p, int event) {
+		if(event == Player.TOP_OUT) {
+			Player pw;
+			if(players[0] == p) pw = players[1];
+			else pw = players[0];
+			p.gameover = true;
+			p.popup.create(true, 1);
+			pw.gameover = true;
+			pw.popup.create(true, 3);
+			return true;
+		} else return super.handle(p, event);
+	}
 }
