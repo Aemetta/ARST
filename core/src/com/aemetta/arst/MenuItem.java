@@ -21,8 +21,10 @@ public enum MenuItem {
 			new String[] {
 					"Marathon",
 					"Line Clear",
-					"Ultra"
+					"Ultra",
+					"Cheese"
 			}, new int[] {
+					MenuSelector.GAMEMODE,
 					MenuSelector.GAMEMODE,
 					MenuSelector.GAMEMODE,
 					MenuSelector.GAMEMODE

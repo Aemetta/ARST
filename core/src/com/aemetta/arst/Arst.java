@@ -2,6 +2,7 @@ package com.aemetta.arst;
 
 import com.aemetta.arst.display.CursorPos;
 import com.aemetta.arst.display.Display;
+import com.aemetta.arst.gamemodes.Cheese;
 import com.aemetta.arst.gamemodes.Gamemode;
 import com.aemetta.arst.gamemodes.LineClear;
 import com.aemetta.arst.gamemodes.Marathon;
@@ -70,6 +71,7 @@ public class Arst extends ApplicationAdapter {
 		case "lineclear": game = new LineClear(this); break;
 		case "line clear": game = new LineClear(this); break;
 		case "ultra": game = new Ultra(this); break;
+		case "cheese": game = new Cheese(this); break;
 		case "versus": game = new Versus(this); break;
 		default: game = new Menu(this); break;
 		}
