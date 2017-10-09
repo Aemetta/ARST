@@ -10,6 +10,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Preferences;
 
 public class Gamemode extends Wrapper {
 	
@@ -19,7 +20,7 @@ public class Gamemode extends Wrapper {
 		super(arst);
 	}
 	
-	public void init() {
+	public void init(Preferences prefs) {
 		manager = new AssetManager();
 		manager.load("Backgrounds/017.png", Texture.class);
 		
@@ -29,6 +30,19 @@ public class Gamemode extends Wrapper {
 		manager.finishLoading();
 		background = manager.get("Backgrounds/017.png", Texture.class);
 		displays[0].init(manager);
+		
+		for(Player p : players) {
+			if(human1 == p) {
+				p.setDAS(prefs.getInteger("P1 DAS", 200));
+				p.setARR(prefs.getInteger("P1 ARR", 80));
+				p.setDropRate(prefs.getInteger("P1 Drop", 75));
+			}
+			if(human2 == p) {
+				p.setDAS(prefs.getInteger("P2 DAS", 200));
+				p.setARR(prefs.getInteger("P2 ARR", 80));
+				p.setDropRate(prefs.getInteger("P2 Drop", 75));
+			}
+		}
 	}
 	
 	public void draw(SpriteBatch batch, OrthographicCamera cam) {

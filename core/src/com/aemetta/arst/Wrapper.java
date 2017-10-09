@@ -1,6 +1,7 @@
 package com.aemetta.arst;
 
 import com.aemetta.arst.display.Display;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ public abstract class Wrapper {
 		this.arst = arst;
 	}
 	
-	abstract public void init();
+	abstract public void init(Preferences prefs);
 	abstract public void act(float delta);
 	abstract public void draw(SpriteBatch batch, OrthographicCamera cam);
 	abstract public void debug(int keycode);

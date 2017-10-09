@@ -74,7 +74,7 @@ public class Arst extends ApplicationAdapter {
 		default: game = new Menu(this); break;
 		}
 		
-		game.init();
+		game.init(prefs);
 		
 		if(game.human2 != null)
 			Controllers.addListener(new ControllerAdapter () {
@@ -157,8 +157,6 @@ public class Arst extends ApplicationAdapter {
 				}
 				
 				});
-			
-			applyPrefs();
 	}
 	
 	private void loadPrefs() {
@@ -203,21 +201,6 @@ public class Arst extends ApplicationAdapter {
 		prefs.putBoolean("Debug Mode", debug);
 		
 		prefs.flush();
-	}
-	
-	private void applyPrefs() {/*
-		if(game.human1 != null) {
-			game.human1.setDAS(prefs.getInteger("P1 DAS", 200));
-			game.human1.setARR(prefs.getInteger("P1 ARR", 80));
-			game.human1.setDropRate(prefs.getInteger("P1 Drop", 75));
-		}
-		
-		if(game.human2 != null) {
-			game.human2.setDAS(prefs.getInteger("P2 DAS", 200));
-			game.human2.setARR(prefs.getInteger("P2 ARR", 80));
-			game.human2.setDropRate(prefs.getInteger("P2 Drop", 75));
-			
-		}*/
 	}
 
 	public void render () {

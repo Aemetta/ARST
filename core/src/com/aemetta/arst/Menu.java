@@ -3,6 +3,7 @@ package com.aemetta.arst;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.display.MenuDisplay;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +19,7 @@ public class Menu extends Wrapper {
 		human1 = ms;
 	}
 
-	public void init() {
+	public void init(Preferences prefs) {
 		manager = new AssetManager();
 		manager.load("Backgrounds/017.png", Texture.class);
 		
@@ -28,6 +29,8 @@ public class Menu extends Wrapper {
 		manager.finishLoading();
 		background = manager.get("Backgrounds/017.png", Texture.class);
 		displays[0].init(manager);
+		
+		ms.setPrefs(prefs);
 	}
 
 	public void draw(SpriteBatch batch, OrthographicCamera cam) {

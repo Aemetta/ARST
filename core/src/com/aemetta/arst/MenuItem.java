@@ -16,7 +16,7 @@ public enum MenuItem {
 					MenuSelector.SUBMENU,
 					MenuSelector.ABOUT,
 					MenuSelector.QUIT,
-			}),
+			}, "Main"),
 	Singleplayer(
 			new String[] {
 					"Marathon",
@@ -26,14 +26,14 @@ public enum MenuItem {
 					MenuSelector.GAMEMODE,
 					MenuSelector.GAMEMODE,
 					MenuSelector.GAMEMODE
-			}),
+			}, "Main"),
 	Hotseat(
 			new String[] {
-					"VERSUS"
+					"Versus"
 			}, new int[] {
 					MenuSelector.GAMEMODE
-			}),
-	Network(new String[] {}, new int[] {}),
+			}, "Main"),
+	Network(new String[] {}, new int[] {}, "Main"),
 	Settings(
 			new String[] {
 					"Test",
@@ -47,7 +47,7 @@ public enum MenuItem {
 					MenuSelector.SUBMENU,
 					MenuSelector.SUBMENU,
 					MenuSelector.SUBMENU
-			}),
+			}, "Main"),
 	Controls(
 			new String[] {
 					"Menu Left",
@@ -81,7 +81,7 @@ public enum MenuItem {
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY
-			}),
+			}, "Settings"),
 	Tuning(
 			new String[] {
 					"Test",
@@ -99,7 +99,7 @@ public enum MenuItem {
 					MenuSelector.INTEGER,
 					MenuSelector.INTEGER,
 					MenuSelector.INTEGER
-			}),
+			}, "Settings"),
 	Theme(
 			new String[] {
 					"Menu",
@@ -109,7 +109,7 @@ public enum MenuItem {
 					MenuSelector.SELECTOR,
 					MenuSelector.SELECTOR,
 					MenuSelector.SELECTOR
-			}),
+			}, "Settings"),
 	Audio(
 			new String[] {
 					"Master",
@@ -119,13 +119,15 @@ public enum MenuItem {
 					MenuSelector.SLIDER,
 					MenuSelector.SLIDER,
 					MenuSelector.SLIDER
-			});
+			}, "Settings");
 	
+	public String parent;
 	public String[] items;
 	public int[] type;
 	
-	MenuItem(String[] items, int[] type){
+	MenuItem(String[] items, int[] type, String parent){
 		this.items = items;
 		this.type = type;
+		this.parent = parent;
 	}
 }

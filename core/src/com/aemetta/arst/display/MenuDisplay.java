@@ -38,15 +38,26 @@ public class MenuDisplay implements Display {
 		
 		for(int i = 0; i < ms.numberOfItems(); i++) {
 			if(i==ms.getSelection()) continue;
-			drawText(batch, font, i, ms.isMainMenu());
+			drawText(batch, font, i, ms.isMainMenu(), ms.isSetting(i));
 		}
 		if(ms.isActivated())
-			drawText(batch, select, ms.getSelection(), ms.isMainMenu());
+			drawText(batch, select, ms.getSelection(),
+					ms.isMainMenu(), ms.isSetting(ms.getSelection()));
 	}
 	
-	private void drawText(Batch batch, BitmapFont f, int i, boolean main){
-		f.draw(batch, ms.getItems()[i].toLowerCase(),
-				-100, -50*((main) ? i : i-ms.numberOfItems()/2), 200, 1, false);
+	private void drawText(Batch batch, BitmapFont f, int i, boolean main, boolean setting){
+		if(setting) {
+			f.draw(batch, ms.getItems()[i].toLowerCase(),
+				-250, -50*((main) ? i : i-ms.numberOfItems()/2),
+				500, -1, false);
+			f.draw(batch, ms.getSetting(i).toLowerCase(),
+					-250, -50*((main) ? i : i-ms.numberOfItems()/2),
+					500, 2, false);
+		} else {
+			f.draw(batch, ms.getItems()[i].toLowerCase(),
+					-100, -50*((main) ? i : i-ms.numberOfItems()/2),
+					200, 1, false);
+		}
 	}
 
 	public void dispose() {
