@@ -23,7 +23,7 @@ score: {
 		offsetX: 100
 		offsetY: 0
 		width: 100
-		align: 0
+		align: -1
 }
 level: {
 		fontPath: fonts/time.fnt
