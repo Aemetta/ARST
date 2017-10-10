@@ -1,5 +1,7 @@
-package com.aemetta.arst;
+package com.aemetta.arst.menu;
 
+import com.aemetta.arst.Arst;
+import com.aemetta.arst.Wrapper;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.display.MenuDisplay;
 import com.badlogic.gdx.Gdx;

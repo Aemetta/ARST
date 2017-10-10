@@ -1,6 +1,8 @@
-package com.aemetta.arst;
+package com.aemetta.arst.menu;
 
 import com.badlogic.gdx.Input.Keys;
+import com.aemetta.arst.Arst;
+import com.aemetta.arst.Controllable;
 import com.badlogic.gdx.Preferences;
 
 public class MenuSelector implements Controllable {
@@ -15,6 +17,8 @@ public class MenuSelector implements Controllable {
 	private boolean[] setting;
 	int[] vals;
 	String[] disp;
+	
+	boolean specialInput;
 	
 	Preferences prefs;
 	
@@ -38,15 +42,44 @@ public class MenuSelector implements Controllable {
 	
 	public void input(int key, boolean pressed) {
 		if(pressed) {
-			if(key == Arst.MENU_UP) move(-1);
-			if(key == Arst.MENU_DOWN) move(1);
-			if(key == Arst.MENU_SELECT)
+			if(specialInput) {
 				switch(menu.type[getSelection()]) {
-				case QUIT: host.handle(QUIT); break;
-				case SUBMENU: newMenu(true); break;
-				case GAMEMODE: host.handle(GAMEMODE); break;
-				};
-			if(key == Arst.MENU_BACK) newMenu(false);
+				case HOTKEY:	specialInput = false;
+								activated = true;
+								vals[selected] = key;
+								disp[selected] = Keys.toString(key);
+								break;
+				case INTEGER:	if(key == Keys.ENTER) {
+									specialInput = false;
+									activated = true;
+									try { vals[selected] = 
+											Integer.parseInt(disp[selected]); }
+									catch(Exception e) { vals[selected] = 0; }
+									disp[selected] = "" + key;
+									prefs.putInteger(menu.items[selected], vals[selected]);
+								} else if(key == Keys.BACKSPACE && disp[selected] != "")
+									disp[selected] = disp[selected]
+											.substring(disp[selected].length()-1);
+								else if(key >= Keys.NUM_0 && key <= Keys.NUM_9)
+									disp[selected] += Keys.toString(key);
+				}
+			} else {
+				if(key == Arst.MENU_UP) move(-1);
+				else if(key == Arst.MENU_DOWN) move(1);
+				else if(key == Arst.MENU_SELECT) {
+					switch(menu.type[getSelection()]) {
+					case QUIT: host.handle(QUIT); break;
+					case SUBMENU: newMenu(true); break;
+					case GAMEMODE: host.handle(GAMEMODE); break;
+					case INTEGER:
+					case SELECTOR:
+					case HOTKEY:	disp[selected] = "";
+									specialInput = true;
+									activated = false;
+									break;
+					};}
+				else if(key == Arst.MENU_BACK) newMenu(false);
+			}
 		}
 	}
 	
@@ -64,9 +97,9 @@ public class MenuSelector implements Controllable {
 					setSelection(i);
 		}
 		
-		if(menu == MenuItem.Main) setMain(true);
+		if(menu == MenuItem.Main) main = true;
 		else{
-			setMain(false);
+			main = false;
 		}
 
 		vals = new int[numberOfItems()];
@@ -99,17 +132,10 @@ public class MenuSelector implements Controllable {
 	}
 
 	/**
-	 * @return the main
+	 * @return Whether the current menu is the main one, to draw the logo
 	 */
 	public boolean isMainMenu() {
 		return main;
-	}
-
-	/**
-	 * @param main the main to set
-	 */
-	public void setMain(boolean main) {
-		this.main = main;
 	}
 
 	/**
@@ -119,6 +145,9 @@ public class MenuSelector implements Controllable {
 		return menu.items;
 	}
 	
+	/**
+	 * @return How many items are in the menu
+	 */
 	public int numberOfItems() {
 		return menu.items.length;
 	}

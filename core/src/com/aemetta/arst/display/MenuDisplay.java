@@ -1,6 +1,6 @@
 package com.aemetta.arst.display;
 
-import com.aemetta.arst.MenuSelector;
+import com.aemetta.arst.menu.MenuSelector;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,10 +34,12 @@ public class MenuDisplay implements Display {
 	}
 
 	public void draw(Batch batch, OrthographicCamera cam) {
+		if(disposed) return;
+		
 		if(ms.isMainMenu()) batch.draw(logo, -logo.getWidth()/2, 100);
 		
 		for(int i = 0; i < ms.numberOfItems(); i++) {
-			if(i==ms.getSelection()) continue;
+			if(i==ms.getSelection() && ms.isActivated()) continue;
 			drawText(batch, font, i, ms.isMainMenu(), ms.isSetting(i));
 		}
 		if(ms.isActivated())
@@ -62,6 +64,7 @@ public class MenuDisplay implements Display {
 
 	public void dispose() {
 		logo.dispose();
+		disposed = true;
 	}
 
 }
