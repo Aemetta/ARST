@@ -154,7 +154,8 @@ public class Piece {
 	public void placeGhost(){
 		
 		for(int i = 0; i < 4; i++){
-			matrix.hideSquare(gx[i], gy[i]); //Hide the ghost
+			if(matrix.getColor(gx[i], gy[i]) == 8)
+				 matrix.hideSquare(gx[i], gy[i]); //Hide the ghost
 		}
 		int j = 0;
 		while(canShift(0, j)) j--; //Check how far down it can go
