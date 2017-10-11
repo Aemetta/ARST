@@ -9,6 +9,7 @@ public class Garbage {
 	final Random rand;
 	private int warning = 0;
 	int[] fillings = new int[]{};
+	int lastHole = -1;
 	
 	public Garbage(Matrix b, long s){
 		matrix = b;
@@ -47,7 +48,11 @@ public class Garbage {
 			int a = fillings[z];
 			for(int i = 0; i < a; i++)
 				matrix.shift(0, true);
-			int b = (int)(rand.nextDouble()*matrix.getWidth());
+			int b = 0;
+			do {
+				b = (int)(rand.nextDouble()*matrix.getWidth());
+			} while(b == lastHole);
+			lastHole = b;
 			for(int i = 0; i < a; i++)
 				for(int j = 0; j < matrix.getWidth(); j++){
 					if(j==b) continue;
