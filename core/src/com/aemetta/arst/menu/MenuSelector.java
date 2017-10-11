@@ -121,10 +121,10 @@ public class MenuSelector implements Controllable {
 		for(int i = 0; i < numberOfItems(); i++) {
 			setting[i] = true;
 			switch(menu.type[i]){
-			case INTEGER: vals[i] = prefs.getInteger(menu.items[i]);
+			case INTEGER: vals[i] = prefs.getInteger(menu.items[i], getDefaultIntegerSetting(i));
 						disp[i] = "" + vals[i]; break;
 			case SELECTOR: disp[i] = prefs.getString(menu.items[i]); break;
-			case HOTKEY: vals[i] = prefs.getInteger(menu.items[i]); 
+			case HOTKEY: vals[i] = prefs.getInteger(menu.items[i], getDefaultHotkey(i)); 
 						disp[i] = Keys.toString(vals[i]); break;
 			
 			default: setting[i] = false; 
@@ -138,6 +138,22 @@ public class MenuSelector implements Controllable {
 		setSelection(getSelection() + m);
 		setSelection((getSelection() < 0) ? menu.items.length-1 : getSelection());
 		setSelection((getSelection() >= menu.items.length) ? 0 : getSelection());
+	}
+	
+	private int getDefaultHotkey(int i) {
+		return Arst.controls[i];
+	}
+	
+	private int getDefaultIntegerSetting(int i) {
+		switch(menu.items[i]){
+		case "P1 DAS": return 200;
+		case "P2 DAS": return 200;
+		case "P1 ARR": return 80;
+		case "P2 ARR": return 80;
+		case "P1 Drop": return 50;
+		case "P2 Drop": return 50;
+		default: return 0;
+		}
 	}
 	
 	public void setPrefs(Preferences prefs) {

@@ -35,12 +35,12 @@ public class Gamemode extends Wrapper {
 			if(human1 == p) {
 				p.setDAS(prefs.getInteger("P1 DAS", 200));
 				p.setARR(prefs.getInteger("P1 ARR", 80));
-				p.setDropRate(prefs.getInteger("P1 Drop", 75));
+				p.setDropRate(prefs.getInteger("P1 Drop", 50));
 			}
 			if(human2 == p) {
 				p.setDAS(prefs.getInteger("P2 DAS", 200));
 				p.setARR(prefs.getInteger("P2 ARR", 80));
-				p.setDropRate(prefs.getInteger("P2 Drop", 75));
+				p.setDropRate(prefs.getInteger("P2 Drop", 50));
 			}
 		}
 	}

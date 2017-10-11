@@ -31,23 +31,23 @@ public class Arst extends ApplicationAdapter {
 	Wrapper game;
 	Preferences prefs;
 	
-	private int[] controls = new int[15];
+	public static int[] controls = new int[15];
 
 	final static public int MENU_LEFT = 0;
 	final static public int MENU_RIGHT = 1;
 	final static public int MENU_UP = 2;
 	final static public int MENU_DOWN = 3;
-	final static public int LEFT = 4;
-	final static public int RIGHT = 5;
-	final static public int HARD_DROP = 6;
-	final static public int SOFT_DROP = 7;
-	final static public int ROTATE_LEFT = 8;
-	final static public int ROTATE_RIGHT = 9;
-	final static public int ROTATE_180 = 10;
-	final static public int HOLD = 11;
-	final static public int DEPLOY = 12;
-	final static public int MENU_SELECT = 13;
-	final static public int MENU_BACK = 14;
+	final static public int MENU_SELECT = 4;
+	final static public int MENU_BACK = 5;
+	final static public int LEFT = 6;
+	final static public int RIGHT = 7;
+	final static public int HARD_DROP = 8;
+	final static public int SOFT_DROP = 9;
+	final static public int ROTATE_LEFT = 10;
+	final static public int ROTATE_RIGHT = 11;
+	final static public int ROTATE_180 = 12;
+	final static public int HOLD = 13;
+	final static public int DEPLOY = 14;
 	
 	boolean debug = false;
 	
@@ -58,7 +58,6 @@ public class Arst extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		
 		prefs = Gdx.app.getPreferences("arst");
-		loadControls();
 		
 		if(gamemode != null) newGame(gamemode);
 		else newGame("");
@@ -171,17 +170,17 @@ public class Arst extends ApplicationAdapter {
 		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
 		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
 		controls[3] = prefs.getInteger("Menu Down", Keys.DOWN);
-		controls[4] = prefs.getInteger("Left", Keys.LEFT);
-		controls[5] = prefs.getInteger("Right", Keys.RIGHT);
-		controls[6] = prefs.getInteger("Hard Drop", Keys.UP);
-		controls[7] = prefs.getInteger("Soft Drop", Keys.DOWN);
-		controls[8] = prefs.getInteger("Rotate Left", Keys.Z);
-		controls[9] = prefs.getInteger("Rotate Right", Keys.X);
-		controls[10] = prefs.getInteger("Rotate 180", Keys.C);
-		controls[11] = prefs.getInteger("Hold", Keys.SPACE);
-		controls[12] = prefs.getInteger("Deploy", Keys.V);
-		controls[13] = prefs.getInteger("Menu Select", Keys.ENTER);
-		controls[14] = prefs.getInteger("Menu Back", Keys.ESCAPE);
+		controls[4] = prefs.getInteger("Menu Select", Keys.ENTER);
+		controls[5] = prefs.getInteger("Menu Back", Keys.ESCAPE);
+		controls[6] = prefs.getInteger("Left", Keys.LEFT);
+		controls[7] = prefs.getInteger("Right", Keys.RIGHT);
+		controls[8] = prefs.getInteger("Hard Drop", Keys.UP);
+		controls[9] = prefs.getInteger("Soft Drop", Keys.DOWN);
+		controls[10] = prefs.getInteger("Rotate Left", Keys.Z);
+		controls[11] = prefs.getInteger("Rotate Right", Keys.X);
+		controls[12] = prefs.getInteger("Rotate 180", Keys.C);
+		controls[13] = prefs.getInteger("Hold", Keys.SPACE);
+		controls[14] = prefs.getInteger("Deploy", Keys.V);
 		
 		debug = prefs.getBoolean("Debug Mode", false);
 	}
