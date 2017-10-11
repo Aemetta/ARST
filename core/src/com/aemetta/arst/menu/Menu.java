@@ -45,6 +45,7 @@ public class Menu extends Wrapper {
 		switch(event) {
 		case MenuSelector.QUIT: Gdx.app.exit(); break;
 		case MenuSelector.GAMEMODE: arst.newGame(ms.getItems()[ms.getSelection()].toLowerCase()); break;
+		case MenuSelector.UPDATE_CONTROLS: arst.loadControls();
 		default: return false;
 		}
 		return true;

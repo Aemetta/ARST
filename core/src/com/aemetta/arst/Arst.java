@@ -3,7 +3,6 @@ package com.aemetta.arst;
 import com.aemetta.arst.display.CursorPos;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.gamemodes.Cheese;
-import com.aemetta.arst.gamemodes.Gamemode;
 import com.aemetta.arst.gamemodes.LineClear;
 import com.aemetta.arst.gamemodes.Marathon;
 import com.aemetta.arst.gamemodes.Ultra;
@@ -59,7 +58,7 @@ public class Arst extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		
 		prefs = Gdx.app.getPreferences("arst");
-		loadPrefs();
+		loadControls();
 		
 		if(gamemode != null) newGame(gamemode);
 		else newGame("");
@@ -122,14 +121,18 @@ public class Arst extends ApplicationAdapter {
 			Gdx.input.setInputProcessor(new InputAdapter () {
 				
 				public boolean keyDown (int keycode) {
-						
-					//Debug hotkeys
-					if(debug) game.debug(keycode);
 					
-					for(int i = 0; i < controls.length; i++)
-						if(keycode == controls[i]) {
-							game.human1.input(i, true);
-						}
+					if(game.human1.isRawInput())
+						game.human1.input(keycode, true);
+					else {
+						//Debug hotkeys
+						if(debug) game.debug(keycode);
+						
+						for(int i = 0; i < controls.length; i++)
+							if(keycode == controls[i]) {
+								game.human1.input(i, true);
+							}
+					}
 					
 					return true;
 				}
@@ -162,7 +165,7 @@ public class Arst extends ApplicationAdapter {
 				});
 	}
 	
-	private void loadPrefs() {
+	public void loadControls() {
 		
 		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
 		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
@@ -181,29 +184,6 @@ public class Arst extends ApplicationAdapter {
 		controls[14] = prefs.getInteger("Menu Back", Keys.ESCAPE);
 		
 		debug = prefs.getBoolean("Debug Mode", false);
-	}
-	
-	private void writePrefs() {
-		
-		prefs.putInteger("Menu Left", controls[0]);
-		prefs.putInteger("Menu Right", controls[1]);
-		prefs.putInteger("Menu Up", controls[2]);
-		prefs.putInteger("Menu Down", controls[3]);
-		prefs.putInteger("Left", controls[4]);
-		prefs.putInteger("Right", controls[5]);
-		prefs.putInteger("Hard Drop", controls[6]);
-		prefs.putInteger("Soft Drop", controls[7]);
-		prefs.putInteger("Rotate Left", controls[8]);
-		prefs.putInteger("Rotate Right", controls[9]);
-		prefs.putInteger("Rotate 180", controls[10]);
-		prefs.putInteger("Hold", controls[11]);
-		prefs.putInteger("Deploy", controls[12]);
-		prefs.putInteger("Menu Select", controls[13]);
-		prefs.putInteger("Menu Back", controls[14]);
-		
-		prefs.putBoolean("Debug Mode", debug);
-		
-		prefs.flush();
 	}
 
 	public void render () {
@@ -229,8 +209,6 @@ public class Arst extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		writePrefs();
-		
 		batch.dispose();
 		game.manager.dispose();
 		for(Display d : game.displays)

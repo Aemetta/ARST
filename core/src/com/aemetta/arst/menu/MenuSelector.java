@@ -31,6 +31,8 @@ public class MenuSelector implements Controllable {
 	public static final int HOTKEY = 6;
 	public static final int ABOUT = 7;
 	
+	public static final int UPDATE_CONTROLS = 100;
+	
 	
 	public MenuSelector(Menu menu) {
 		this.host = menu;
@@ -48,6 +50,7 @@ public class MenuSelector implements Controllable {
 								activated = true;
 								vals[selected] = key;
 								disp[selected] = Keys.toString(key);
+								prefs.putInteger(menu.items[selected], vals[selected]);
 								break;
 				case INTEGER:	if(key == Keys.ENTER) {
 									specialInput = false;
@@ -55,11 +58,11 @@ public class MenuSelector implements Controllable {
 									try { vals[selected] = 
 											Integer.parseInt(disp[selected]); }
 									catch(Exception e) { vals[selected] = 0; }
-									disp[selected] = "" + key;
+									disp[selected] = "" + vals[selected];
 									prefs.putInteger(menu.items[selected], vals[selected]);
 								} else if(key == Keys.BACKSPACE && disp[selected] != "")
 									disp[selected] = disp[selected]
-											.substring(disp[selected].length()-1);
+											.substring(0, disp[selected].length()-1);
 								else if(key >= Keys.NUM_0 && key <= Keys.NUM_9)
 									disp[selected] += Keys.toString(key);
 				}
@@ -79,6 +82,13 @@ public class MenuSelector implements Controllable {
 									break;
 					};}
 				else if(key == Arst.MENU_BACK) newMenu(false);
+				else if(key == Arst.MENU_LEFT || key == Arst.MENU_RIGHT) {
+					if(menu.type[getSelection()] == INTEGER) {
+						vals[selected] += (key == Arst.MENU_LEFT) ? -5 : 5;
+						disp[selected] = "" + vals[selected];
+						prefs.putInteger(menu.items[selected], vals[selected]);
+					}
+				}
 			}
 		}
 	}
@@ -95,6 +105,9 @@ public class MenuSelector implements Controllable {
 			for(int i = 0; i < numberOfItems(); i++)
 				if(backward == menu.items[i])
 					setSelection(i);
+			
+			if(prefs != null) prefs.flush();
+			host.handle(UPDATE_CONTROLS);
 		}
 		
 		if(menu == MenuItem.Main) main = true;
@@ -189,5 +202,10 @@ public class MenuSelector implements Controllable {
 	
 	public String getSetting(int i) {
 		return disp[i];
+	}
+
+	@Override
+	public boolean isRawInput() {
+		return specialInput;
 	}
 }

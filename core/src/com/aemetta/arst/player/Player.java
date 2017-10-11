@@ -264,4 +264,9 @@ public class Player implements Controllable {
 	public void setDropRate(int rate) {
 		this.drop = rate;
 	}
+
+	@Override
+	public boolean isRawInput() {
+		return false;
+	}
 }
