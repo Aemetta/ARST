@@ -33,10 +33,10 @@ public enum Wang {
 		case "MIDDLE": break;
 		case "HORIZ":
 			if(a!=2)return Wang.VERT;
-			break;
+			else return Wang.HORIZ;
 		case "VERT":
 			if(a!=2)return Wang.HORIZ;
-			break;
+			else return Wang.VERT;
 		case "WCAP":
 			if(a==1)return Wang.NCAP;
 			else if(a==2)return Wang.ECAP;

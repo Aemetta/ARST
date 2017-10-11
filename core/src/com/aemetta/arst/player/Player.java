@@ -59,8 +59,6 @@ public class Player implements Controllable {
 		popup = new Popup();
 		score = new Score(this);
 		piece = new Piece(matrix, queue, score, this);
-		
-	//	garbage.add(4);
 	}
 	
 	public Player(Gamemode g, long seed) {
@@ -130,6 +128,7 @@ public class Player implements Controllable {
 			}
 			if(key == Arst.ROTATE_LEFT) piece.rotate(-1);
 			if(key == Arst.ROTATE_RIGHT) piece.rotate(1);
+			if(key == Arst.ROTATE_180) piece.rotate(2);
 		} else {
 			if(key == Arst.LEFT) shiftDir = 0;
 			if(key == Arst.RIGHT) shiftDir = 0;
