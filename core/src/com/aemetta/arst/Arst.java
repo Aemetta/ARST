@@ -27,7 +27,7 @@ public class Arst extends ApplicationAdapter {
 	SpriteBatch batch;
 	OrthographicCamera cam;
 	
-	String gamemode = null;
+	String startupGamemode = null;
 	Wrapper game;
 	Preferences prefs;
 	
@@ -59,18 +59,18 @@ public class Arst extends ApplicationAdapter {
 		
 		prefs = Gdx.app.getPreferences("arst");
 		
-		if(gamemode != null) newGame(gamemode);
+		if(startupGamemode != null) newGame(startupGamemode);
 		else newGame("");
 	}
 	
 	public void newGame(String gamemode) {
 		
-		if(gamemode == "marathon") game = new Marathon(this);
-		else if(gamemode == "lineclear") game = new LineClear(this);
-		else if(gamemode == "line clear") game = new LineClear(this);
-		else if(gamemode == "ultra") game = new Ultra(this);
-		else if(gamemode == "cheese") game = new Cheese(this);
-		else if(gamemode == "versus") game = new Versus(this);
+		if(gamemode.contentEquals("marathon")) game = new Marathon(this);
+		else if(gamemode.contentEquals("lineclear")) game = new LineClear(this);
+		else if(gamemode.contentEquals("line clear")) game = new LineClear(this);
+		else if(gamemode.contentEquals("ultra")) game = new Ultra(this);
+		else if(gamemode.contentEquals("cheese")) game = new Cheese(this);
+		else if(gamemode.contentEquals("versus")) game = new Versus(this);
 		else game = new Menu(this);
 		
 		game.init(prefs);
@@ -194,8 +194,6 @@ public class Arst extends ApplicationAdapter {
 		game.draw(batch, cam);
 		
 		batch.end();
-		
-		Gdx.graphics.setTitle("" + Gdx.graphics.getFramesPerSecond());
 	}
 	
 	public void resize(int width, int height) {
@@ -213,6 +211,6 @@ public class Arst extends ApplicationAdapter {
 	}
 	
 	public void setStartupGamemode(String g) {
-		gamemode = g;
+		startupGamemode = g;
 	}
 }
