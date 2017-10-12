@@ -11,8 +11,8 @@ public class Piece {
 	
 	Shape shape;
 	
-	int[] x;
-	int[] y;
+	int[] x = new int[4];
+	int[] y = new int[4];
 	int[] gx = new int[4];
 	int[] gy = new int[4];
 	Wang[] wang = new Wang[4]; //The wang is what image to use for the mino
