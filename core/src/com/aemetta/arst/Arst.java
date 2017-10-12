@@ -65,15 +65,13 @@ public class Arst extends ApplicationAdapter {
 	
 	public void newGame(String gamemode) {
 		
-		switch(gamemode) {
-		case "marathon": game = new Marathon(this); break;
-		case "lineclear": game = new LineClear(this); break;
-		case "line clear": game = new LineClear(this); break;
-		case "ultra": game = new Ultra(this); break;
-		case "cheese": game = new Cheese(this); break;
-		case "versus": game = new Versus(this); break;
-		default: game = new Menu(this); break;
-		}
+		if(gamemode == "marathon") game = new Marathon(this);
+		else if(gamemode == "lineclear") game = new LineClear(this);
+		else if(gamemode == "line clear") game = new LineClear(this);
+		else if(gamemode == "ultra") game = new Ultra(this);
+		else if(gamemode == "cheese") game = new Cheese(this);
+		else if(gamemode == "versus") game = new Versus(this);
+		else game = new Menu(this);
 		
 		game.init(prefs);
 		

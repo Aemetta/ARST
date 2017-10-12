@@ -145,15 +145,13 @@ public class MenuSelector implements Controllable {
 	}
 	
 	private int getDefaultIntegerSetting(int i) {
-		switch(menu.items[i]){
-		case "P1 DAS": return 200;
-		case "P2 DAS": return 200;
-		case "P1 ARR": return 80;
-		case "P2 ARR": return 80;
-		case "P1 Drop": return 50;
-		case "P2 Drop": return 50;
-		default: return 0;
-		}
+		if(menu.items[i] == "P1 DAS") return 200;
+		else if(menu.items[i] == "P2 DAS") return 200;
+		else if(menu.items[i] == "P1 ARR") return 80;
+		else if(menu.items[i] == "P2 ARR") return 80;
+		else if(menu.items[i] == "P1 Drop") return 50;
+		else if(menu.items[i] == "P2 Drop") return 50;
+		else return 0;
 	}
 	
 	public void setPrefs(Preferences prefs) {

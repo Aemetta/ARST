@@ -28,71 +28,71 @@ public enum Wang {
 	}
 	
 	public Wang rotate(int a){
-		switch(this.name()){
-		case "LONER": break;
-		case "MIDDLE": break;
-		case "HORIZ":
+		switch(this){
+		case LONER: break;
+		case MIDDLE: break;
+		case HORIZ:
 			if(a!=2)return Wang.VERT;
 			else return Wang.HORIZ;
-		case "VERT":
+		case VERT:
 			if(a!=2)return Wang.HORIZ;
 			else return Wang.VERT;
-		case "WCAP":
+		case WCAP:
 			if(a==1)return Wang.NCAP;
 			else if(a==2)return Wang.ECAP;
 			else if(a==3)return Wang.SCAP;
 			break;
-		case "ECAP":
+		case ECAP:
 			if(a==1)return Wang.SCAP;
 			else if(a==2)return Wang.WCAP;
 			else if(a==3)return Wang.NCAP;
 			break;
-		case "NCAP":
+		case NCAP:
 			if(a==1)return Wang.ECAP;
 			else if(a==2)return Wang.SCAP;
 			else if(a==3)return Wang.WCAP;
 			break;
-		case "SCAP":
+		case SCAP:
 			if(a==1)return Wang.WCAP;
 			else if(a==2)return Wang.NCAP;
 			else if(a==3)return Wang.ECAP;
 			break;
-		case "WTEE":
+		case WTEE:
 			if(a==1)return Wang.NTEE;
 			else if(a==2)return Wang.ETEE;
 			else if(a==3)return Wang.STEE;
 			break;
-		case "ETEE":
+		case ETEE:
 			if(a==1)return Wang.STEE;
 			else if(a==2)return Wang.WTEE;
 			else if(a==3)return Wang.NTEE;
 			break;
-		case "NTEE":
+		case NTEE:
 			if(a==1)return Wang.ETEE;
 			else if(a==3)return Wang.WTEE;
 			else if(a==2)return Wang.STEE;
 			break;
-		case "STEE":
+		case STEE:
 			if(a==1)return Wang.WTEE;
 			else if(a==2)return Wang.NTEE;
 			else if(a==3)return Wang.ETEE;
 			break;
-		case "NWCORN":
+		case NWCORN:
 			if(a==1)return Wang.NECORN;
 			else if(a==2)return Wang.SECORN;
 			else if(a==3)return Wang.SWCORN;
 			break;
-		case "SECORN":
+		case SECORN:
 			if(a==1)return Wang.SWCORN;
 			else if(a==2)return Wang.NWCORN;
 			else if(a==3)return Wang.NECORN;
 			break;
-		case "NECORN":
+		case NECORN:
 			if(a==1)return Wang.SECORN;
 			else if(a==2)return Wang.SWCORN;
 			else if(a==3)return Wang.NWCORN;
 			break;
-		case "SWCORN":
+		case SWCORN:
 			if(a==1)return Wang.NWCORN;
 			else if(a==2)return Wang.NECORN;
 			else if(a==3)return Wang.SECORN;
@@ -102,49 +102,49 @@ public enum Wang {
 	}
 	
 	public Wang shear(boolean bottom){
-		switch(this.name()){
-		case "LONER":
+		switch(this){
+		case LONER:
 			return Wang.LONER;
-		case "MIDDLE":
+		case MIDDLE:
 			if(bottom)return Wang.STEE;
 			return Wang.NTEE;
-		case "HORIZ":
+		case HORIZ:
 			return Wang.HORIZ;
-		case "VERT":
+		case VERT:
 			if(bottom)return Wang.SCAP;
 			return Wang.NCAP;
-		case "WCAP":
+		case WCAP:
 			return Wang.WCAP;
-		case "ECAP":
+		case ECAP:
 			return Wang.ECAP;
-		case "NCAP":
+		case NCAP:
 			if(bottom)return Wang.LONER;
 			return Wang.NCAP;
-		case "SCAP":
+		case SCAP:
 			if(!bottom)return Wang.LONER;
 			return Wang.SCAP;
-		case "WTEE":
+		case WTEE:
 			if(bottom)return Wang.SWCORN;
 			return Wang.NWCORN;
-		case "ETEE":
+		case ETEE:
 			if(bottom)return Wang.SECORN;
 			return Wang.NECORN;
-		case "NTEE":
+		case NTEE:
 			if(bottom)return Wang.HORIZ;
 			return Wang.NTEE;
-		case "STEE":
+		case STEE:
 			if(!bottom)return Wang.HORIZ;
 			return Wang.STEE;
-		case "NWCORN":
+		case NWCORN:
 			if(bottom)return Wang.WCAP;
 			return Wang.NWCORN;
-		case "SECORN":
+		case SECORN:
 			if(!bottom)return Wang.ECAP;
 			return Wang.SECORN;
-		case "NECORN":
+		case NECORN:
 			if(bottom)return Wang.ECAP;
 			return Wang.NECORN;
-		case "SWCORN":
+		case SWCORN:
 			if(!bottom)return Wang.WCAP;
 			return Wang.SWCORN;
 		}
