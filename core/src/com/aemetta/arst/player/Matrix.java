@@ -171,12 +171,17 @@ public class Matrix {
 	
 	public Matrix clone() {
 		Matrix m = new Matrix(this.getWidth(), this.getHeight(), this.getTopOffset());
-		m.solid = this.solid.clone();
-		m.color = this.color.clone();
-		m.wang = this.wang.clone();
-		m.texture = this.texture.clone();
-		m.updated = this.updated.clone();
-		m.sprite = this.sprite.clone();
+		
+		for(int i = 0; i < this.getHeight(); i++)
+			for(int j = 0; j < this.getWidth(); j++) {
+				m.solid[i][j] = this.solid[i][j];
+				m.color[i][j] = this.color[i][j];
+				m.wang[i][j] = this.wang[i][j];
+				m.texture[i][j] = this.texture[i][j];
+				m.updated[i][j] = this.updated[i][j];
+				m.sprite[i][j] = this.sprite[i][j];
+			}
+		
 		return m;
 	}
 	
