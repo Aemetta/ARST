@@ -98,10 +98,11 @@ public class Piece {
 	
 	void newPiece(){
 		
-		x = shape.x.clone();
-		y = shape.y.clone();
-		wang = shape.wang.clone();
 		for(int i = 0; i < 4; i++){
+			x[i] = shape.x[i];
+			y[i] = shape.y[i];
+			wang[i] = shape.wang[i];
+			
 			gx[i] = x[i];
 			gy[i] = y[i]; //Move the ghost away from its old position to avoid glitchy
 		}
@@ -174,11 +175,14 @@ public class Piece {
 		if(a==0) return;	  //not rotating at all
 		if(shape==Shape.O) return;	  //squares don't rotate
 		
-		int[] oldx = x.clone();
-		int[] oldy = y.clone();
-		
-		for(int i = 0; i < 4; i++)
+		int[] oldx = new int[4];
+		int[] oldy = new int[4];
+		for(int i = 0; i < 4; i++) {
+			oldx[i] = x[i];
+			oldy[i] = y[i];
+			
 			matrix.hideSquare(x[i], y[i]); //Hide the piece
+		}
 		
 		int rx = x[1]; int ry = y[1]; //The middle of the piece
 		for(int i = 0; i < 4; i++){
