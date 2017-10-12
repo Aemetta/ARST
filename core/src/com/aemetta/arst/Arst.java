@@ -32,6 +32,7 @@ public class Arst extends ApplicationAdapter {
 	Preferences prefs;
 	
 	public static int[] controls = new int[15];
+	public static String[] theme = new String[3];
 
 	final static public int MENU_LEFT = 0;
 	final static public int MENU_RIGHT = 1;
@@ -58,6 +59,10 @@ public class Arst extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		
 		prefs = Gdx.app.getPreferences("arst");
+		debug = prefs.getBoolean("Debug Mode", false);
+		
+		loadControls();
+		loadTheme();
 		
 		if(startupGamemode != null) newGame(startupGamemode);
 		else newGame("");
@@ -163,7 +168,6 @@ public class Arst extends ApplicationAdapter {
 	}
 	
 	public void loadControls() {
-		
 		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
 		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
 		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
@@ -179,8 +183,12 @@ public class Arst extends ApplicationAdapter {
 		controls[12] = prefs.getInteger("Rotate 180", Keys.C);
 		controls[13] = prefs.getInteger("Hold", Keys.SPACE);
 		controls[14] = prefs.getInteger("Deploy", Keys.V);
-		
-		debug = prefs.getBoolean("Debug Mode", false);
+	}
+	
+	public void loadTheme() {
+		theme[0] = prefs.getString("Menu", "default");
+		theme[1] = prefs.getString("Playfield", "purple-20");
+		theme[2] = prefs.getString("Minos", "candy-20");
 	}
 
 	public void render () {

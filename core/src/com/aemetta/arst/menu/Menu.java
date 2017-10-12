@@ -25,14 +25,18 @@ public class Menu extends Wrapper {
 		manager = new AssetManager();
 		manager.load("Backgrounds/017.png", Texture.class);
 		
+		loadDisplay();
+		
+		ms.setPrefs(prefs);
+	}
+	
+	private void loadDisplay() {
 		displays = new Display[1];
 		displays[0] = new MenuDisplay("default", ms, manager);
 
 		manager.finishLoading();
 		background = manager.get("Backgrounds/017.png", Texture.class);
 		displays[0].init(manager);
-		
-		ms.setPrefs(prefs);
 	}
 
 	public void draw(SpriteBatch batch, OrthographicCamera cam) {
@@ -44,8 +48,11 @@ public class Menu extends Wrapper {
 	public boolean handle(int event) {
 		switch(event) {
 		case MenuSelector.QUIT: Gdx.app.exit(); break;
-		case MenuSelector.GAMEMODE: arst.newGame(ms.getItems()[ms.getSelection()].toLowerCase()); break;
-		case MenuSelector.UPDATE_CONTROLS: arst.loadControls();
+		case MenuSelector.GAMEMODE: arst.newGame(ms.getItem(ms.getSelection()).toLowerCase()); break;
+		case MenuSelector.UPDATE_CONTROLS: arst.loadControls(); break;
+		case MenuSelector.UPDATE_THEME: arst.loadTheme();
+										loadDisplay();
+										break;
 		default: return false;
 		}
 		return true;

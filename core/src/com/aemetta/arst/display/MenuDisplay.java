@@ -64,14 +64,14 @@ public class MenuDisplay implements Display {
 	
 	private void drawText(Batch batch, BitmapFont f, int i, boolean main, boolean setting){
 		if(setting) {
-			f.draw(batch, ms.getItems()[i].toLowerCase(),
+			f.draw(batch, ms.getItem(i).toLowerCase(),
 				-250, -50*((main) ? i-scroll : i-scroll-scope/2),
 				500, -1, false);
 			f.draw(batch, ms.getSetting(i).toLowerCase(),
 					-250, -50*((main) ? i-scroll : i-scroll-scope/2),
 					500, 2, false);
 		} else {
-			f.draw(batch, ms.getItems()[i].toLowerCase(),
+			f.draw(batch, ms.getItem(i).toLowerCase(),
 					-100, -50*((main) ? i-scroll : i-scroll-scope/2),
 					200, 1, false);
 		}

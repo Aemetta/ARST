@@ -35,7 +35,12 @@ public enum MenuItem {
 			}, new int[] {
 					MenuSelector.GAMEMODE
 			}, "Main"),
-	Network(new String[] {}, new int[] {}, "Main"),
+	Network(
+			new String[] {
+					"lol not yet"
+			}, new int[] {
+					MenuSelector.GAMEMODE
+			}, "Main"),
 	Settings(
 			new String[] {
 					"Test",
@@ -105,8 +110,8 @@ public enum MenuItem {
 	Theme(
 			new String[] {
 					"Menu",
-					"Minos",
-					"Playfield"
+					"Playfield",
+					"Minos"
 			}, new int[] {
 					MenuSelector.SELECTOR,
 					MenuSelector.SELECTOR,

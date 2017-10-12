@@ -25,7 +25,7 @@ public class Gamemode extends Wrapper {
 		manager.load("Backgrounds/017.png", Texture.class);
 		
 		displays = new PlayerDisplay[1];
-		displays[0] = new PlayerDisplay("purple-20", "candy-20", players, manager);
+		displays[0] = new PlayerDisplay(Arst.theme[1], Arst.theme[2], players, manager);
 
 		manager.finishLoading();
 		background = manager.get("Backgrounds/017.png", Texture.class);

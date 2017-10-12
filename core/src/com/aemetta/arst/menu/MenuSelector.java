@@ -32,6 +32,7 @@ public class MenuSelector implements Controllable {
 	public static final int ABOUT = 7;
 	
 	public static final int UPDATE_CONTROLS = 100;
+	public static final int UPDATE_THEME = 101;
 	
 	
 	public MenuSelector(Menu menu) {
@@ -60,11 +61,21 @@ public class MenuSelector implements Controllable {
 									catch(Exception e) { vals[selected] = 0; }
 									disp[selected] = "" + vals[selected];
 									prefs.putInteger(menu.items[selected], vals[selected]);
-								} else if(key == Keys.BACKSPACE && disp[selected] != "")
+								} else if(key == Keys.BACKSPACE && !disp[selected].contentEquals(""))
 									disp[selected] = disp[selected]
 											.substring(0, disp[selected].length()-1);
 								else if(key >= Keys.NUM_0 && key <= Keys.NUM_9)
 									disp[selected] += Keys.toString(key);
+				case SELECTOR:	if(key == Keys.ENTER) {
+									specialInput = false;
+									activated = true;
+									disp[selected] = disp[selected].toLowerCase();
+									prefs.putString(menu.items[selected], disp[selected]);
+								} else if(key == Keys.BACKSPACE && !disp[selected].contentEquals(""))
+									disp[selected] = disp[selected]
+											.substring(0, disp[selected].length()-1);
+								else if(Keys.toString(key).length() == 1)
+										disp[selected] += Keys.toString(key);
 				}
 			} else {
 				if(key == Arst.MENU_UP) move(-1);
@@ -74,10 +85,9 @@ public class MenuSelector implements Controllable {
 					case QUIT: host.handle(QUIT); break;
 					case SUBMENU: newMenu(true); break;
 					case GAMEMODE: host.handle(GAMEMODE); break;
-					case INTEGER:
-					case SELECTOR:
-					case HOTKEY:	disp[selected] = "";
-									specialInput = true;
+					case HOTKEY:	
+					case INTEGER:	disp[selected] = "";
+					case SELECTOR:	specialInput = true;
 									activated = false;
 									break;
 					};}
@@ -99,21 +109,22 @@ public class MenuSelector implements Controllable {
 			setSelection(0);
 		}
 		else {
+
+			if(menu == MenuItem.Controls) host.handle(UPDATE_CONTROLS);
+			else if(menu == MenuItem.Theme) host.handle(UPDATE_THEME);
+			
 			String backward = menu.name();
 			menu = MenuItem.valueOf(menu.parent);
 			setSelection(0);
 			for(int i = 0; i < numberOfItems(); i++)
-				if(backward == menu.items[i])
+				if(backward.contentEquals(menu.items[i]))
 					setSelection(i);
 			
-			if(prefs != null) prefs.flush();
-			host.handle(UPDATE_CONTROLS);
+			if(menu == MenuItem.Settings && prefs != null) prefs.flush();
 		}
 		
 		if(menu == MenuItem.Main) main = true;
-		else{
-			main = false;
-		}
+		else main = false;
 
 		vals = new int[numberOfItems()];
 		disp = new String[numberOfItems()];
@@ -123,7 +134,7 @@ public class MenuSelector implements Controllable {
 			switch(menu.type[i]){
 			case INTEGER: vals[i] = prefs.getInteger(menu.items[i], getDefaultIntegerSetting(i));
 						disp[i] = "" + vals[i]; break;
-			case SELECTOR: disp[i] = prefs.getString(menu.items[i]); break;
+			case SELECTOR: disp[i] = prefs.getString(menu.items[i], getDefaultTheme(i)); break;
 			case HOTKEY: vals[i] = prefs.getInteger(menu.items[i], getDefaultHotkey(i)); 
 						disp[i] = Keys.toString(vals[i]); break;
 			
@@ -142,6 +153,10 @@ public class MenuSelector implements Controllable {
 	
 	private int getDefaultHotkey(int i) {
 		return Arst.controls[i];
+	}
+	
+	private String getDefaultTheme(int i) {
+		return Arst.theme[i];
 	}
 	
 	private int getDefaultIntegerSetting(int i) {
@@ -168,8 +183,8 @@ public class MenuSelector implements Controllable {
 	/**
 	 * @return The items in the menu
 	 */
-	public String[] getItems() {
-		return menu.items;
+	public String getItem(int i) {
+		return menu.items[i];
 	}
 	
 	/**
