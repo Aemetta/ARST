@@ -22,7 +22,8 @@ public class Cheese extends Gamemode {
 			players[0].garbage.add(1);
 		
 		players[0].garbage.fill();
-		players[0].matrix.smooth(0, 10);
+		players[0].matrix.smooth(0, 9);
+		players[0].matrix.recolor(2, 0, 0, players[0].matrix.getWidth(), 10);
 	}
 
 }
