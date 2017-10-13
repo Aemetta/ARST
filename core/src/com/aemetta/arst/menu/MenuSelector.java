@@ -30,7 +30,10 @@ public class MenuSelector implements Controllable {
 	public static final int SLIDER = 5;
 	public static final int HOTKEY = 6;
 	public static final int ABOUT = 7;
+	public static final int RESUME = 8;
+	public static final int RESTART = 9;
 	
+	public static final int ENTER_MAIN_MENU = 99;
 	public static final int UPDATE_CONTROLS = 100;
 	public static final int UPDATE_THEME = 101;
 	
@@ -85,6 +88,8 @@ public class MenuSelector implements Controllable {
 					case QUIT: host.handle(QUIT); break;
 					case SUBMENU: newMenu(true); break;
 					case GAMEMODE: host.handle(GAMEMODE); break;
+					case RESUME: host.handle(RESUME); break;
+					case RESTART: host.handle(RESTART); break;
 					case HOTKEY:	
 					case INTEGER:	disp[selected] = "";
 					case SELECTOR:	specialInput = true;
@@ -105,7 +110,7 @@ public class MenuSelector implements Controllable {
 	
 	private void newMenu(boolean down) {
 		if(down) {
-			menu = MenuItem.valueOf(menu.items[getSelection()]);
+			menu = Enum.valueOf(MenuItem.class, menu.items[getSelection()]);
 			setSelection(0);
 		}
 		else {
@@ -114,7 +119,7 @@ public class MenuSelector implements Controllable {
 			else if(menu == MenuItem.Theme) host.handle(UPDATE_THEME);
 			
 			String backward = menu.name();
-			menu = MenuItem.valueOf(menu.parent);
+			menu = Enum.valueOf(MenuItem.class, menu.parent);
 			setSelection(0);
 			for(int i = 0; i < numberOfItems(); i++)
 				if(backward.contentEquals(menu.items[i]))
@@ -123,7 +128,10 @@ public class MenuSelector implements Controllable {
 			if(menu == MenuItem.Settings && prefs != null) prefs.flush();
 		}
 		
-		if(menu == MenuItem.Main) main = true;
+		if(menu == MenuItem.Main) {
+			main = true;
+			host.handle(ENTER_MAIN_MENU);
+		}
 		else main = false;
 
 		vals = new int[numberOfItems()];
@@ -149,6 +157,11 @@ public class MenuSelector implements Controllable {
 		setSelection(getSelection() + m);
 		setSelection((getSelection() < 0) ? menu.items.length-1 : getSelection());
 		setSelection((getSelection() >= menu.items.length) ? 0 : getSelection());
+	}
+	
+	public void setMenu(MenuItem m) {
+		menu = m;
+		newMenu(false);
 	}
 	
 	private int getDefaultHotkey(int i) {

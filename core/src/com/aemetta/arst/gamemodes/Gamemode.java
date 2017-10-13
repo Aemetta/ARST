@@ -4,6 +4,7 @@ import com.aemetta.arst.Arst;
 import com.aemetta.arst.Wrapper;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.display.PlayerDisplay;
+import com.aemetta.arst.menu.Menu;
 import com.aemetta.arst.player.Player;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
@@ -59,7 +60,9 @@ public class Gamemode extends Wrapper {
 	
 	public boolean handle(Player p, int event) {
 		if(event==Player.FINISHED)
-			arst.newGame("menu");
+			arst.newGame((Wrapper)new Menu(arst));
+		if(event==Player.PAUSE)
+			arst.newGame((Wrapper)new Menu(arst, this));
 		return false;
 	}
 

@@ -31,7 +31,7 @@ public class Arst extends ApplicationAdapter {
 	Wrapper game;
 	Preferences prefs;
 	
-	public static int[] controls = new int[15];
+	public static int[] controls = new int[16];
 	public static String[] theme = new String[3];
 
 	final static public int MENU_LEFT = 0;
@@ -49,6 +49,7 @@ public class Arst extends ApplicationAdapter {
 	final static public int ROTATE_180 = 12;
 	final static public int HOLD = 13;
 	final static public int DEPLOY = 14;
+	final static public int PAUSE = 15;
 	
 	boolean debug = false;
 	
@@ -77,7 +78,16 @@ public class Arst extends ApplicationAdapter {
 		else if(gamemode.contentEquals("cheese")) game = new Cheese(this);
 		else if(gamemode.contentEquals("versus")) game = new Versus(this);
 		else game = new Menu(this);
-		
+
+		newGame();
+	}
+	
+	public void newGame(Wrapper wrapper) {
+		game = wrapper;
+		newGame();
+	}
+	
+	public void newGame() {
 		game.init(prefs);
 		
 		if(game.human2 != null)
@@ -183,6 +193,7 @@ public class Arst extends ApplicationAdapter {
 		controls[12] = prefs.getInteger("Rotate 180", Keys.C);
 		controls[13] = prefs.getInteger("Hold", Keys.SPACE);
 		controls[14] = prefs.getInteger("Deploy", Keys.V);
+		controls[15] = prefs.getInteger("Pause", Keys.ESCAPE);
 	}
 	
 	public void loadTheme() {

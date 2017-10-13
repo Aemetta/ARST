@@ -71,8 +71,10 @@ public enum MenuItem {
 					"Hard Drop",
 					"Soft Drop",
 					"Hold",
-					"Deploy"
+					"Deploy",
+					"Pause"
 			}, new int[] {
+					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
@@ -126,7 +128,17 @@ public enum MenuItem {
 					MenuSelector.SLIDER,
 					MenuSelector.SLIDER,
 					MenuSelector.SLIDER
-			}, "Settings");
+			}, "Settings"),
+	Pause(
+			new String[] {
+					"Resume",
+					"Restart",
+					"Main"
+			}, new int[] {
+					MenuSelector.RESUME,
+					MenuSelector.RESTART,
+					MenuSelector.SUBMENU
+			}, "Pause");
 	
 	public String parent;
 	public String[] items;
