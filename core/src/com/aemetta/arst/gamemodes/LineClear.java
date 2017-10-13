@@ -21,5 +21,10 @@ public class LineClear extends Gamemode {
 		players[0].hideScore();
 		players[0].hideLevels();
 	}
-
+	
+	public boolean handle(Player p, int event) {
+		if(event==Player.LEVEL_MAX)
+			p.hideLines();
+		return super.handle(p, event);
+	}
 }
