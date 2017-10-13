@@ -181,6 +181,10 @@ public class Player implements Controllable {
 		levelsVisible = false;
 	}
 	
+	public void hideLines() {
+		linesVisible = false;
+	}
+	
 	public boolean hasTimer() {
 		return timeVisible;
 	}
