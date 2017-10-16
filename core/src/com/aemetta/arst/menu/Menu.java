@@ -75,4 +75,9 @@ public class Menu extends Wrapper {
 	
 	public void act(float delta) {}
 	public void debug(int keycode) {}
+	
+	public void input(int player, int key, boolean pressed) {
+		if(player == 0)
+			ms.input(key, pressed);
+	}
 }

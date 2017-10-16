@@ -61,13 +61,19 @@ public class Gamemode extends Wrapper {
 	public boolean handle(Player p, int event) {
 		if(event==Player.FINISHED)
 			arst.newGame((Wrapper)new Menu(arst));
-		if(event==Player.PAUSE)
-			arst.newGame((Wrapper)new Menu(arst, this));
 		return false;
 	}
 
 	public void debug(int keycode) {
 		if(keycode == Keys.F2)
 			players[0].getLevelTracker().clearLines(5);
+	}
+
+	@Override
+	public void input(int player, int key, boolean pressed) {
+		if(player == 0 && key == Arst.PAUSE && pressed)
+			arst.newGame((Wrapper)new Menu(arst, this));
+		else if(player == 1 && human1 != null) human1.input(key, pressed);
+		else if(player == 2 && human2 != null) human2.input(key, pressed);
 	}
 }

@@ -20,7 +20,7 @@ public class MenuDisplay implements Display {
 	
 	private int scroll;
 	private int scope;
-	private int maxScope = 7;
+	private int maxScope = 10;
 	
 	public MenuDisplay(String p, MenuSelector ms, AssetManager manager) {
 		this.ms = ms;

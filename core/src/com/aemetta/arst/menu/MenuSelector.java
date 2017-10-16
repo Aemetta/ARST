@@ -55,7 +55,14 @@ public class MenuSelector implements Controllable {
 								activated = true;
 								vals[selected] = key;
 								disp[selected] = Keys.toString(key);
-								prefs.putInteger(menu.items[selected], vals[selected]);
+								String prefix;
+								switch(menu) {
+								case P1Controls: prefix = "Controls P1 "; break;
+								case P2Controls: prefix = "Controls P2 "; break;
+								case MenuControls: prefix = "Controls Menu "; break;
+								default: prefix = "";
+								}
+								prefs.putInteger(prefix + menu.items[selected], vals[selected]);
 								break;
 				case INTEGER:	if(key == Keys.ENTER) {
 									specialInput = false;
@@ -111,12 +118,15 @@ public class MenuSelector implements Controllable {
 	
 	private void newMenu(boolean down) {
 		if(down) {
-			menu = Enum.valueOf(MenuItem.class, menu.items[getSelection()]);
+			menu = Enum.valueOf(MenuItem.class, menu.items[getSelection()].replaceAll(" ", ""));
 			setSelection(0);
 		}
 		else {
 
-			if(menu == MenuItem.Controls) host.handle(UPDATE_CONTROLS);
+			if(menu == MenuItem.P1Controls ||
+						menu == MenuItem.P2Controls || 
+						menu == MenuItem.MenuControls)
+				host.handle(UPDATE_CONTROLS);
 			else if(menu == MenuItem.Theme) host.handle(UPDATE_THEME);
 			
 			String backward = menu.name();
@@ -144,7 +154,7 @@ public class MenuSelector implements Controllable {
 			case INTEGER: vals[i] = prefs.getInteger(menu.items[i], getDefaultIntegerSetting(i));
 						disp[i] = "" + vals[i]; break;
 			case SELECTOR: disp[i] = prefs.getString(menu.items[i], getDefaultTheme(i)); break;
-			case HOTKEY: vals[i] = prefs.getInteger(menu.items[i], getDefaultHotkey(i)); 
+			case HOTKEY: vals[i] = prefs.getInteger(getNormalHotkey(i), getDefaultHotkey(i)); 
 						disp[i] = Keys.toString(vals[i]); break;
 			
 			default: setting[i] = false; 
@@ -165,8 +175,22 @@ public class MenuSelector implements Controllable {
 		newMenu(false);
 	}
 	
+	private String getNormalHotkey(int i) {
+		switch(menu) {
+		case P1Controls: return "Controls P1 " + menu.items[i];
+		case P2Controls: return "Controls P2 " + menu.items[i];
+		case MenuControls: return "Controls Menu " + menu.items[i];
+		default: return null;
+		}
+	}
+	
 	private int getDefaultHotkey(int i) {
-		return Arst.controls[i];
+		switch(menu) {
+		case P1Controls: return Arst.p1controls[i];
+		case P2Controls: return Arst.p2controls[i];
+		case MenuControls: return Arst.menucontrols[i];
+		default: return 0;
+		}
 	}
 	
 	private String getDefaultTheme(int i) {

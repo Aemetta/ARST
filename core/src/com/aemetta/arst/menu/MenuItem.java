@@ -44,7 +44,9 @@ public enum MenuItem {
 	Settings(
 			new String[] {
 					"Test",
-					"Controls",
+					"P1 Controls",
+					"P2 Controls",
+					"Menu Controls",
 					"Tuning",
 					"Theme",
 					"Audio"
@@ -53,16 +55,12 @@ public enum MenuItem {
 					MenuSelector.SUBMENU,
 					MenuSelector.SUBMENU,
 					MenuSelector.SUBMENU,
+					MenuSelector.SUBMENU,
+					MenuSelector.SUBMENU,
 					MenuSelector.SUBMENU
 			}, "Main"),
-	Controls(
+	P1Controls(
 			new String[] {
-					"Menu Left",
-					"Menu Right",
-					"Menu Up",
-					"Menu Down",
-					"Menu Select",
-					"Menu Back",
 					"Left",
 					"Right",
 					"Rotate Left",
@@ -71,8 +69,7 @@ public enum MenuItem {
 					"Hard Drop",
 					"Soft Drop",
 					"Hold",
-					"Deploy",
-					"Pause"
+					"Deploy"
 			}, new int[] {
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
@@ -82,7 +79,40 @@ public enum MenuItem {
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY
+			}, "Settings"),
+	P2Controls(
+			new String[] {
+					"Left",
+					"Right",
+					"Rotate Left",
+					"Rotate Right",
+					"Rotate 180",
+					"Hard Drop",
+					"Soft Drop",
+					"Hold",
+					"Deploy"
+			}, new int[] {
 					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY,
+					MenuSelector.HOTKEY
+			}, "Settings"),
+	MenuControls(
+			new String[] {
+					"Left",
+					"Right",
+					"Up",
+					"Down",
+					"Select",
+					"Back",
+					"Pause"
+			}, new int[] {
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,
 					MenuSelector.HOTKEY,

@@ -38,7 +38,6 @@ public class Player implements Controllable {
 	final static public int TOP_OUT = 100;
 	final static public int TIME_UP = 101;
 	final static public int LEVEL_MAX = 102;
-	final static public int PAUSE = 103;
 	final static public int LEVEL_UP = 200;
 	final static public int PERFECT_CLEAR = 201;
 	
@@ -134,8 +133,6 @@ public class Player implements Controllable {
 			if(key == Arst.LEFT) shiftDir = 0;
 			if(key == Arst.RIGHT) shiftDir = 0;
 			if(key == Arst.SOFT_DROP) dropping = false;
-
-			if(key == Arst.PAUSE) handle(PAUSE);
 		}
 	}
 	

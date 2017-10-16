@@ -1,6 +1,5 @@
 package com.aemetta.arst;
 
-import com.aemetta.arst.display.CursorPos;
 import com.aemetta.arst.display.Display;
 import com.aemetta.arst.gamemodes.Cheese;
 import com.aemetta.arst.gamemodes.LineClear;
@@ -17,10 +16,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.PovDirection;
 
 public class Arst extends ApplicationAdapter {
 	
@@ -31,7 +26,9 @@ public class Arst extends ApplicationAdapter {
 	Wrapper game;
 	Preferences prefs;
 	
-	public static int[] controls = new int[16];
+	public static int[] p1controls = new int[9];
+	public static int[] p2controls = new int[9];
+	public static int[] menucontrols = new int[9];
 	public static String[] theme = new String[3];
 
 	final static public int MENU_LEFT = 0;
@@ -40,16 +37,23 @@ public class Arst extends ApplicationAdapter {
 	final static public int MENU_DOWN = 3;
 	final static public int MENU_SELECT = 4;
 	final static public int MENU_BACK = 5;
-	final static public int LEFT = 6;
-	final static public int RIGHT = 7;
-	final static public int HARD_DROP = 8;
-	final static public int SOFT_DROP = 9;
-	final static public int ROTATE_LEFT = 10;
-	final static public int ROTATE_RIGHT = 11;
-	final static public int ROTATE_180 = 12;
-	final static public int HOLD = 13;
-	final static public int DEPLOY = 14;
-	final static public int PAUSE = 15;
+	final static public int MENU_PAUSE = 6;
+	
+	final static public int LEFT = 0;
+	final static public int RIGHT = 1;
+	final static public int UP = 2;
+	final static public int DOWN = 3;
+	final static public int SELECT = 4;
+	final static public int BACK = 5;
+	final static public int PAUSE = 6;
+	
+	final static public int HARD_DROP = 2;
+	final static public int SOFT_DROP = 3;
+	final static public int ROTATE_LEFT = 4;
+	final static public int ROTATE_RIGHT = 5;
+	final static public int ROTATE_180 = 6;
+	final static public int HOLD = 7;
+	final static public int DEPLOY = 8;
 	
 	boolean debug = false;
 	
@@ -89,71 +93,49 @@ public class Arst extends ApplicationAdapter {
 	
 	public void newGame() {
 		game.init(prefs);
-		
-		if(game.human2 != null)
-			Controllers.addListener(new ControllerAdapter () {
-				@Override
-				public boolean buttonDown(Controller controller, int buttonCode) {
-					if(buttonCode == 0) game.human2.input(ROTATE_LEFT, true);
-					if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, true);
-					if(buttonCode == 4) game.human2.input(HOLD, true);
-					if(buttonCode == 5) game.human2.input(HOLD, true);
-					return true;
-				}
-				@Override
-				public boolean buttonUp(Controller controller, int buttonCode) {
-					if(buttonCode == 0) game.human2.input(ROTATE_LEFT, false);
-					if(buttonCode == 1) game.human2.input(ROTATE_RIGHT, false);
-					if(buttonCode == 4) game.human2.input(HOLD, false);
-					if(buttonCode == 5) game.human2.input(HOLD, false);
-					return true;
-				}
-				@Override
-				public boolean axisMoved(Controller controller, int axisCode, float value) {
-					return true;
-				}
-				@Override
-				public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-					if(value == PovDirection.east) game.human2.input(RIGHT, true);
-					if(value == PovDirection.west) game.human2.input(LEFT, true);
-					if(value == PovDirection.north) game.human2.input(HARD_DROP, true);
-					if(value == PovDirection.south) game.human2.input(SOFT_DROP, true);
-					if(value == PovDirection.center) {
-						game.human2.input(LEFT, false);
-						game.human2.input(RIGHT, false);
-						game.human2.input(SOFT_DROP, false);
-						
-					}
-					return true;
-				}
-				
-			});
 			
-			if(game.human1 != null)
 			Gdx.input.setInputProcessor(new InputAdapter () {
 				
 				public boolean keyDown (int keycode) {
 					
-					if(game.human1.isRawInput())
+					//Debug hotkeys
+					if(debug) game.debug(keycode);
+					
+					if(game.human1 != null && game.human1.isRawInput()) {
 						game.human1.input(keycode, true);
-					else {
-						//Debug hotkeys
-						if(debug) game.debug(keycode);
-						
-						for(int i = 0; i < controls.length; i++)
-							if(keycode == controls[i]) {
-								game.human1.input(i, true);
-							}
+						return true;
 					}
+					
+					for(int i = 0; i < menucontrols.length; i++)
+						if(keycode == menucontrols[i]) {
+							game.input(0, i, true);
+						}
+					for(int i = 0; i < p1controls.length; i++)
+						if(keycode == p1controls[i]) {
+							game.input(1, i, true);
+						}
+					for(int i = 0; i < p2controls.length; i++)
+						if(keycode == p2controls[i]) {
+							game.input(2, i, true);
+						}
 					
 					return true;
 				}
 
 				public boolean keyUp (int keycode) {
-						
-					for(int i = 0; i < controls.length; i++)
-						if(keycode == controls[i]) {
-							game.human1.input(i, false);
+					
+
+					for(int i = 0; i < menucontrols.length; i++)
+						if(keycode == menucontrols[i]) {
+							game.input(0, i, false);
+						}
+					for(int i = 0; i < p1controls.length; i++)
+						if(keycode == p1controls[i]) {
+							game.input(1, i, false);
+						}
+					for(int i = 0; i < p2controls.length; i++)
+						if(keycode == p2controls[i]) {
+							game.input(2, i, false);
 						}
 					
 					return true;
@@ -178,22 +160,33 @@ public class Arst extends ApplicationAdapter {
 	}
 	
 	public void loadControls() {
-		controls[0] = prefs.getInteger("Menu Left", Keys.LEFT);
-		controls[1] = prefs.getInteger("Menu Right", Keys.RIGHT);
-		controls[2] = prefs.getInteger("Menu Up", Keys.UP);
-		controls[3] = prefs.getInteger("Menu Down", Keys.DOWN);
-		controls[4] = prefs.getInteger("Menu Select", Keys.ENTER);
-		controls[5] = prefs.getInteger("Menu Back", Keys.ESCAPE);
-		controls[6] = prefs.getInteger("Left", Keys.LEFT);
-		controls[7] = prefs.getInteger("Right", Keys.RIGHT);
-		controls[8] = prefs.getInteger("Hard Drop", Keys.UP);
-		controls[9] = prefs.getInteger("Soft Drop", Keys.DOWN);
-		controls[10] = prefs.getInteger("Rotate Left", Keys.Z);
-		controls[11] = prefs.getInteger("Rotate Right", Keys.X);
-		controls[12] = prefs.getInteger("Rotate 180", Keys.C);
-		controls[13] = prefs.getInteger("Hold", Keys.SPACE);
-		controls[14] = prefs.getInteger("Deploy", Keys.V);
-		controls[15] = prefs.getInteger("Pause", Keys.ESCAPE);
+		menucontrols[0] = prefs.getInteger("Controls Menu Left", Keys.LEFT);
+		menucontrols[1] = prefs.getInteger("Controls Menu Right", Keys.RIGHT);
+		menucontrols[2] = prefs.getInteger("Controls Menu Up", Keys.UP);
+		menucontrols[3] = prefs.getInteger("Controls Menu Down", Keys.DOWN);
+		menucontrols[4] = prefs.getInteger("Controls Menu Select", Keys.ENTER);
+		menucontrols[5] = prefs.getInteger("Controls Menu Back", Keys.ESCAPE);
+		menucontrols[6] = prefs.getInteger("Controls Pause", Keys.ESCAPE);
+		
+		p1controls[0] = prefs.getInteger("Controls P1 Left", Keys.LEFT);
+		p1controls[1] = prefs.getInteger("Controls P1 Right", Keys.RIGHT);
+		p1controls[2] = prefs.getInteger("Controls P1 Hard Drop", Keys.UP);
+		p1controls[3] = prefs.getInteger("Controls P1 Soft Drop", Keys.DOWN);
+		p1controls[4] = prefs.getInteger("Controls P1 Rotate Left", Keys.Z);
+		p1controls[5] = prefs.getInteger("Controls P1 Rotate Right", Keys.X);
+		p1controls[6] = prefs.getInteger("Controls P1 Rotate 180", Keys.C);
+		p1controls[7] = prefs.getInteger("Controls P1 Hold", Keys.SPACE);
+		p1controls[8] = prefs.getInteger("Controls P1 Deploy", Keys.V);
+		
+		p2controls[0] = prefs.getInteger("Controls P2 Left", Keys.DPAD_LEFT);
+		p2controls[1] = prefs.getInteger("Controls P2 Right", Keys.DPAD_RIGHT);
+		p2controls[2] = prefs.getInteger("Controls P2 Hard Drop", Keys.DPAD_UP);
+		p2controls[3] = prefs.getInteger("Controls P2 Soft Drop", Keys.DPAD_DOWN);
+		p2controls[4] = prefs.getInteger("Controls P2 Rotate Left", Keys.BUTTON_A);
+		p2controls[5] = prefs.getInteger("Controls P2 Rotate Right", Keys.BUTTON_B);
+		p2controls[6] = prefs.getInteger("Controls P2 Rotate 180", Keys.BUTTON_Y);
+		p2controls[7] = prefs.getInteger("Controls P2 Hold", Keys.BUTTON_R1);
+		p2controls[8] = prefs.getInteger("Controls P2 Deploy", Keys.BUTTON_L1);
 	}
 	
 	public void loadTheme() {
