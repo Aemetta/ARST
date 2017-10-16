@@ -1,6 +1,8 @@
 package com.aemetta.arst.gamemodes;
 
 import com.aemetta.arst.Arst;
+import com.aemetta.arst.player.Garbage;
+import com.aemetta.arst.player.Matrix;
 import com.aemetta.arst.player.Player;
 import com.aemetta.arst.player.Timer;
 
@@ -8,22 +10,25 @@ public class Cheese extends Gamemode {
 	
 	public Cheese(Arst arst) {
 		super(arst);
+		long seed = Double.doubleToLongBits(Math.random());
+		
+		Matrix m = new Matrix();
+		Garbage g = new Garbage(m, seed);
+		
+		for(int i = 0; i < 10; i++)
+			g.add(1);
+		
+		g.fill();
+		m.smooth(0, 9);
+		m.recolor(2, 0, 0, m.getWidth(), 10);
 		
 		players = new Player[1];
 		
-		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(this, seed);
+		players[0] = new Player(this, seed, m);
 		human1 = players[0];
 
 		players[0].setTimer(new Timer(0));
 		players[0].hideScore();
-		
-		for(int i = 0; i < 10; i++)
-			players[0].garbage.add(1);
-		
-		players[0].garbage.fill();
-		players[0].matrix.smooth(0, 9);
-		players[0].matrix.recolor(2, 0, 0, players[0].matrix.getWidth(), 10);
 	}
 
 }
