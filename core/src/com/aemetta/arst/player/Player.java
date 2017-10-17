@@ -95,7 +95,10 @@ public class Player implements Controllable {
 	}
 	
 	public void input(int key, boolean pressed){
-		if(gameover) return;
+		if(gameover) {
+			if(pressed) handle(FINISHED);
+			return;
+			}
 		if(pressed){
 			if(key == Arst.LEFT){
 				piece.shift(-1, 0, 0);
