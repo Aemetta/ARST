@@ -1,6 +1,5 @@
 package com.aemetta.arst.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.aemetta.arst.Arst;
 import com.aemetta.arst.Controllable;
