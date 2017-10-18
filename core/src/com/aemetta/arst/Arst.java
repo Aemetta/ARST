@@ -7,6 +7,7 @@ import com.aemetta.arst.gamemodes.Marathon;
 import com.aemetta.arst.gamemodes.Ultra;
 import com.aemetta.arst.gamemodes.Versus;
 import com.aemetta.arst.menu.Menu;
+import com.aemetta.arst.menu.MenuLayout;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -65,6 +66,13 @@ public class Arst extends ApplicationAdapter {
 		
 		prefs = Gdx.app.getPreferences("arst");
 		debug = prefs.getBoolean("Debug Mode", false);
+		
+		MenuLayout.P1Controls.init(prefs);
+		MenuLayout.P2Controls.init(prefs);
+		MenuLayout.MenuControls.init(prefs);
+		MenuLayout.Tuning.init(prefs);
+		MenuLayout.Theme.init(prefs);
+		MenuLayout.Audio.init(prefs);
 		
 		loadControls();
 		loadTheme();

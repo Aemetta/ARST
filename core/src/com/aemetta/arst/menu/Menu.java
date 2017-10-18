@@ -28,7 +28,7 @@ public class Menu extends Wrapper {
 		ms = new MenuSelector(this);
 		human1 = ms;
 		
-		ms.setMenu(MenuItem.Pause);
+		ms.setMenu(MenuLayout.Pause);
 		this.game = game;
 	}
 
@@ -59,7 +59,8 @@ public class Menu extends Wrapper {
 	public boolean handle(int event) {
 		switch(event) {
 		case MenuSelector.QUIT: Gdx.app.exit(); break;
-		case MenuSelector.GAMEMODE: arst.newGame(ms.getItem(ms.getSelection()).toLowerCase()); break;
+		case MenuSelector.GAMEMODE: arst.newGame(ms.getItem(ms.getSelection())
+				.getColumn(1).toLowerCase()); break;
 		case MenuSelector.RESUME: arst.newGame((Wrapper)game);
 		case MenuSelector.RESTART: arst.newGame(game.getClass().getName()
 				.toLowerCase().replaceFirst("com.aemetta.arst.gamemodes.", ""));

@@ -1,34 +1,23 @@
 package com.aemetta.arst.menu;
 
-import com.badlogic.gdx.Input.Keys;
 import com.aemetta.arst.Arst;
 import com.aemetta.arst.Controllable;
 import com.badlogic.gdx.Preferences;
 
 public class MenuSelector implements Controllable {
 	
-	private Menu host;
+	Menu host;
 	
-	private MenuItem menu;
-	private int selected;
-	private boolean activated;
-	private boolean main;
-	
-	private boolean[] setting;
-	int[] vals;
-	String[] disp;
+	MenuLayout menu;
+	boolean activated;
+	boolean main;
 	
 	boolean specialInput;
 	
 	Preferences prefs;
 	
 	public static final int QUIT = 0;
-	public static final int SUBMENU = 1;
-	public static final int GAMEMODE = 2;
-	public static final int INTEGER = 3;
-	public static final int SELECTOR = 4;
-	public static final int SLIDER = 5;
-	public static final int HOTKEY = 6;
+	public static final int GAMEMODE = 1;
 	public static final int ABOUT = 7;
 	public static final int RESUME = 8;
 	public static final int RESTART = 9;
@@ -42,125 +31,44 @@ public class MenuSelector implements Controllable {
 		this.host = menu;
 		setActivated(true);
 		
-		this.menu = MenuItem.Main;
-		newMenu(false);
+		newMenu(MenuLayout.Main);
 	}
 	
 	public void input(int key, boolean pressed) {
 		if(pressed) {
-			if(specialInput) {
-				switch(menu.type[getSelection()]) {
-				case HOTKEY:	specialInput = false;
-								activated = true;
-								vals[selected] = key;
-								disp[selected] = Keys.toString(key);
-								String prefix;
-								switch(menu) {
-								case P1Controls: prefix = "Controls P1 "; break;
-								case P2Controls: prefix = "Controls P2 "; break;
-								case MenuControls: prefix = "Controls Menu "; break;
-								default: prefix = "";
-								}
-								prefs.putInteger(prefix + menu.items[selected], vals[selected]);
-								break;
-				case INTEGER:	if(key == Keys.ENTER) {
-									specialInput = false;
-									activated = true;
-									try { vals[selected] = 
-											Integer.parseInt(disp[selected]); }
-									catch(Exception e) { vals[selected] = 0; }
-									disp[selected] = "" + vals[selected];
-									prefs.putInteger(menu.items[selected], vals[selected]);
-								} else if(key == Keys.BACKSPACE && !disp[selected].contentEquals(""))
-									disp[selected] = disp[selected]
-											.substring(0, disp[selected].length()-1);
-								else if(key >= Keys.NUM_0 && key <= Keys.NUM_9)
-									disp[selected] += Keys.toString(key);
-				case SELECTOR:	if(key == Keys.ENTER) {
-									specialInput = false;
-									activated = true;
-									disp[selected] = disp[selected].toLowerCase();
-									prefs.putString(menu.items[selected], disp[selected]);
-								} else if(key == Keys.BACKSPACE && !disp[selected].contentEquals(""))
-									disp[selected] = disp[selected]
-											.substring(0, disp[selected].length()-1);
-								else if(Keys.toString(key).length() == 1)
-										disp[selected] += Keys.toString(key);
-				}
-			} else {
+			if(specialInput && currentItem() instanceof SettingItem)
+				((SettingItem)currentItem()).input(this, key);
+			else {
 				if(key == Arst.MENU_UP) move(-1);
 				else if(key == Arst.MENU_DOWN) move(1);
-				else if(key == Arst.MENU_SELECT) {
-					switch(menu.type[getSelection()]) {
-					case QUIT: host.handle(QUIT); break;
-					case SUBMENU: newMenu(true); break;
-					case GAMEMODE: host.handle(GAMEMODE); break;
-					case RESUME: host.handle(RESUME); break;
-					case RESTART: host.handle(RESTART); break;
-					case HOTKEY:	
-					case INTEGER:	disp[selected] = "";
-					case SELECTOR:	specialInput = true;
-									activated = false;
-									break;
-					};}
-				else if(key == Arst.MENU_BACK) newMenu(false);
-				else if(key == Arst.MENU_LEFT || key == Arst.MENU_RIGHT) {
-					if(menu.type[getSelection()] == INTEGER) {
-						vals[selected] += (key == Arst.MENU_LEFT) ? -5 : 5;
-						disp[selected] = "" + vals[selected];
-						prefs.putInteger(menu.items[selected], vals[selected]);
-					}
-				}
+				else if(key == Arst.MENU_SELECT) currentItem().select(this);
+				else if(key == Arst.MENU_BACK) newMenu(Enum.valueOf(MenuLayout.class, menu.parent));
+				else if(key == Arst.MENU_LEFT) currentItem().turn(this, false);
+				else if(key == Arst.MENU_RIGHT) currentItem().turn(this, true);
 			}
 		}
 	}
 	
-	private void newMenu(boolean down) {
-		if(down) {
-			menu = Enum.valueOf(MenuItem.class, menu.items[getSelection()].replaceAll(" ", ""));
-			setSelection(0);
-		}
-		else {
-
-			if(menu == MenuItem.P1Controls ||
-						menu == MenuItem.P2Controls || 
-						menu == MenuItem.MenuControls)
-				host.handle(UPDATE_CONTROLS);
-			else if(menu == MenuItem.Theme) host.handle(UPDATE_THEME);
-			
-			String backward = menu.name();
-			menu = Enum.valueOf(MenuItem.class, menu.parent);
-			setSelection(0);
-			for(int i = 0; i < numberOfItems(); i++)
-				if(backward.contentEquals(menu.items[i]))
-					setSelection(i);
-			
-			if(menu == MenuItem.Settings && prefs != null) prefs.flush();
-		}
+	void newMenu(MenuLayout link) {
 		
-		if(menu == MenuItem.Main) {
+		if(menu == MenuLayout.P1Controls ||
+					menu == MenuLayout.P2Controls || 
+					menu == MenuLayout.MenuControls)
+			host.handle(UPDATE_CONTROLS);
+		else if(menu == MenuLayout.Theme) host.handle(UPDATE_THEME);
+		
+		menu = link;
+		
+		if(link == MenuLayout.Settings && prefs != null) prefs.flush();
+			
+		
+		if(menu == MenuLayout.Main) {
 			main = true;
 			host.handle(ENTER_MAIN_MENU);
 		}
 		else main = false;
 
-		vals = new int[numberOfItems()];
-		disp = new String[numberOfItems()];
-		setting = new boolean[numberOfItems()];
-		for(int i = 0; i < numberOfItems(); i++) {
-			setting[i] = true;
-			switch(menu.type[i]){
-			case INTEGER: vals[i] = prefs.getInteger(menu.items[i], getDefaultIntegerSetting(i));
-						disp[i] = "" + vals[i]; break;
-			case SELECTOR: disp[i] = prefs.getString(menu.items[i], getDefaultTheme(i)); break;
-			case HOTKEY: vals[i] = prefs.getInteger(getNormalHotkey(i), getDefaultHotkey(i)); 
-						disp[i] = Keys.toString(vals[i]); break;
-			
-			default: setting[i] = false; 
-					disp[i] = "";
-					break;
-			}
-		}
+		if(!menu.initialized && prefs != null) menu.init(prefs);
 	}
 	
 	private void move(int m) {
@@ -169,45 +77,16 @@ public class MenuSelector implements Controllable {
 		setSelection((getSelection() >= menu.items.length) ? 0 : getSelection());
 	}
 	
-	public void setMenu(MenuItem m) {
-		menu = m;
-		newMenu(false);
-	}
-	
-	private String getNormalHotkey(int i) {
-		switch(menu) {
-		case P1Controls: return "Controls P1 " + menu.items[i];
-		case P2Controls: return "Controls P2 " + menu.items[i];
-		case MenuControls: return "Controls Menu " + menu.items[i];
-		default: return null;
-		}
-	}
-	
-	private int getDefaultHotkey(int i) {
-		switch(menu) {
-		case P1Controls: return Arst.p1controls[i];
-		case P2Controls: return Arst.p2controls[i];
-		case MenuControls: return Arst.menucontrols[i];
-		default: return 0;
-		}
-	}
-	
-	private String getDefaultTheme(int i) {
-		return Arst.theme[i];
-	}
-	
-	private int getDefaultIntegerSetting(int i) {
-		if(menu.items[i] == "P1 DAS") return 200;
-		else if(menu.items[i] == "P2 DAS") return 200;
-		else if(menu.items[i] == "P1 ARR") return 80;
-		else if(menu.items[i] == "P2 ARR") return 80;
-		else if(menu.items[i] == "P1 Drop") return 50;
-		else if(menu.items[i] == "P2 Drop") return 50;
-		else return 0;
+	public void setMenu(MenuLayout m) {
+		newMenu(m);
 	}
 	
 	public void setPrefs(Preferences prefs) {
 		this.prefs = prefs;
+	}
+	
+	Item currentItem() {
+		return menu.items[menu.selected];
 	}
 
 	/**
@@ -220,7 +99,7 @@ public class MenuSelector implements Controllable {
 	/**
 	 * @return The items in the menu
 	 */
-	public String getItem(int i) {
+	public Item getItem(int i) {
 		return menu.items[i];
 	}
 	
@@ -235,14 +114,14 @@ public class MenuSelector implements Controllable {
 	 * @return The text item that's selected
 	 */
 	public int getSelection() {
-		return selected;
+		return menu.selected;
 	}
 
 	/**
 	 * @param selected The text item that's selected
 	 */
 	public void setSelection(int selected) {
-		this.selected = selected;
+		menu.selected = selected;
 	}
 
 	/**
@@ -263,15 +142,15 @@ public class MenuSelector implements Controllable {
 	 * @return the setting
 	 */
 	public boolean isSetting(int i) {
-		return setting[i];
-	}
-	
-	public String getSetting(int i) {
-		return disp[i];
+		return menu.items[i] instanceof SettingItem;
 	}
 
 	@Override
 	public boolean isRawInput() {
 		return specialInput;
+	}
+	
+	public int numColumns(int i) {
+		return menu.items[i].column.length;
 	}
 }

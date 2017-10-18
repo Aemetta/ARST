@@ -55,25 +55,25 @@ public class MenuDisplay implements Display {
 		
 		for(int i = scroll; i < scope+scroll; i++) {
 			if(i==sel && ms.isActivated()) continue;
-			drawText(batch, font, i, ms.isMainMenu(), ms.isSetting(i));
+			drawText(batch, font, i, ms.isMainMenu(), ms.numColumns(i));
 		}
 		if(ms.isActivated())
 			drawText(batch, select, sel,
-					ms.isMainMenu(), ms.isSetting(sel));
+					ms.isMainMenu(), ms.numColumns(sel));
 	}
 	
-	private void drawText(Batch batch, BitmapFont f, int i, boolean main, boolean setting){
-		if(setting) {
-			f.draw(batch, ms.getItem(i).toLowerCase(),
-				-250, -50*((main) ? i-scroll : i-scroll-scope/2),
-				500, -1, false);
-			f.draw(batch, ms.getSetting(i).toLowerCase(),
-					-250, -50*((main) ? i-scroll : i-scroll-scope/2),
-					500, 2, false);
-		} else {
-			f.draw(batch, ms.getItem(i).toLowerCase(),
-					-100, -50*((main) ? i-scroll : i-scroll-scope/2),
-					200, 1, false);
+	private void drawText(Batch batch, BitmapFont f, int i, boolean main, int columns){
+		for(int j = 0; j < columns; j++) {
+			f.draw(batch, 
+					ms.getItem(i)
+					.getColumn(j)
+					.toLowerCase(),
+				-250, -50*((main) ? i-scroll : i-scroll-scope/2), 500, 
+				(columns == 1) ? 1 :
+				(columns == 2) ? (j == 0) ? -1 : 0 :
+				(columns == 3) ? (j == 0) ? -1 : (j == 1) ? 1 : 0 :
+					0,
+				false);
 		}
 	}
 
