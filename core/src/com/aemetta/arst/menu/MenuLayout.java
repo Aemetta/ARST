@@ -84,7 +84,7 @@ public enum MenuLayout {
 			}, "Settings"),
 	Theme(
 			new Item[] {
-					new SettingTextEntry("Menu", "menu"),
+					new SettingTextEntry("Menu", "default"),
 					new SettingTextEntry("Playfield", "purple-20"),
 					new SettingTextEntry("Minos", "candy-20")
 			}, "Settings"),
