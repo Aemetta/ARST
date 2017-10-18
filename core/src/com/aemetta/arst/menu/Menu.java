@@ -74,7 +74,10 @@ public class Menu extends Wrapper {
 		return true;
 	}
 	
-	public void act(float delta) {}
+	public void act(float delta) {
+		ms.act(delta);
+	}
+	
 	public void debug(int keycode) {}
 	
 	public void input(int player, int key, boolean pressed) {

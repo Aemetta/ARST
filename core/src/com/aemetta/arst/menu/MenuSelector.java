@@ -14,6 +14,14 @@ public class MenuSelector implements Controllable {
 	
 	boolean specialInput;
 	
+	float autoRepeat;
+	boolean moving;
+	boolean movingDirection;
+	boolean movingSideways;
+	
+	int DAS = 200;
+	int ARR = 80;
+	
 	Preferences prefs;
 	
 	public static final int QUIT = 0;
@@ -35,17 +43,41 @@ public class MenuSelector implements Controllable {
 	}
 	
 	public void input(int key, boolean pressed) {
-		if(pressed) {
-			if(specialInput && currentItem() instanceof SettingItem)
-				((SettingItem)currentItem()).input(this, key);
-			else {
-				if(key == Arst.MENU_UP) move(-1);
-				else if(key == Arst.MENU_DOWN) move(1);
-				else if(key == Arst.MENU_SELECT) currentItem().select(this);
-				else if(key == Arst.MENU_BACK) newMenu(Enum.valueOf(MenuLayout.class, menu.parent));
-				else if(key == Arst.MENU_LEFT) currentItem().turn(this, false);
-				else if(key == Arst.MENU_RIGHT) currentItem().turn(this, true);
-			}
+		if(!pressed) {
+			moving = false;
+			return;
+		}
+		
+		if(specialInput && currentItem() instanceof SettingItem) {
+			((SettingItem)currentItem()).input(this, key);
+			return;
+		}
+
+		if(key == Arst.MENU_LEFT) { currentItem().turn(this, false);
+			movingDirection = false; movingSideways = true;
+			moving = true; autoRepeat = (float)DAS / 1000;}
+		else if(key == Arst.MENU_RIGHT) { currentItem().turn(this, true);
+			movingDirection = true; movingSideways = true;
+			moving = true; autoRepeat = (float)DAS / 1000;}
+		else if(key == Arst.MENU_UP) { move(-1);
+			movingDirection = false; movingSideways = false;
+			moving = true; autoRepeat = (float)DAS / 1000;}
+		else if(key == Arst.MENU_DOWN) { move(1);
+			movingDirection = true; movingSideways = false;
+			moving = true; autoRepeat = (float)DAS / 1000;}
+		else if(key == Arst.MENU_SELECT) currentItem().select(this);
+		else if(key == Arst.MENU_BACK) newMenu(Enum.valueOf(MenuLayout.class, menu.parent));
+	}
+
+	public void act(float delta) {
+		if(!moving) return;
+		autoRepeat -= delta;
+		if(autoRepeat <= 0) {
+			autoRepeat += (float)ARR / 1000;
+			if(movingSideways)
+				currentItem().turn(this, movingDirection);
+			else
+				move((movingDirection) ? 1 : -1);
 		}
 	}
 	
