@@ -60,11 +60,11 @@ public class Menu extends Wrapper {
 		switch(event) {
 		case MenuSelector.QUIT: Gdx.app.exit(); break;
 		case MenuSelector.GAMEMODE: arst.newGame(ms.getItem(ms.getSelection())
-				.getColumn(1).toLowerCase()); break;
-		case MenuSelector.RESUME: arst.newGame((Wrapper)game);
+				.getColumn(0).toLowerCase()); break;
+		case MenuSelector.RESUME: if(game != null) arst.setGame((Wrapper)game); break;
 		case MenuSelector.RESTART: arst.newGame(game.getClass().getName()
 				.toLowerCase().replaceFirst("com.aemetta.arst.gamemodes.", ""));
-		case MenuSelector.ENTER_MAIN_MENU: game = null;
+		case MenuSelector.ENTER_MAIN_MENU: game = null; break;
 		case MenuSelector.UPDATE_CONTROLS: arst.loadControls(); break;
 		case MenuSelector.UPDATE_THEME: arst.loadTheme();
 										loadDisplay();

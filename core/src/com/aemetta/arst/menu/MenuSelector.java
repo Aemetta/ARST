@@ -67,6 +67,7 @@ public class MenuSelector implements Controllable {
 			moving = true; autoRepeat = (float)DAS / 1000;}
 		else if(key == Arst.MENU_SELECT) currentItem().select(this);
 		else if(key == Arst.MENU_BACK) newMenu(Enum.valueOf(MenuLayout.class, menu.parent));
+		else if(key == Arst.PAUSE) host.handle(RESUME);
 	}
 
 	public void act(float delta) {

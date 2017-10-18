@@ -167,6 +167,10 @@ public class Arst extends ApplicationAdapter {
 				});
 	}
 	
+	public void setGame(Wrapper wrapper) {
+		game = wrapper;
+	}
+	
 	public void loadControls() {
 		menucontrols[0] = prefs.getInteger("Controls Menu Left", Keys.LEFT);
 		menucontrols[1] = prefs.getInteger("Controls Menu Right", Keys.RIGHT);
