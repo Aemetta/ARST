@@ -8,7 +8,7 @@ public enum MenuLayout {
 			new Item[] {
 					new ItemSubmenu("Singleplayer"),
 					new ItemSubmenu("Hotseat"),
-					new ItemSubmenu("Network"),
+					new ItemSubmenu("High Scores"),
 					new ItemSubmenu("Settings"),
 					new ItemFunction("About", MenuSelector.ABOUT),
 					new ItemFunction("Quit", MenuSelector.QUIT)
@@ -24,13 +24,13 @@ public enum MenuLayout {
 			new Item[] {
 					new ItemGamemode("Versus")
 			}, "Main"),
-	Network(
+	HighScores(
 			new Item[] {
 					new ItemFunction("lol not yet", MenuSelector.ABOUT)
 			}, "Main"),
 	Settings(
 			new Item[] {
-					new ItemGamemode("Test"),
+					new SettingTextEntry("Name", "Anon"),
 					new ItemSubmenu("P1 Controls"),
 					new ItemSubmenu("P2 Controls"),
 					new ItemSubmenu("Menu Controls"),
@@ -76,23 +76,24 @@ public enum MenuLayout {
 			new Item[] {
 					new ItemGamemode("Test"),
 					new SettingInteger("P1 DAS", 200),
-					new SettingInteger("P1 ARR", 80),
-					new SettingInteger("P1 Drop", 50),
+					new SettingInteger("P1 ARR", 80, 0, 500),
+					new SettingInteger("P1 Drop", 50, 0, 500),
 					new SettingInteger("P2 DAS", 200),
-					new SettingInteger("P2 ARR", 80),
-					new SettingInteger("P2 Drop", 50)
+					new SettingInteger("P2 ARR", 80, 0, 500),
+					new SettingInteger("P2 Drop", 50, 0, 500)
 			}, "Settings"),
 	Theme(
 			new Item[] {
-					new SettingTextEntry("Menu", "default"),
-					new SettingTextEntry("Playfield", "purple-20"),
-					new SettingTextEntry("Minos", "candy-20")
+					new SettingDirectorySelector("Menu", "default", "Menus"),
+					new SettingDirectorySelector("Playfield", "purple-20", "Playfields"),
+					new SettingDirectorySelector("Minos", "candy-20", "Minos"),
+					new SettingDirectorySelector("Background", "aemetta", "Backgrounds")
 			}, "Settings"),
 	Audio(
 			new Item[] {
-					new SettingInteger("Master", 100),
-					new SettingInteger("SFX", 100),
-					new SettingInteger("Music", 100)
+					new SettingInteger("Master", 100, 0, 100),
+					new SettingInteger("SFX", 100, 0, 100),
+					new SettingInteger("Music", 100, 0, 100)
 			}, "Settings"),
 	Pause(
 			new Item[] {
@@ -110,6 +111,18 @@ public enum MenuLayout {
 	MenuLayout(Item[] items, String parent){
 		this.items = items;
 		this.parent = parent;
+	}
+	
+	public static void fullyInit(Preferences prefs) {
+		MenuLayout.HighScores.init(prefs);
+		MenuLayout.Settings.init(prefs);
+		
+		MenuLayout.P1Controls.init(prefs);
+		MenuLayout.P2Controls.init(prefs);
+		MenuLayout.MenuControls.init(prefs);
+		MenuLayout.Tuning.init(prefs);
+		MenuLayout.Theme.init(prefs);
+		MenuLayout.Audio.init(prefs);
 	}
 	
 	public void init(Preferences prefs){

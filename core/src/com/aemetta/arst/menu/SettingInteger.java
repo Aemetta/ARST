@@ -8,10 +8,19 @@ public class SettingInteger extends SettingItem {
 	int value;
 	int def;
 	
-	SettingInteger(String label, int def) {
+	int min;
+	int max;
+	
+	SettingInteger(String label, int def, int min, int max) {
 		super(label, label);
 		pushColumn("0");
 		this.def = def;
+		this.min = min;
+		this.max = max;
+	}
+	
+	SettingInteger(String label, int def) {
+		this(label, def, -65536, 65535);
 	}
 
 	@Override
@@ -51,9 +60,16 @@ public class SettingInteger extends SettingItem {
 	}
 
 	void turn(MenuSelector host, boolean right) {
-		value += (right) ? 5 : -5;
+		set(value + ((right) ? 5 : -5));
+	}
+	
+	void set(int i) {
+		value = i;
+		
+		if(value > max) value = max;
+		else if(value < min) value = min;
+		
 		column[1] = "" + value;
 		prefs.putInteger(name, value);
 	}
-
 }

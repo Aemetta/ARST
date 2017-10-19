@@ -23,13 +23,13 @@ public class Gamemode extends Wrapper {
 	
 	public void init(Preferences prefs) {
 		manager = new AssetManager();
-		manager.load("Backgrounds/017.png", Texture.class);
+		manager.load("Backgrounds/" + Arst.theme[3] + "/0.png", Texture.class);
 		
 		displays = new PlayerDisplay[1];
 		displays[0] = new PlayerDisplay(Arst.theme[1], Arst.theme[2], players, manager);
 
 		manager.finishLoading();
-		background = manager.get("Backgrounds/017.png", Texture.class);
+		background = manager.get("Backgrounds/" + Arst.theme[3] + "/0.png", Texture.class);
 		displays[0].init(manager);
 		
 		for(Player p : players) {

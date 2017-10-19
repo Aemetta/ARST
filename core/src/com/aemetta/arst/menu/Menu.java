@@ -34,7 +34,7 @@ public class Menu extends Wrapper {
 
 	public void init(Preferences prefs) {
 		manager = new AssetManager();
-		manager.load("Backgrounds/017.png", Texture.class);
+		manager.load("Backgrounds/" + Arst.theme[3] + "/0.png", Texture.class);
 		
 		loadDisplay();
 		
@@ -46,7 +46,7 @@ public class Menu extends Wrapper {
 		displays[0] = new MenuDisplay("default", ms, manager);
 
 		manager.finishLoading();
-		background = manager.get("Backgrounds/017.png", Texture.class);
+		background = manager.get("Backgrounds/" + Arst.theme[3] + "/0.png", Texture.class);
 		displays[0].init(manager);
 	}
 

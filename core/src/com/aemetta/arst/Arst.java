@@ -30,7 +30,7 @@ public class Arst extends ApplicationAdapter {
 	public static int[] p1controls = new int[9];
 	public static int[] p2controls = new int[9];
 	public static int[] menucontrols = new int[9];
-	public static String[] theme = new String[3];
+	public static String[] theme = new String[4];
 
 	final static public int MENU_LEFT = 0;
 	final static public int MENU_RIGHT = 1;
@@ -67,12 +67,7 @@ public class Arst extends ApplicationAdapter {
 		prefs = Gdx.app.getPreferences("arst");
 		debug = prefs.getBoolean("Debug Mode", false);
 		
-		MenuLayout.P1Controls.init(prefs);
-		MenuLayout.P2Controls.init(prefs);
-		MenuLayout.MenuControls.init(prefs);
-		MenuLayout.Tuning.init(prefs);
-		MenuLayout.Theme.init(prefs);
-		MenuLayout.Audio.init(prefs);
+		MenuLayout.fullyInit(prefs);
 		
 		loadControls();
 		loadTheme();
@@ -202,9 +197,10 @@ public class Arst extends ApplicationAdapter {
 	}
 	
 	public void loadTheme() {
-		theme[0] = prefs.getString("Menu", "default");
-		theme[1] = prefs.getString("Playfield", "purple-20");
-		theme[2] = prefs.getString("Minos", "candy-20");
+		theme[0] = prefs.getString("Menu");
+		theme[1] = prefs.getString("Playfield");
+		theme[2] = prefs.getString("Minos");
+		theme[3] = prefs.getString("Background");
 	}
 
 	public void render () {

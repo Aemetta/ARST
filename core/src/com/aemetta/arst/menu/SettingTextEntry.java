@@ -35,12 +35,12 @@ public class SettingTextEntry extends SettingItem {
 		if(key == Keys.ENTER) {
 			host.specialInput = false;
 			host.activated = true;
-			column[1] = column[1].toLowerCase();
+			column[1] = column[1];
 			prefs.putString(name, column[1]);
 		} else if(key == Keys.BACKSPACE && !column[1].contentEquals(""))
 			column[1] = column[1]
 					.substring(0, column[1].length()-1);
-		else if(Keys.toString(key).length() == 1)
+		else if(Keys.toString(key).length() == 1 && column[1].length() <= 15)
 			column[1] += Keys.toString(key);
 	}
 
