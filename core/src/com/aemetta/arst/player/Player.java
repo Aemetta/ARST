@@ -38,6 +38,7 @@ public class Player implements Controllable {
 	final static public int TOP_OUT = 100;
 	final static public int TIME_UP = 101;
 	final static public int LEVEL_MAX = 102;
+	final static public int SPECIAL = 103;
 	final static public int LEVEL_UP = 200;
 	final static public int PERFECT_CLEAR = 201;
 	
@@ -92,6 +93,11 @@ public class Player implements Controllable {
 				}
 			}
 		}
+		
+		if(matrix.specialClearedFlag) {
+			handle(SPECIAL);
+			matrix.specialClearedFlag = false;
+		}
 	}
 	
 	public void input(int key, boolean pressed){
@@ -142,14 +148,11 @@ public class Player implements Controllable {
 	public void handle(int event){
 		if(!game.handle(this, event)) {
 			switch(event) {
-			case TOP_OUT:	gameover = true;
-							popup.create(true, 1);
+			case TOP_OUT:	endGame(Popup.END_BAD);
 							break;
-			case TIME_UP:	gameover = true;
-							popup.create(true, 0);
+			case TIME_UP:	endGame(Popup.END_TIMER);
 							break;
-			case LEVEL_MAX:	gameover = true;
-							popup.create(true, 3);
+			case LEVEL_MAX:	endGame(Popup.END_GOOD);
 							break;
 			}
 		}
@@ -160,6 +163,11 @@ public class Player implements Controllable {
 		onGround = false;
 		dropping = false;
 		nextFall = fall + clock;
+	}
+	
+	public void endGame(int type) {
+		gameover = true;
+		popup.create(true, type);
 	}
 	
 	public void setLevelTracker(LevelTracker t) {

@@ -12,6 +12,11 @@ public class Popup {
 	long life = 0;
 	boolean end = false;
 	
+	public static final int END_TIMER = 0;
+	public static final int END_BAD = 1;
+	public static final int END_NEUTRAL = 2;
+	public static final int END_GOOD = 3;
+	
 	public Popup() {
 	}
 	
@@ -78,10 +83,10 @@ public class Popup {
 		image1 = null;
 		if(singleplayer)
 			switch(place) {
-			case 0: set(1, "end-timer"); break;
-			case 1: set(1, "end-bad"); break;
-			case 2: set(1, "end-neutral"); break;
-			case 3: set(1, "end-good"); break;
+			case END_TIMER: set(1, "end-timer"); break;
+			case END_BAD: set(1, "end-bad"); break;
+			case END_NEUTRAL: set(1, "end-neutral"); break;
+			case END_GOOD: set(1, "end-good"); break;
 			}
 		else
 			set(1, "end-place-" + place);

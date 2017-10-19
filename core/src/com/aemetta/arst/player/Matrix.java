@@ -18,6 +18,13 @@ public class Matrix {
 		//ALL ARRAYS WITH X/Y VALUES FOR BLOCKS ON THE matrix
 		//ARE IN THE FORM var[y][x] STARTING WITH Y
 	
+	int specialY = -1;
+	int specialX = 0;
+	int specialType = 0;
+	boolean specialClearedFlag = false;
+	boolean specialUpdated = false;
+	Sprite specialSprite = null;
+	
 	public Matrix(){
 		this(10, 24, 4);
 	}
@@ -56,6 +63,10 @@ public class Matrix {
 							wang[i-1][j] = wang[i-1][j].shear(false);
 							updated[i-1][j] = true;
 						}
+				}
+				if(specialY == i) {
+					clearSpecial();
+					specialClearedFlag = true;
 				}
 			}
 		}
@@ -176,6 +187,22 @@ public class Matrix {
 		return texture[y][x];
 	}
 	
+	public void setSpecial(int x, int y) {
+		this.setSpecial(x, y, 0);
+	}
+	
+	public void setSpecial(int x, int y, int type) {
+		specialX = x;
+		specialY = y;
+		specialType = type;
+		if(specialType != 0) specialUpdated = true;
+	}
+	
+	public void clearSpecial() {
+		specialY = -1;
+		if(specialType != 0) specialUpdated = true;
+	}
+	
 	public Matrix clone() {
 		Matrix m = new Matrix(this.getWidth(), this.getHeight(), this.getTopOffset());
 		
@@ -185,9 +212,12 @@ public class Matrix {
 				m.color[i][j] = this.color[i][j];
 				m.wang[i][j] = this.wang[i][j];
 				m.texture[i][j] = this.texture[i][j];
-				m.updated[i][j] = this.updated[i][j];
-				m.sprite[i][j] = this.sprite[i][j];
+				m.updated[i][j] = true;
 			}
+		
+		m.specialX = this.specialX;
+		m.specialY = this.specialY;
+		m.specialUpdated = true;
 		
 		return m;
 	}
