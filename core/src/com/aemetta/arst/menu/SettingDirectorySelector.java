@@ -12,13 +12,14 @@ public class SettingDirectorySelector extends SettingItem {
 	String directory;
 	int selected = 0;
 	
-	SettingDirectorySelector(String label, String def, String directory) {
+	SettingDirectorySelector(String label, String def, String[] options) {
 		super(label, label);
 		this.def = def;
-		FileHandle[] h = Gdx.files.getFileHandle(directory, FileType.Internal).list();
+		this.options = options;
+	/*	FileHandle[] h = Gdx.files.getFileHandle(directory, FileType.Internal).list();
 		options = new String[h.length];
 		for(int i = 0; i < h.length; i++)
-			options[i] = h[i].name();
+			options[i] = h[i].name();*/
 		pushColumn(options[selected]);
 	}
 

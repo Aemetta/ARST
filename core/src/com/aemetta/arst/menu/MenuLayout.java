@@ -84,10 +84,10 @@ public enum MenuLayout {
 			}, "Settings"),
 	Theme(
 			new Item[] {
-					new SettingDirectorySelector("Menu", "default", "Menus"),
-					new SettingDirectorySelector("Playfield", "purple-20", "Playfields"),
-					new SettingDirectorySelector("Minos", "candy-20", "Minos"),
-					new SettingDirectorySelector("Background", "aemetta", "Backgrounds")
+					new SettingDirectorySelector("Menu", "default", new String[] {"default"}),
+					new SettingDirectorySelector("Playfield", "purple-20", new String[] {"green-20", "purple-20"}),
+					new SettingDirectorySelector("Minos", "candy-20", new String[] {"candy-20", "test-20", "graphite-20"}),
+					new SettingDirectorySelector("Background", "aemetta", new String[] {"aemetta"})
 			}, "Settings"),
 	Audio(
 			new Item[] {
