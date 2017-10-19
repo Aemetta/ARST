@@ -20,7 +20,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '0.1'
+    version = '0.1.1'
     ext {
         appName = "ARST"
         gdxVersion = '1.9.6'
