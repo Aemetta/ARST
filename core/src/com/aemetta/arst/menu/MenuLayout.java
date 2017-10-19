@@ -26,7 +26,7 @@ public enum MenuLayout {
 			}, "Main"),
 	HighScores(
 			new Item[] {
-					new ItemFunction("lol not yet", MenuSelector.ABOUT)
+					new ItemFunction("not yet, sorry", MenuSelector.ABOUT)
 			}, "Main"),
 	Settings(
 			new Item[] {
