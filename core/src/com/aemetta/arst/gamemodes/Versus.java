@@ -12,8 +12,8 @@ public class Versus extends Gamemode {
 		players = new Player[2];
 		
 		long seed = Double.doubleToLongBits(Math.random());
-		players[0] = new Player(this, seed, MapLoader.load("Maps/Untitled.png"));
-		players[1] = new Player(this, seed, MapLoader.load("Maps/Untitled.png"));
+		players[0] = new Player(this, seed, MapLoader.load("Maps/aemetta/Untitled.png"));
+		players[1] = new Player(this, seed, players[0].matrix.clone());
 		human1 = players[0];
 		human2 = players[1];
 		players[0].score.setTarget(players[1]);
