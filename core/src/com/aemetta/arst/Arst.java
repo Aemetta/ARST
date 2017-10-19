@@ -228,6 +228,7 @@ public class Arst extends ApplicationAdapter {
 		game.manager.dispose();
 		for(Display d : game.displays)
 			d.dispose();
+		prefs.flush();
 	}
 	
 	public void setStartupGamemode(String g) {

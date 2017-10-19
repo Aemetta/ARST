@@ -49,6 +49,8 @@ public class SettingDirectorySelector extends SettingItem {
 		selected = (selected < 0) ? options.length - 1 : selected;
 		
 		column[1] = options[selected];
+		
+		save();
 	}
 
 }

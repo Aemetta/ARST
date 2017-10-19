@@ -84,6 +84,8 @@ public class MenuSelector implements Controllable {
 	
 	void newMenu(MenuLayout link) {
 		
+		if(link == MenuLayout.Settings && prefs != null) prefs.flush();
+		
 		if(menu == MenuLayout.P1Controls ||
 					menu == MenuLayout.P2Controls || 
 					menu == MenuLayout.MenuControls)
@@ -91,8 +93,6 @@ public class MenuSelector implements Controllable {
 		else if(menu == MenuLayout.Theme) host.handle(UPDATE_THEME);
 		
 		menu = link;
-		
-		if(link == MenuLayout.Settings && prefs != null) prefs.flush();
 			
 		
 		if(menu == MenuLayout.Main) {

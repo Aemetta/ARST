@@ -131,5 +131,6 @@ public enum MenuLayout {
 				((SettingItem) i).load(prefs);
 				((SettingItem) i).save();
 			}
+		initialized = true;
 	}
 }
