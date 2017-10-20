@@ -10,7 +10,7 @@ public class Matrix {
 	private final int HEIGHT;
 	private final int TOP;
 	boolean[][] solid;
-	int[][] color;
+	Color[][] color;
 	Wang[][] wang;
 	int[][] texture;
 	boolean[][] updated;
@@ -39,7 +39,7 @@ public class Matrix {
 		TOP = t;
 		
 		solid = new boolean[getHeight()][getWidth()];
-		color = new int[getHeight()][getWidth()];
+		color = new Color[getHeight()][getWidth()];
 		wang = new Wang[getHeight()][getWidth()];
 		texture = new int[getHeight()][getWidth()];
 		updated = new boolean[getHeight()][getWidth()];
@@ -83,7 +83,7 @@ public class Matrix {
 					updated[i][j] = true;
 			}
 			solid[getHeight()-1] = new boolean[getWidth()];
-			color[getHeight()-1] = new int[getWidth()];
+			color[getHeight()-1] = new Color[getWidth()];
 			wang[getHeight()-1] = new Wang[getWidth()];
 			updated[getHeight()-1] = new boolean[getWidth()];
 			Arrays.fill(updated[getHeight()-1], true);
@@ -97,7 +97,7 @@ public class Matrix {
 					updated[i][j] = true;
 			}
 			solid[line] = new boolean[getWidth()];
-			color[line] = new int[getWidth()];
+			color[line] = new Color[getWidth()];
 			wang[line] = new Wang[getWidth()];
 			updated[line] = new boolean[getWidth()];
 			Arrays.fill(updated[getHeight()-1], true);
@@ -125,26 +125,26 @@ public class Matrix {
 		}
 	}
 	
-	public void recolor(int color, int x1, int y1, int x2, int y2) {
+	public void recolor(Color color, int x1, int y1, int x2, int y2) {
 		for(int i = y1; i < y2; i++)
 			for(int j = x1; j < x2; j++)
-				if(this.color[i][j] != 0)
+				if(this.color[i][j] != Color.Empty)
 					this.color[i][j] = color;
 	}
 	
-	public void setSquare(int x, int y, int c, Wang s, int t){
+	public void setSquare(int x, int y, Color c, Wang s, int t){
 		setSquare(x, y, c, s);
 		texture[y][x] = t;
 	}
 	
-	public void setSquare(int x, int y, int c, Wang s){
+	public void setSquare(int x, int y, Color c, Wang s){
 		color[y][x] = c;
 		wang[y][x] = s;
 		updated[y][x] = true;
 	}
 	
 	public void hideSquare(int x, int y){
-		color[y][x] = 0;
+		color[y][x] = Color.Empty;
 		wang[y][x] = Wang.LONER;
 	}
 	
@@ -175,7 +175,7 @@ public class Matrix {
 		solid[y][x] = true;;
 	}
 	
-	public int getColor(int x, int y) {
+	public Color getColor(int x, int y) {
 		return color[y][x];
 	}
 

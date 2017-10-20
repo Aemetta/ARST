@@ -156,7 +156,7 @@ public class Piece {
 	public void placeGhost(){
 		
 		for(int i = 0; i < 4; i++){
-			if(matrix.getColor(gx[i], gy[i]) == 8)
+			if(matrix.getColor(gx[i], gy[i]) == Color.Ghost)
 				 matrix.hideSquare(gx[i], gy[i]); //Hide the ghost
 		}
 		int j = 0;
@@ -166,7 +166,7 @@ public class Piece {
 			for(int i = 0; i < 4; i++){
 				gx[i] = x[i]; //Set the ghost's position
 				gy[i] = y[i]+j;
-				matrix.setSquare(gx[i], gy[i], 8, wang[i], texture[i]); //Show the ghost
+				matrix.setSquare(gx[i], gy[i], Color.Ghost, wang[i], texture[i]); //Show the ghost
 			}
 		}
 	}

@@ -57,7 +57,7 @@ public class Garbage {
 				for(int j = 0; j < matrix.getWidth(); j++){
 					if(j==b) continue;
 					matrix.makeSolid(j, i);
-					matrix.setSquare(j, i, 9, Wang.LONER);
+					matrix.setSquare(j, i, Color.Light, Wang.LONER);
 				}
 			matrix.smooth(0, a-1);
 		}

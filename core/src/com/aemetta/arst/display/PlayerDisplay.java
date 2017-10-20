@@ -2,6 +2,7 @@ package com.aemetta.arst.display;
 
 import java.util.Arrays;
 
+import com.aemetta.arst.player.Color;
 import com.aemetta.arst.player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -171,7 +172,7 @@ public class PlayerDisplay implements Display {
 		for(int x = 0; x < p.matrix.getWidth(); x++)
 			for(int y = 0; y < p.matrix.getHeight()-p.matrix.getTopOffset(); y++)
 			{
-				if(p.matrix.getColor(x, y)==0) continue;
+				if(p.matrix.getColor(x, y)==Color.Empty) continue;
 				if(p.matrix.getShape(x, y)==null) continue;
 				Sprite sprite;
 				if(p.matrix.hasUpdated(x, y)) {
@@ -181,7 +182,7 @@ public class PlayerDisplay implements Display {
 					int srcy = 0;
 					
 					if(getMinoConfig().colored)
-						srcy = p.matrix.getColor(x,y);
+						srcy = p.matrix.getColor(x,y).code;
 					
 					if(getMinoConfig().randomized){
 						srcx = p.matrix.getTexture(x,y);
@@ -199,7 +200,7 @@ public class PlayerDisplay implements Display {
 					sprite.setBounds(dspx, dspy, getMinoConfig().size, getMinoConfig().size);
 					p.matrix.setSprite(x, y, sprite);
 					if(!getMinoConfig().colored)
-						sprite.setColor(getMinoConfig().colorset[p.matrix.getColor(x, y)]);
+						sprite.setColor(getMinoConfig().colorset[p.matrix.getColor(x, y).code]);
 				} else {
 					sprite = p.matrix.getSprite(x, y);
 				}
@@ -213,10 +214,10 @@ public class PlayerDisplay implements Display {
 			int b;
 			if(i==0){
 				if(p.queue.getHeldShape()!=null)
-					b = p.queue.getHeldShape().color-1;
+					b = p.queue.getHeldShape().color.code-1;
 				else continue;
 			}
-			else b = p.queue.getQueSpot(i-1).color-1;
+			else b = p.queue.getQueSpot(i-1).color.code-1;
 			
 			Sprite sprite = new Sprite(blocks[blockref[i]], 0, b*a, a, a);
 			sprite.setBounds(getPlayfieldConfig().blockcoords[i][0],getPlayfieldConfig().height-getPlayfieldConfig().blockcoords[i][1]-getPlayfieldConfig().blockcoords[i][3],

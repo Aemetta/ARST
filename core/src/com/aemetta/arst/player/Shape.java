@@ -2,53 +2,53 @@ package com.aemetta.arst.player;
 
 public enum Shape {
 	
-	I(1,
+	I(Color.Cyan,
 			new int[]{3,4,5,6},
 			new int[]{22,22,22,22},
 			new Wang[]{Wang.WCAP, Wang.HORIZ, Wang.HORIZ, Wang.ECAP}),
-	O(2,
+	O(Color.Yellow,
 			new int[]{4,4,5,5},
 			new int[]{23,22,23,22},
 			new Wang[]{Wang.NWCORN, Wang.SWCORN, Wang.NECORN, Wang.SECORN}),
-	T(3,
+	T(Color.Magenta,
 			new int[]{3,4,4,5},
 			new int[]{22,22,23,22},
 			new Wang[]{Wang.WCAP, Wang.STEE, Wang.NCAP, Wang.ECAP}),
-	Z(4,
+	Z(Color.Red,
 			new int[]{5,4,4,3},
 			new int[]{22,22,23,23},
 			new Wang[]{Wang.ECAP, Wang.SWCORN, Wang.NECORN, Wang.WCAP}),
-	S(5,
+	S(Color.Green,
 			new int[]{3,4,4,5},
 			new int[]{22,22,23,23},
 			new Wang[]{Wang.WCAP, Wang.SECORN, Wang.NWCORN, Wang.ECAP}),
-	J(6,
+	J(Color.Blue,
 			new int[]{5,4,3,3},
 			new int[]{22,22,22,23},
 			new Wang[]{Wang.ECAP, Wang.HORIZ, Wang.SWCORN, Wang.NCAP}),
-	L(7,
+	L(Color.Orange,
 			new int[]{3,4,5,5},
 			new int[]{22,22,22,23},
 			new Wang[]{Wang.WCAP, Wang.HORIZ, Wang.SECORN, Wang.NCAP}),
-	Brace(8,
+	Brace(Color.Brown,
 			new int[]{5,4,4},
 			new int[]{22,22,23},
 			new Wang[]{Wang.ECAP, Wang.SWCORN, Wang.NCAP}),
-	Twig(9,
+	Twig(Color.White,
 			new int[]{5,4,3},
 			new int[]{22,22,22},
 			new Wang[]{Wang.ECAP, Wang.HORIZ, Wang.WCAP}),
-	Dot(10,
+	Dot(Color.White,
 			new int[]{4},
 			new int[]{22},
 			new Wang[]{Wang.LONER});
 	
-	public int color;
+	public Color color;
 	public int[] x;
 	public int[] y;
 	public Wang[] wang;
 	
-	Shape(int color, int[] x, int[] y, Wang[] shape){
+	Shape(Color color, int[] x, int[] y, Wang[] shape){
 		this.color = color;
 		this.x = x;
 		this.y = y;
