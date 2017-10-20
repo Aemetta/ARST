@@ -68,7 +68,7 @@ public class MenuDisplay implements Display {
 					ms.getItem(i)
 					.getColumn(j)
 					.toLowerCase(),
-				-250, -50*((main) ? i-scroll : i-scroll-scope/2), 500, 
+				-250, -50*((main) ? i-scroll-1 : i-scroll-scope/2), 500, 
 				(columns == 1) ? 1 :
 				(columns == 2) ? (j == 0) ? -1 : 0 :
 				(columns == 3) ? (j == 0) ? -1 : (j == 1) ? 1 : 0 :
