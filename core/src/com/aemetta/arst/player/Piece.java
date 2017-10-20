@@ -60,12 +60,13 @@ public class Piece {
 		
 		//T-spin 3-corner check
 		boolean tspin = false;
-		if(shape==Shape.T){
+		if(shape==Shape.T && !canShift(0, 1)
+			&& !canShift(1, 0) && !canShift(-1, 0)){
 			int corners = 0;
-			if(matrix.isSolid(x[2]+1, y[2]+1)) corners++;
-			if(matrix.isSolid(x[2]-1, y[2]+1)) corners++;
-			if(matrix.isSolid(x[2]+1, y[2]-1)) corners++;
-			if(matrix.isSolid(x[2]-1, y[2]-1)) corners++;
+			if(matrix.isSolid(x[1]+1, y[1]+1)) corners++;
+			if(matrix.isSolid(x[1]-1, y[1]+1)) corners++;
+			if(matrix.isSolid(x[1]+1, y[1]-1)) corners++;
+			if(matrix.isSolid(x[1]-1, y[1]-1)) corners++;
 			if(corners >= 3) tspin = true;
 		}
 		
